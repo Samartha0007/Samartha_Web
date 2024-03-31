@@ -1,8 +1,8 @@
-Hi I am Samartha Gs , Who is passionate about IoT and Web development . 
+Hi I am Samartha Gs , Who Is Passionate About IoT and Web development . 
 
 
 
-This is an Smart Portfolio Website Developed by me . 
+This is an Smart Portfolio Website Developed By Me . 
 
 
 
@@ -13,4 +13,4 @@ samarthags.cloud
 
 
 
-Thank you ❤️
+Thank You ❤️
