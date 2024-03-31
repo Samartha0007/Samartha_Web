@@ -207,9 +207,8 @@ var typed = new Typed(".type", {
   strings: ["IoT" , "Science Projects" , "Lens Development" , "Web Development","AI" , "API " ],
   smartBackspace: true,
   startDelay: 1000,
-  typeSpeed: 130,
+  typeSpeed: 200,
   backDelay: 1000,
   backSpeed: 60,
   loop: true,
-  spamColor: 'green'
 });
