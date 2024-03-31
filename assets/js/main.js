@@ -206,9 +206,9 @@ themeButton.addEventListener("click", () => {
 var typed = new Typed(".type", {
   strings: ["IoT" , "Science Projects" , "Lens Development" , "Web Development","AI" , "API " ],
   smartBackspace: true,
-  startDelay: 100,
-  typeSpeed: 200,
-  backDelay: 100,
-  backSpeed: 600,
+  startDelay: 0,
+  typeSpeed: 1000,
+  backDelay: 1,
+  backSpeed: 1000,
   loop: true,
 });
