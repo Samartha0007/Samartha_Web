@@ -182,33 +182,26 @@ const iconTheme = "uil-sun";
 
 // Previously selected topic (if user selected)
 const selectedTheme = localStorage.getItem("selected-theme");
-const selectedIcon = localStorage.getItem("selected-icon");
 
-// obtain the current theme
-const getCurrentTheme = () =>
-  document.body.classList.contains(darkTheme) ? "dark" : "light";
-const getCurrentIcon = () =>
-  themeButton.classList.contains(iconTheme) ? "uil-moon" : "uil-sun";
+// Function to set the theme based on user choice
+const setTheme = (theme) => {
+  document.body.classList.toggle(darkTheme, theme === "dark");
+  themeButton.classList.toggle(iconTheme, theme === "dark");
+  localStorage.setItem("selected-theme", theme);
+};
 
-if (selectedTheme) {
-  document.body.classList[selectedTheme === "dark" ? "add" : "remove"](
-    darkTheme
-  );
-  themeButton.classList[selectedIcon === "uil-moon" ? "add" : "remove"](
-    iconTheme
-  );
-}
+// Function to get the current theme
+const getCurrentTheme = () => document.body.classList.contains(darkTheme) ? "dark" : "light";
+
+// Set the theme based on previous selection or default to dark
+setTheme(selectedTheme || "dark");
 
 // Activate/Deactivate the theme manually with the button
 themeButton.addEventListener("click", () => {
-  // Add or remove the dark icon/theme
-  document.body.classList.toggle(darkTheme);
-  themeButton.classList.toggle(iconTheme);
-  // We save the theme and the current icon that the user chose
-  localStorage.setItem("selected-theme", getCurrentTheme());
-  localStorage.setItem("selected-icon", getCurrentIcon());
+  const currentTheme = getCurrentTheme();
+  const newTheme = currentTheme === "dark" ? "light" : "dark";
+  setTheme(newTheme);
 });
-
 // Typing Animation using Typed JS
 var typed = new Typed(".type", {
   strings: ["IoT" , "Science Projects" , "Lens Development" , "Web Development","AI" , "API " ],
