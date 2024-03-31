@@ -211,4 +211,5 @@ var typed = new Typed(".type", {
   backDelay: 1000,
   backSpeed: 60,
   loop: true,
+  spamColor: '#ff0000'
 });
