@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Samartha-App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #000;
+            margin: 0;
+            padding: 0;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+        }
+
+        .card {
+            background-color: #000;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(155, 225, 255, 0.1);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            color: #fff;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #007bff;
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .app-icon {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto;
+            margin-bottom: 20px;
+        }
+
+        .app-icon img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+        }
+
+        p {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 30px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .download-button {
+            padding: 15px 25px;
+            background-color: #0ef;
+            border: 2px solid #0ff;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 15px;
+            animation: bounce 1s ease-out;
+            box-shadow: 0 0 1px rgba(0, 0, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .download-button:hover {
+            background-color: #0ef;
+            border-color: #0ef;
+            box-shadow: 0 0 15px rgba(0, 0, 255, 0.8);
+        }
+
+        .download-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .particles-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .typed-text {
+            color:#0ef;
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 2px solid #000;
+            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100%;
+            }
+        }
+
+        @keyframes blink-caret {
+            from, to {
+                border-color: transparent;
+            }
+            50% {
+                border-color: #000;
+            }
+        }
+
+        .small-text {
+            font-size: 14px;
+            color: #666;
+            margin-top: 10px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .designed-by {
+            font-size: 14px;
+            color: #666;
+            margin-top: 10px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .stars {
+            display: flex;
+            justify-content: center;
+        }
+
+        .star {
+            font-size: 24px;
+            color: #ddd;
+            cursor: pointer;
+        }
+
+        .star.filled {
+            color: #ff0;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes bounce {
+            0% {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="app-icon">
+                <img src="https://i.ibb.co/LYcD1kV/IMG-20240307-112133-743.jpg" alt="App Icon">
+            </div>
+            <h1><span class="typed-text"></span></h1>
+            <p>App is secured. No need to worry.</p>
+            <button id="downloadButton" class="download-button">Download Now</button>
+            <div class="designed-by">Designed by Samartha Gs</div>
+        </div>
+        <div class="particles-bg"></div>
+    </div>
+
+    <!-- New container for download status -->
+    <div class="container">
+        <div class="card">
+            <h2>50+ are already downloaded</h2>
+        </div>
+    </div>
+
+    <!-- Review section -->
+    
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        const typedTextSpan = document.querySelector(".typed-text");
+        const textArray = ["AI Chatbot", "PicSharing", "Comments", "Live location ", "Weather", "NotifyBot", "Remainder","Search Bot","20000+ ","Images","3000+","Comments","GPT-3"];
+        const typingDelay = 100; // in milliseconds
+        const erasingDelay = 50; // in milliseconds
+        const newTextDelay = 2000; // in milliseconds
+
+        let textArrayIndex = 0;
+        let charIndex = 0;
+        let erase = false;
+
+        function type() {
+            if (!erase && charIndex < textArray[textArrayIndex].length) {
+                typedTextSpan.textContent += textArray[textArrayIndex].charAt(charIndex);
+                charIndex++;
+                setTimeout(type, typingDelay);
+            } else {
+                erase = true;
+                setTimeout(eraseText, newTextDelay);
+            }
+        }
+
+        function eraseText() {
+            if (charIndex > 0) {
+                typedTextSpan.textContent = textArray[textArrayIndex].substring(0, charIndex - 1);
+                charIndex--;
+                setTimeout(eraseText, erasingDelay);
+            } else {
+                erase = false;
+                textArrayIndex = (textArrayIndex + 1) % textArray.length;
+                setTimeout(type, typingDelay);
+            }
+        }
+
+        setTimeout(type, newTextDelay);
+
+        const downloadButton = document.getElementById("downloadButton");
+
+        downloadButton.addEventListener("click", function() {
+            // Replace the alert with the actual download logic
+            var appFilePath = 'Echolink_1_1.0.apk'; // Relative path to your apk file
+            var link = document.createElement('a');
+            link.href = appFilePath;
+            link.download = 'Echolink'; // Change the filename according to your apk file
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+
+        // Review section JavaScript
+        const stars = document.querySelectorAll(".star");
+
+        stars.forEach((star, index) => {
+            star.addEventListener("click", function() {
+                fillStars(index);
+                saveReview(index);
+            });
+        });
+
+        function fillStars(index) {
+            stars.forEach((star, i) => {
+                if (i <= index) {
+                    star.classList.add("filled");
+                } else {
+                    star.classList.remove("filled");
+                }
+            });
+        }
+
+        function saveReview(index) {
+            // Your code to save the review to localhost goes here
+            console.log("Review saved:", index + 1);
+        }
+    </script>
+
+</body>
+</html>
