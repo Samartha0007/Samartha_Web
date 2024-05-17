@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- start webpushr tracking code --> 
+<script>(function(w,d, s, id) {if(typeof(w.webpushr)!=='undefined') return;w.webpushr=w.webpushr||function(){(w.webpushr.q=w.webpushr.q||[]).push(arguments)};var js, fjs = d.getElementsByTagName(s)[0];js = d.createElement(s); js.id = id;js.async=1;js.src = "https://cdn.webpushr.com/app.min.js";
+fjs.parentNode.appendChild(js);}(window,document, 'script', 'webpushr-jssdk'));
+webpushr('setup',{'key':'BOoXVuRGEKm6cdZHh2OLbum-bkE_ugNFQMvURIVZdtSbBod_G7zN_cZdhlAvlS83vBr1YPkRO1IHyStHMoUgP3Y' });</script>
+<!-- end webpushr tracking code -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="icon.jpg" type="image/webp">
+  <link rel="icon" href="icon.jpg" type="image/webp">
+    <meta property="og:description"
+    content="Samartha GS is enthusiastic about web development and IoT" />
+    <meta property="og:image" content="about.jpg" />
+      <meta property="og:image:secure_url" content="about.jpg" />
+  <meta name="twitter:url" content="https://samarthags.cloud" />
+  <meta property="profile:username" content="SamarthaGs" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Samartha Gs" />
+    <title>Quotiful</title>
+      <link rel="shortcut icon" href="icon.jpg" type="image/x-icon" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-…" crossorigin="anonymous" />
+
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            flex-direction: column; 
+            transition: background 0.5s ease-in-out;
+            background: linear-gradient(45deg, #7F7FD5, #86A8E7, #91EAE4);
+        }
+
+        .container {
+            position: relative;
+            text-align: center;
+            width: 70%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .quote-container {
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            margin-bottom: 60px;
+            animation: fadeSlideIn 1s ease-in-out;
+            background: transparent;
+            color: #fff;
+            margin-bottom: 110px; 
+        }
+
+
+
+        .quote {
+            font-size: 24px;
+            white-space: pre-line;
+            overflow: hidden;
+            display: inline-block;
+            color: #fff;
+            word-break: keep-all; 
+        }
+
+        .char {
+            display: inline-block;
+            opacity: 0;
+            animation: fadeInChar 0.5s forwards;
+        }
+
+        #change-quote-btn {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            font-size: 16px;
+            font-family: 'Courier New', Courier, monospace;
+            cursor: pointer;
+            border: none;
+            border-radius: 15px;
+            background-color: transparent;
+            color: #fff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        #change-quote-btn:hover {
+            background-color: #333;
+            color: #fff;
+        }
+
+        .social-icons {
+            position: absolute;
+            bottom: -130px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .social-icon {
+            margin: 0 10px;
+            font-size: 15px;
+            color: white;
+        }
+
+        .social-icon:hover {
+            color: #ccc;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+
+
+        <div class="quote-container">
+            <div id="quote" class="quote"></div>
+        </div>
+
+        <button id="change-quote-btn">Renew Quote</button>
+
+        <div class="social-icons">
+            <a href="https://www.linkedin.com/in/samarthags/" class="social-icon"><i class="fab fa-linkedin"></i></a>
+            <a href="https://twitter.com/@samarth600/" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="https://t.me/Samartha_gs" class="social-icon"><i class="fab fa-telegram"></i></a>
+        <a href="mailto:samarthags121@gmail.com" class="social-icon"><i class="far fa-envelope"></i></a>
+        <a href="https://samarthags.cloud" class="social-icon"><i class="fas fa-external-link-alt"></i></a>
+        </div>
+    </div>
+    
+
+    
+    
+    <script>
+
+
+const quotes = [
+    "The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt",
+    "The only way to do great work is to love what you do. - Steve Jobs",
+    "Success is not final, failure is not fatal: It is the courage to continue that counts. - Winston Churchill",
+    "Your time is limited, don't waste it living someone else's life. - Steve Jobs",
+    "Believe you can and you're halfway there. - Theodore Roosevelt",
+    "Don't let what you cannot do interfere with what you can do. - John Wooden",
+    "Success is the sum of small efforts, repeated day in and day out. - Robert Collier",
+    "The only limit to our realization of tomorrow will be our doubts of today. - Franklin D. Roosevelt",
+    "Opportunities don't happen, you create them. - Chris Grosser",
+    "The only person you should try to be better than is the person you were yesterday. - Anonymous",
+    "Don’t watch the clock; do what it does. Keep going. - Sam Levenson",
+    "Success is walking from failure to failure with no loss of enthusiasm. - Winston Churchill",
+    "The journey of a thousand miles begins with one step. - Lao Tzu",
+    "You are never too old to set another goal or to dream a new dream. - C.S. Lewis",
+    "The only way to learn mathematics is to do mathematics. - Paul Halmos",
+    "You don’t have to be great to start, but you have to start to be great. - Zig Ziglar",
+    "Your attitude, not your aptitude, will determine your altitude. - Zig Ziglar",
+    "Failure is the opportunity to begin again more intelligently. - Henry Ford",
+    "Success is not about being the best. It's about being better than you were yesterday. - Unknown",
+    "The expert in anything was once a beginner. - Helen Hayes",
+    "Success doesn't come from what you do occasionally. It comes from what you do consistently. - Marie Forleo",
+    "Dream big and dare to fail. - Norman Vaughan",
+    "The only place where success comes before work is in the dictionary. - Vidal Sassoon",
+    "Success is not for the chosen few, but for the few who choose it. - Unknown",
+    "Every accomplishment starts with the decision to try. - Unknown",
+    "Challenges are what make life interesting and overcoming them is what makes life meaningful. - Joshua J. Marine",
+    "Success is the sum of small efforts repeated day in and day out. - Robert Collier",
+    "Success is not in what you have, but who you are. - Bo Bennett",
+    "Success is not the absence of failure; it's the persistence through failure. - Aisha Tyler",
+    "The harder you work for something, the greater you'll feel when you achieve it. - Unknown",
+    "Success is not just about making money. It's about making a difference. - Unknown",
+    "The best way to predict the future is to create it. - Peter Drucker",
+    "Don't be pushed around by the fears in your mind. Be led by the dreams in your heart. - Roy T. Bennett",
+    "You are the artist of your own life. Don't hand the paintbrush to anyone else. - Unknown",
+    "Your life does not get better by chance, it gets better by change. - Jim Rohn",
+    "The only limit to our realization of tomorrow will be our doubts of today. - Franklin D. Roosevelt",
+    "The secret to getting ahead is getting started. - Mark Twain",
+    "You have brains in your head. You have feet in your shoes. You can steer yourself any direction you choose. - Dr. Seuss",
+    "The only way to do great work is to love what you do. - Steve Jobs",
+    "The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt",
+    "Success is not the absence of failure; it's the persistence through failure. - Aisha Tyler",
+    "Don't let what you cannot do interfere with what you can do. - John Wooden",
+    "The only way to learn mathematics is to do mathematics. - Paul Halmos",
+    "You don't have to be great to start, but you have to start to be great. - Zig Ziglar",
+    "The expert in anything was once a beginner. - Helen Hayes",
+    "It does not matter how slowly you go as long as you do not stop. - Confucius",
+    "In the middle of every difficulty lies opportunity. - Albert Einstein",
+    "Don't let yesterday take up too much of today. - Will Rogers",
+    "Success is the sum of small efforts repeated day in and day out. - Robert Collier",
+    "The best revenge is massive success. - Frank Sinatra",
+    "The only limit to our realization of tomorrow will be our doubts of today. - Franklin D. Roosevelt",
+    "Your time is limited, don't waste it living someone else's life. - Steve Jobs",
+    "The only way to do great work is to love what you do. - Steve Jobs",
+    "Don't watch the clock; do what it does. Keep going. - Sam Levenson",
+    "You don’t have to be great to start, but you have to start to be great. - Zig Ziglar",
+    "Your attitude, not your aptitude, will determine your altitude. - Zig Ziglar",
+    "Success is the sum of small efforts, repeated day in and day out. - Robert Collier",
+    "Don't let what you cannot do interfere with what you can do. - John Wooden",
+    "Success doesn't come from what you do occasionally. It comes from what you do consistently. - Marie Forleo",
+    "Dream big and dare to fail. - Norman Vaughan",
+    "The only place where success comes before work is in the dictionary. - Vidal Sassoon",
+    "Success is not for the chosen few, but for the few who choose it. - Unknown",
+    "Every accomplishment starts with the decision to try. - Unknown",
+    "Challenges are what make life interesting and overcoming them is what makes life meaningful. - Joshua J. Marine",
+    "Success is not in what you have, but who you are. - Bo Bennett",
+    "Success is not the absence of failure; it's the persistence through failure. - Aisha Tyler",
+    "The harder you work for something, the greater you'll feel when you achieve it. - Unknown",
+    "Success is not just about making money. It's about making a difference. - Unknown",
+    "Dream, dream, dream. Dreams transform into thoughts and thoughts result in action. - APJ Abdul Kalam",
+    "You have to dream before your dreams can come true. - APJ Abdul Kalam",
+    "If you want to shine like a sun, first burn like a sun. - APJ Abdul Kalam",
+    "Excellence is a continuous process and not an accident. - APJ Abdul Kalam",
+    "All of us do not have equal talent. But, all of us have an equal opportunity to develop our talents. - APJ Abdul Kalam",
+    "Man needs difficulties in life because they are necessary to enjoy the success. - APJ Abdul Kalam",
+    "Suffering is the essence of success. - APJ Abdul Kalam",
+    "You should not give up and we should not allow the problem to defeat us. - APJ Abdul Kalam",
+    "Let us sacrifice our today so that our children can have a better tomorrow. - APJ Abdul Kalam",
+    "You cannot change your future, but you can change your habits, and surely your habits will change your future. - APJ Abdul Kalam",
+    "Climbing to the top demands strength, whether it is to the top of Mount Everest or to the top of your career. - APJ Abdul Kalam",
+    "To succeed in your mission, you must have single-minded devotion to your goal. - APJ Abdul Kalam",
+    "Unless India stands up to the world, no one will respect us. In this world, fear has no place. Only strength respects strength. - APJ Abdul Kalam",
+    "The bird is powered by its own life and by its motivation. - APJ Abdul Kalam",
+    "The ignited minds of the youth are the most powerful resource on the earth, above the earth and under the earth. - APJ Abdul Kalam",
+    "We should not give up and we should not allow the problem to defeat us. - APJ Abdul Kalam",
+    "Don't read success stories, you will only get a message. Read failure stories, you will get some ideas to get success. - APJ Abdul Kalam",
+    "Thinking should become your capital asset, no matter whatever ups and downs you come across in your life. - APJ Abdul Kalam",
+    "To succeed in your mission, you must have single-minded devotion to your goal. - APJ Abdul Kalam",
+    "Let us sacrifice our today so that our children can have a better tomorrow. - APJ Abdul Kalam",
+    "Without your involvement, you can't succeed. With your involvement, you can't fail. - APJ Abdul Kalam",
+        "Dream big, work hard. - Unknown",
+    "Success starts with a single step. - Unknown",
+    "Believe in yourself. - Unknown",
+    "Learn from failure. - Unknown",
+    "Stay focused, stay strong. - Unknown",
+    "Embrace challenges. - Unknown",
+    "Every setback is a setup for a comeback. - Unknown",
+    "Make today count. - Unknown",
+    "You are capable of amazing things. - Unknown",
+    "Push yourself beyond your limits. - Unknown",
+    "Be the change you wish to see. - Unknown",
+    "Strive for progress, not perfection. - Unknown",
+    "Hard work beats talent when talent doesn't work hard. - Unknown",
+    "Your attitude determines your altitude. - Unknown",
+    "Never give up on your dreams. - Unknown",
+    "Success is earned, not given. - Unknown",
+    "Opportunities are endless. - Unknown",
+    "The best way to predict the future is to create it. - Unknown",
+    "Focus on solutions, not problems. - Unknown",
+    "Be the hardest worker in the room. - Unknown",
+    "Do it with passion or not at all. - Unknown",
+    "Be relentless in the pursuit of your goals. - Unknown",
+    "Think big, start small, act now. - Unknown",
+    "You are stronger than you think. - Unknown",
+    "Stay hungry for knowledge. - Unknown",
+    "Failure is the fertilizer of success. - Unknown",
+    "Success is the sum of small efforts repeated day in and day out. - Unknown",
+    "Strive for excellence in everything you do. - Unknown",
+    "Your potential is limitless. - Unknown",
+    "Seize the day. - Unknown",
+    "The only way to do great work is to love what you do. - Unknown",
+    "Set goals, smash them, repeat. - Unknown",
+    "Keep your eyes on the stars and your feet on the ground. - Unknown",
+    "Be the architect of your own destiny. - Unknown",
+    "Dare to be different. - Unknown",
+    "The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt",
+    "Work hard, stay humble. - Unknown",
+    "Success is not for the chosen few, but for the few who choose it. - Unknown",
+    "You have the power to shape your own destiny. - Unknown",
+    "Strive for progress, not perfection. - Unknown",
+    "The only limit is your mind. - Unknown",
+    "Don't wait for opportunities, create them. - Unknown",
+    "Believe you can and you're halfway there. - Unknown",
+    "Make each day your masterpiece. - Unknown",
+    "Do what you love, love what you do. - Unknown",
+    "Be a voice, not an echo. - Unknown",
+    "Success demands hustle. - Unknown",
+    "Chase your dreams fearlessly. - Unknown",
+    "Your journey to success begins with a single step. - Unknown",
+    "Stay positive, work hard, make it happen. - Unknown",
+    "Be the change you wish to see in the world. - Unknown",
+    "Never underestimate the power of hard work. - Unknown",
+    "Don't stop until you're proud. - Unknown",
+    "The secret of getting ahead is getting started. - Unknown",
+    "Failure is not falling down but refusing to get up. - Unknown",
+    "Strive for progress, not perfection. - Unknown",
+    "Be so good they can't ignore you. - Unknown",
+    "Believe in your infinite potential. - Unknown",
+    "Work smart, not just hard. - Unknown",
+    "Success is not a destination, it's a journey. - Unknown",
+    "Your dreams are valid. - Unknown",
+    "Do what you can with what you have, where you are. - Unknown",
+    "The only way to do great work is to love what you do. - Unknown",
+    "Success is the result of preparation, hard work, and learning from failure. - Unknown",
+    "Don't watch the clock, do what it does: keep going. - Unknown",
+    "Your attitude determines your direction. - Unknown",
+    "Strive for greatness every day. - Unknown",
+    "Make it happen. - Unknown",
+    "The harder you work, the luckier you get. - Unknown",
+    "Success is not given, it's earned. - Unknown",
+    "You are the author of your own story. - Unknown",
+    "Be the energy you want to attract. - Unknown",
+    "Don't wait for opportunity, create it. - Unknown",
+    "The only limit to our realization of tomorrow will be our doubts of today. - Franklin D. Roosevelt",
+    "Believe you can and you're halfway there. - Unknown",
+    "Success is not just about the destination, but about the journey. - Unknown",
+    "Success is the sum of small efforts repeated day in and day out. - Unknown",
+    "The only place where success comes before work is in the dictionary. - Vidal Sassoon",
+    "Dream it. Believe it. Achieve it. - Unknown",
+    "The journey of a thousand miles begins with a single step. - Lao Tzu",
+    "Don't be afraid to give up the good to go for the great. - John D. Rockefeller",
+    "You are never too old to set another goal or to dream a new dream. - C.S. Lewis",
+    "Success is not the key to happiness. Happiness is the key to success. - Albert Schweitzer",
+    "Success is not for the lazy. - Unknown",
+    "Success is not in what you have, but in who you are. - Unknown",
+    "Your time is limited, don't waste it living someone else's life. - Steve Jobs",
+    "The only way to do great work is to love what you do. - Steve Jobs",
+    "Don't let yesterday take up too much of today. - Unknown",
+    "Success is not measured by money, but by the difference you make in people's lives. - Unknown",
+    "Success is not about how much you have, but how much you give. - Unknown",
+    "Success is not about winning every battle, but rising every time you fall. - Unknown",
+    "Success is not about reaching the top, but staying there. - Unknown",
+    "Success is about finding your purpose and making it your passion. - Unknown",
+    "Success is about embracing failure as a stepping stone to greatness. - Unknown",
+    "Success is about making a difference, not just a living. - Unknown",
+    "Success is about being the best version of yourself. - Unknown",
+    "Success is about creating a life you love. - Unknown",
+    "Success is about living your life on your own terms. - Unknown",
+        "The future belongs to those who believe in the beauty of their dreams. - Jawaharlal Nehru",
+    "Don't be pushed around by the fears in your mind. Be led by the dreams in your heart. - Abdul Kalam",
+    "Believe you can and you're halfway there. - Swami Vivekananda",
+    "Dream, dream, dream. Dreams transform into thoughts and thoughts result in action. - Abdul Kalam",
+    "Arise, awake, and stop not till the goal is reached. - Swami Vivekananda",
+    "The power of imagination makes us infinite. - Tagore",
+    "Success is not just about the destination, it's also about how you journey. - Amartya Sen",
+    "In a gentle way, you can shake the world. - Mahatma Gandhi",
+    "The best way to predict the future is to create it. - Abdul Kalam",
+    "You must be the change you wish to see in the world. - Mahatma Gandhi",
+    "You are never too old to set another goal or to dream a new dream. - C.S. Lewis",
+    "Success is walking from failure to failure with no loss of enthusiasm. - Winston Churchill",
+    "The only limit to our realization of tomorrow will be our doubts of today. - Franklin D. Roosevelt",
+    "All our dreams can come true if we have the courage to pursue them. - Walt Disney",
+    "Keep your face always toward the sunshine—and shadows will fall behind you. - Walt Whitman",
+    "Strive not to be a success, but rather to be of value. - Albert Einstein",
+    "The future depends on what you do today. - Mahatma Gandhi",
+    "The only way to do great work is to love what you do. - Steve Jobs",
+    "The mind is everything. What you think you become. - Buddha",
+    "Success is not final, failure is not fatal: It is the courage to continue that counts. - Winston Churchill",
+    "Happiness is not something readymade. It comes from your own actions. - Dalai Lama",
+        "Dream big. Work hard. Stay focused.",
+    "Success is not final, failure is not fatal: It is the courage to continue that counts. - Winston Churchill",
+    "Believe you can and you're halfway there. - Theodore Roosevelt",
+    "The only way to do great work is to love what you do. - Steve Jobs",
+    "In the middle of difficulty lies opportunity. - Albert Einstein",
+    "The only limit to our realization of tomorrow will be our doubts of today. - Franklin D. Roosevelt",
+    "Don't watch the clock; do what it does. Keep going. - Sam Levenson",
+    "The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt",
+    "Strive not to be a success, but rather to be of value. - Albert Einstein",
+    "The harder you work for something, the greater you'll feel when you achieve it.",
+    "Opportunities don't happen, you create them. - Chris Grosser",
+    "It does not matter how slowly you go as long as you do not stop. - Confucius",
+    "Success is walking from failure to failure with no loss of enthusiasm. - Winston Churchill",
+    "The only place where success comes before work is in the dictionary. - Vidal Sassoon",
+    "You are never too old to set another goal or to dream a new dream. - C.S. Lewis",
+    "Don't be pushed around by the fears in your mind. Be led by the dreams in your heart.",
+    "The best way to predict the future is to create it. - Peter Drucker",
+    "You miss 100% of the shots you don't take. - Wayne Gretzky",
+    "You don't have to be great to start, but you have to start to be great. - Zig Ziglar",
+    "The only way to achieve the impossible is to believe it is possible. - Charles Kingsleigh",
+    "Your limitation—it's only your imagination.",
+    "Push yourself because no one else is going to do it for you.",
+    "Great things never come from comfort zones.",
+    "Dream it. Wish it. Do it.",
+    "Success doesn’t just find you. You have to go out and get it.",
+    "The harder you work, the luckier you get.",
+    "Don’t stop when you’re tired. Stop when you’re done.",
+    "Wake up with determination. Go to bed with satisfaction.",
+    "Do something today that your future self will thank you for.",
+    "Little things make big days.",
+    "It’s going to be hard, but hard does not mean impossible.",
+    "Don’t wait for opportunity. Create it.",
+    "Sometimes we’re tested not to show our weaknesses, but to discover our strengths.",
+    "The key to success is to focus on goals, not obstacles.",
+    "Dream bigger. Do bigger.",
+    "Don’t stop until you’re proud.",
+    "The key to success is to start before you are ready.",
+    "Believe you can and you’re halfway there.",
+    "You are never too old to set another goal or dream a new dream.",
+    "The harder you work for something, the greater you’ll feel when you achieve it.",
+    "Dream it. Believe it. Build it.",
+    "The only way to do great work is to love what you do.",
+    "Don’t watch the clock; do what it does. Keep going.",
+    "It’s not about how bad you want it. It’s about how hard you’re willing to work for it.",
+    "You are stronger than you think.",
+    "Success is what happens after you have survived all your disappointments.",
+    "Success is the sum of small efforts repeated day in and day out.",
+    "The only thing standing between you and your goal is the story you keep telling yourself as to why you can't achieve it.",
+    "The road to success and the road to failure are almost exactly the same.",
+    "Success is stumbling from failure to failure with no loss of enthusiasm.",
+    "The difference between ordinary and extraordinary is that little extra.",
+    "Success is not just about greatness. It’s about consistency. Consistent hard work leads to success. Greatness will come.",
+    "The only limit to our realization of tomorrow will be our doubts of today.",
+    "A successful man is one who can lay a firm foundation with the bricks others have thrown at him. - David Brinkley",
+    "The only way to do great work is to love what you do. - Steve Jobs",
+    "Don't be afraid to give up the good to go for the great. - John D. Rockefeller",
+    "The difference between a successful person and others is not a lack of strength, not a lack of knowledge, but rather a lack in will. - Vince Lombardi",
+    "Don't let yesterday take up too much of today. - Will Rogers",
+    "You learn more from failure than from success. Don’t let it stop you. Failure builds character.",
+    "The way to get started is to quit talking and begin doing. - Walt Disney",
+    "The pessimist sees difficulty in every opportunity. The optimist sees opportunity in every difficulty. - Winston Churchill",
+    "Don’t let the fear of losing be greater than the excitement of winning. - Robert Kiyosaki",
+    "Success is not in what you have, but who you are. - Bo Bennett",
+    "The only place where success comes before work is in the dictionary. - Vidal Sassoon",
+    "Don't let what you cannot do interfere with what you can do. - John Wooden",
+    "You don’t have to be perfect to be amazing.",
+    "What you get by achieving your goals is not as important as what you become by achieving your goals. - Zig Ziglar",
+    "Strive for progress, not perfection.",
+    "Believe in yourself and all that you are. Know that there is something inside you that is greater than any obstacle. - Christian D. Larson",
+    "The expert in everything was once a beginner.",
+    "Don’t wait for the opportunity. Create it.",
+    "The only way to do great work is to love what you do. - Steve Jobs",
+    "The best revenge is massive success. - Frank Sinatra",
+    "Don’t be pushed around by the fears in your mind. Be led by the dreams in your heart.",
+    "The only limit to our realization of tomorrow is our doubts of today. - Franklin D. Roosevelt",
+    "You are never too old to set another goal or to dream a new dream. - C.S. Lewis",
+    "Success is not final, failure is not fatal: It is the courage to continue that counts. - Winston Churchill",
+    "Success is walking from failure to failure with no loss of enthusiasm. - Winston Churchill",
+    "Believe you can and you're halfway there. - Theodore Roosevelt",
+    "The harder you work for something, the greater you'll feel when you achieve it.",
+    "Opportunities don't happen, you create them. - Chris Grosser",
+        "Peace begins with a smile. - Mother Teresa",
+    "Peace is always beautiful. - Walt Whitman",
+    "Peace is not absence of conflict, it is the ability to handle conflict by peaceful means. - Ronald Reagan",
+    "Peace is its own reward. - Mahatma Gandhi",
+    "When the power of love overcomes the love of power, the world will know peace. - Jimi Hendrix",
+    "Peace comes from within. Do not seek it without. - Buddha",
+    "In peace, sons bury their fathers. In war, fathers bury their sons. - Herodotus",
+    "Peace is not something you wish for; it's something you make, something you do, something you are, and something you give away. - John Lennon",
+    "Peace is the only battle worth waging. - Albert Camus",
+    "Peace cannot be kept by force; it can only be achieved by understanding. - Albert Einstein",
+    "Peace is the key to unlocking the potential of humanity. - Unknown",
+    "The most valuable possession you can own is an open heart. The most powerful weapon you can be is an instrument of peace. - Carlos Santana",
+    "An eye for an eye only ends up making the whole world blind. - Mahatma Gandhi",
+    "If you want peace, you don't talk to your friends. You talk to your enemies. - Desmond Tutu",
+    "Better than a thousand hollow words, is one word that brings peace. - Buddha",
+    "Peace is not found in a calmer storm, it is found in a better understanding of the storm. - Unknown",
+    "There is no path to peace. Peace is the path. - Mahatma Gandhi",
+    "To forgive is the highest, most beautiful form of love. In return, you will receive untold peace and happiness. - Robert Muller",
+    "If we have no peace, it is because we have forgotten that we belong to each other. - Mother Teresa",
+    "Peace is not just the absence of conflict, but the presence of justice. - Martin Luther King Jr.",
+    "Peace is a journey of a thousand miles and it must be taken one step at a time. - Lyndon B. Johnson",
+    "To enjoy good health, to bring true happiness to one's family, to bring peace to all, one must first discipline and control one's own mind. - Buddha",
+    "Peace is not something you wish for; it's something you make, something you do, something you are, and something you give away. - Robert Fulghum",
+    "Peace is not merely a distant goal that we seek, but a means by which we arrive at that goal. - Martin Luther King Jr.",
+    "If we are to teach real peace in this world, and if we are to carry on a real war against war, we shall have to begin with the children. - Mahatma Gandhi",
+    "Peace cannot be achieved through violence, it can only be attained through understanding. - Ralph Waldo Emerson",
+    "Peace is a daily, a weekly, a monthly process, gradually changing opinions, slowly eroding old barriers, quietly building new structures. - John F. Kennedy",
+    "Peace comes from within. Do not seek it without. - Buddha",
+    "It isn't enough to talk about peace. One must believe in it. And it isn't enough to believe in it. One must work at it. - Eleanor Roosevelt",
+    "If you want to make peace with your enemy, you have to work with your enemy. Then he becomes your partner. - Nelson Mandela",
+    "Peace is not the absence of power. Peace is the presence of love. - Sri Chinmoy",
+    "When the power of love overcomes the love of power, the world will know peace. - Jimi Hendrix",
+    "We can never obtain peace in the outer world until we make peace with ourselves. - Dalai Lama",
+    "The day the power of love overrules the love of power, the world will know peace. - Mahatma Gandhi",
+    "Peace begins with a smile. - Mother Teresa",
+    "Peace is always beautiful. - Walt Whitman",
+    "Peace is not absence of conflict, it is the ability to handle conflict by peaceful means. - Ronald Reagan",
+    "Peace is its own reward. - Mahatma Gandhi",
+    "When the power of love overcomes the love of power, the world will know peace. - Jimi Hendrix",
+    "Peace comes from within. Do not seek it without. - Buddha",
+    "In peace, sons bury their fathers. In war, fathers bury their sons. - Herodotus",
+    "Peace is not something you wish for; it's something you make, something you do, something you are, and something you give away. - John Lennon",
+    "Peace is the only battle worth waging. - Albert Camus",
+    "Peace cannot be kept by force; it can only be achieved by understanding. - Albert Einstein",
+    "Peace is the key to unlocking the potential of humanity. - Unknown",
+    "The most valuable possession you can own is an open heart. The most powerful weapon you can be is an instrument of peace. - Carlos Santana",
+    "An eye for an eye only ends up making the whole world blind. - Mahatma Gandhi",
+    "If you want peace, you don't talk to your friends. You talk to your enemies. - Desmond Tutu",
+    "Better than a thousand hollow words, is one word that brings peace. - Buddha",
+    "Peace is not found in a calmer storm, it is found in a better understanding of the storm. - Unknown",
+    "There is no path to peace. Peace is the path. - Mahatma Gandhi",
+    "To forgive is the highest, most beautiful form of love. In return, you will receive untold peace and happiness. - Robert Muller",
+    "If we have no peace, it is because we have forgotten that we belong to each other. - Mother Teresa",
+    "Peace is not just the absence of conflict, but the presence of justice. - Martin Luther King Jr.",
+        "The only real mistake is the one from which we learn nothing. - Henry Ford",
+    "The only way to do great work is to love what you do. If you haven't found it yet, keep looking. Don't settle. - Steve Jobs",
+    "Success is not final, failure is not fatal: It is the courage to continue that counts. - Winston Churchill",
+    "The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt",
+    "Believe you can and you're halfway there. - Theodore Roosevelt",
+    "In the middle of difficulty lies opportunity. - Albert Einstein",
+    "It does not matter how slowly you go as long as you do not stop. - Confucius",
+    "Success is walking from failure to failure with no loss of enthusiasm. - Winston Churchill",
+    "The only place where success comes before work is in the dictionary. - Vidal Sassoon",
+    "You are never too old to set another goal or to dream a new dream. - C.S. Lewis",
+    "The roots of education are bitter, but the fruit is sweet. - Aristotle",
+    "Education is the passport to the future, for tomorrow belongs to those who prepare for it today. - Malcolm X",
+    "The mind is not a vessel to be filled, but a fire to be kindled. - Plutarch",
+    "Learning is a treasure that will follow its owner everywhere. - Chinese Proverb",
+    "The only way to learn mathematics is to do mathematics. - Paul Halmos",
+    "Education is the most powerful weapon which you can use to change the world. - Nelson Mandela",
+    "The beautiful thing about learning is that no one can take it away from you. - B.B. King",
+    "The capacity to learn is a gift; the ability to learn is a skill; the willingness to learn is a choice. - Brian Herbert",
+    "Develop a passion for learning. If you do, you will never cease to grow. - Anthony J. D'Angelo",
+    "An investment in knowledge pays the best interest. - Benjamin Franklin",
+    "Success is not the key to happiness. Happiness is the key to success. If you love what you are doing, you will be successful. - Albert Schweitzer",
+    "Success is not just about greatness. It's about consistency. Consistent hard work leads to success. Greatness will come. - Dwayne Johnson",
+    "The only limit to our realization of tomorrow will be our doubts of today. - Franklin D. Roosevelt",
+    "Success is stumbling from failure to failure with no loss of enthusiasm. - Winston Churchill",
+    "The difference between a successful person and others is not a lack of strength, not a lack of knowledge, but rather a lack in will. - Vince Lombardi",
+    "Success is not in what you have, but who you are. - Bo Bennett",
+    "Success is not the key to happiness. Happiness is the key to success. If you love what you are doing, you will be successful. - Albert Schweitzer",
+    "Success is not just about greatness. It's about consistency. Consistent hard work leads to success. Greatness will come. - Dwayne Johnson",
+    "The only limit to our realization of tomorrow will be our doubts of today. - Franklin D. Roosevelt",
+    "Success is stumbling from failure to failure with no loss of enthusiasm. - Winston Churchill",
+    "The difference between a successful person and others is not a lack of strength, not a lack of knowledge, but rather a lack in will. - Vince Lombardi",
+    "Success is not in what you have, but who you are. - Bo Bennett",
+    "Talent wins games, but teamwork and intelligence win championships. - Michael Jordan",
+    "Hard work beats talent when talent doesn't work hard. - Tim Notke",
+    "Your talent is God's gift to you. What you do with it is your gift back to God. - Leo Buscaglia",
+    "Hide not your talents, they for use were made, what's a sundial in the shade? - Benjamin Franklin",
+    "Every person is born with a unique set of talents and strengths. It's up to you to discover and nurture them. - Unknown",
+    "Talent is cheaper than table salt. What separates the talented individual from the successful one is a lot of hard work. - Stephen King",
+    "Don't hide your talents. They were given to you for a reason. Use them, share them, and make the world a better place. - Unknown",
+    "Everyone has talent. What's rare is the courage to follow it to the dark places where it leads. - Erica Jong",
+    "Your talent determines what you can do. Your motivation determines how much you are willing to do. Your attitude determines how well you do it. - Lou Holtz",
+    "Talent is a pursued interest. Anything that you're willing to practice, you can do. - Bob Ross",
+        "Arise, awake, and stop not until the goal is achieved. - Swami Vivekananda",
+    "Take risks in your life, If you win, you can lead! If you lose, you can guide! - Swami Vivekananda",
+    "You have to dream before your dreams can come true. - A.P.J. Abdul Kalam",
+    "Learning gives creativity. Creativity leads to thinking. Thinking provides knowledge. Knowledge makes you great. - A.P.J. Abdul Kalam",
+    "All of us do not have equal talent. But, all of us have an equal opportunity to develop our talents. - A.P.J. Abdul Kalam",
+    "Don't take rest after your first victory because if you fail in second, more lips are waiting to say that your first victory was just luck. - A.P.J. Abdul Kalam",
+    "Failure will never overtake me if my determination to succeed is strong enough. - A.P.J. Abdul Kalam",
+    "If you want to shine like a sun, first burn like a sun. - A.P.J. Abdul Kalam",
+    "Climbing to the top demands strength, whether it is to the top of Mount Everest or to the top of your career. - A.P.J. Abdul Kalam",
+    "You cannot change your future, but you can change your habits, and surely your habits will change your future. - A.P.J. Abdul Kalam",
+    "The more you sweat in practice, the less you bleed in battle. - A.P.J. Abdul Kalam",
+    "Your best teacher is your last mistake. - A.P.J. Abdul Kalam",
+    "The best brains of the nation may be found on the last benches of the classroom. - A.P.J. Abdul Kalam",
+    "Great dreams of great dreamers are always transcended. - A.P.J. Abdul Kalam",
+    "The bird is powered by its own life and by its motivation. - A.P.J. Abdul Kalam",
+    "We should not give up and we should not allow the problem to defeat us. - A.P.J. Abdul Kalam",
+    "Science is a beautiful gift to humanity; we should not distort it. - A.P.J. Abdul Kalam",
+    "You should not give up and we should not allow the problem to defeat us. - A.P.J. Abdul Kalam",
+    "Let us sacrifice our today so that our children can have a better tomorrow. - A.P.J. Abdul Kalam",
+    "Excellence is a continuous process and not an accident. - A.P.J. Abdul Kalam",
+    "We have to dream before our dreams can come true. - A.P.J. Abdul Kalam",
+    "For me, there are two types of people: the young and the experienced. - A.P.J. Abdul Kalam",
+    "Life is a difficult game. You can win it only by retaining your birthright to be a person. - A.P.J. Abdul Kalam",
+    "If you fail, never give up because F.A.I.L. means 'First Attempt In Learning'. - A.P.J. Abdul Kalam",
+    "It is very easy to defeat someone, but it is very hard to win someone. - A.P.J. Abdul Kalam",
+    "Let us sacrifice our today so that our children can have a better tomorrow. - A.P.J. Abdul Kalam",
+    "Excellence happens not by accident. It is a process. - A.P.J. Abdul Kalam",
+   "The ignited minds of the youth is the most powerful resource on the earth, above the earth and under the earth. - A.P.J. Abdul Kalam",
+    "Without your involvement, you can't succeed. With your involvement, you can't fail. - A.P.J. Abdul Kalam",
+    "Thinking is the capital, Enterprise is the way, Hard Work is the solution. - A.P.J. Abdul Kalam",
+    "Learning gives creativity, Creativity leads to thinking, Thinking provides knowledge, Knowledge makes you great. - A.P.J. Abdul Kalam",
+    "To succeed in your mission, you must have single-minded devotion to your goal. - A.P.J. Abdul Kalam",
+    "If you fail, never give up because F.A.I.L. means 'First Attempt In Learning'. - A.P.J. Abdul Kalam",
+    "If you want to shine like a sun. First burn like the sun. - A.P.J. Abdul Kalam",
+    "Don't read success stories, you will only get a message. Read failure stories, you will get some ideas to get success. - A.P.J. Abdul Kalam",
+    "We should not give up and we should not allow the problem to defeat us. - A.P.J. Abdul Kalam",
+    "Great dreams of great dreamers are always transcended. - A.P.J. Abdul Kalam",
+    "Thinking should become your capital asset, no matter whatever ups and downs you come across in your life. - A.P.J. Abdul Kalam",
+    "One best book is equal to a hundred good friends, but one good friend is equal to a library. - A.P.J. Abdul Kalam",
+        "The only way to do great work is to love what you do. - Steve Jobs",
+    "The only limit to our realization of tomorrow will be our doubts of today. - Franklin D. Roosevelt",
+    "It does not matter how slowly you go as long as you do not stop. - Confucius",
+    "The only person you should try to be better than is the person you were yesterday. - Unknown",
+    "Believe you can and you're halfway there. - Theodore Roosevelt",
+    "You are never too old to set another goal or to dream a new dream. - C.S. Lewis",
+    "Success is not the key to happiness. Happiness is the key to success. If you love what you are doing, you will be successful. - Albert Schweitzer",
+    "The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt",
+    "The only way to achieve the impossible is to believe it is possible. - Charles Kingsleigh",
+    "The journey of a thousand miles begins with one step. - Lao Tzu",
+    "Don't watch the clock; do what it does. Keep going. - Sam Levenson",
+    "Success is not in what you have, but who you are. - Bo Bennett",
+    "Opportunities don't happen, you create them. - Chris Grosser",
+    "You miss 100% of the shots you don't take. - Wayne Gretzky",
+    "The only way to do great work is to love what you do. - Steve Jobs",
+    "The only limit to our realization of tomorrow will be our doubts of today. - Franklin D. Roosevelt",
+    "It does not matter how slowly you go as long as you do not stop. - Confucius",
+    "The only person you should try to be better than is the person you were yesterday. - Unknown",
+    "Believe you can and you're halfway there. - Theodore Roosevelt",
+    "You are never too old to set another goal or to dream a new dream. - C.S. Lewis",
+    "Success is not the key to happiness. Happiness is the key to success. If you love what you are doing, you will be successful. - Albert Schweitzer",
+    "The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt",
+    "The only way to achieve the impossible is to believe it is possible. - Charles Kingsleigh",
+    "The journey of a thousand miles begins with one step. - Lao Tzu",
+    "Don't watch the clock; do what it does. Keep going. - Sam Levenson",
+    "Success is not in what you have, but who you are. - Bo Bennett",
+    "Opportunities don't happen, you create them. - Chris Grosser",
+    "You miss 100% of the shots you don't take. - Wayne Gretzky",
+    "Don't be pushed around by the fears in your mind. Be led by the dreams in your heart. - Roy T. Bennett",
+    "In the middle of difficulty lies opportunity. - Albert Einstein",
+    "Success is not the absence of failure; it's the persistence through failure. - Aisha Tyler",
+    "What you get by achieving your goals is not as important as what you become by achieving your goals. - Zig Ziglar",
+    "Success is walking from failure to failure with no loss of enthusiasm. - Winston Churchill",
+    "Believe in yourself and all that you are. Know that there is something inside you that is greater than any obstacle. - Christian D. Larson",
+    "Don't be pushed around by the fears in your mind. Be led by the dreams in your heart. - Roy T. Bennett",
+    "In the middle of difficulty lies opportunity. - Albert Einstein",
+    "Success is not the absence of failure; it's the persistence through failure. - Aisha Tyler",
+    "What you get by achieving your goals is not as important as what you become by achieving your goals. - Zig Ziglar",
+    "Success is walking from failure to failure with no loss of enthusiasm. - Winston Churchill",
+    "Believe in yourself and all that you are. Know that there is something inside you that is greater than any obstacle. - Christian D. Larson",
+    "The only limit to our realization of tomorrow will be our doubts of today. - Franklin D. Roosevelt",
+    "Believe you can and you're halfway there. - Theodore Roosevelt",
+    "Your attitude, not your aptitude, will determine your altitude. - Zig Ziglar",
+    "The best way to predict the future is to create it. - Peter Drucker",
+    "Success is not the key to happiness. Happiness is the key to success. If you love what you are doing, you will be successful. - Albert Schweitzer",
+    "The only way to do great work is to love what you do. - Steve Jobs",
+    "The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt",
+    "The only way to achieve the impossible is to believe it is possible. - Charles Kingsleigh",
+    "The journey of a thousand miles begins with one step. - Lao Tzu",
+    "Don't watch the clock; do what it does. Keep going. - Sam Levenson",
+    "Success is not in what you have, but who you are. - Bo Bennett",
+    "Opportunities don't happen, you create them. - Chris Grosser",
+    "You miss 100% of the shots you don't take. - Wayne Gretzky",
+    "Don't be pushed around by the fears in your mind. Be led by the dreams in your heart. - Roy T. Bennett",
+    "In the middle of difficulty lies opportunity. - Albert Einstein",
+    "Success is not the absence of failure; it's the persistence through failure. - Aisha Tyler",
+    "What you get by achieving your goals is not as important as what you become by achieving your goals. - Zig Ziglar",
+    "Success is walking from failure to failure with no loss of enthusiasm. - Winston Churchill",
+    "Believe in yourself and all that you are. Know that there is something inside you that is greater than any obstacle. - Christian D. Larson",
+    "The only limit to our realization of tomorrow will be our doubts of today. - Franklin D. Roosevelt",
+    "Believe you can and you're halfway there. - Theodore Roosevelt",
+    "Your attitude, not your aptitude, will determine your altitude. - Zig Ziglar",
+    "The best way to predict the future is to create it. - Peter Drucker",
+    "Success is not the key to happiness. Happiness is the key to success. If you love what you are doing, you will be successful. - Albert Schweitzer",
+    "The only way to do great work is to love what you do. - Steve Jobs",
+    "The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt",
+    "The only way to achieve the impossible is to believe it is possible. - Charles Kingsleigh",
+    "The journey of a thousand miles begins with one step. - Lao Tzu",
+        "Success is not about being the best; it's about being better than you were yesterday.",
+    "Every study session counts, no matter how small the progress.",
+    "Challenges are what make studying interesting. Overcoming them is what makes it meaningful.",
+    "Embrace the struggle of studying. It's the process that transforms you.",
+    "Studying is not just about getting good grades; it's about gaining knowledge and understanding.",
+    "Every setback is a setup for a comeback. Keep pushing forward in your studies.",
+    "Make studying a habit, not a chore. Consistency is key to success.",
+    "The only way to fail in studying is to stop trying.",
+    "Effort is the currency of success in studying. Invest wisely.",
+    "Don't compare your studying journey to others'. Focus on your own progress.",
+    "Studying is not a sprint; it's a marathon. Pace yourself and keep moving forward.",
+    "Stay disciplined in your studying habits. Success comes to those who persevere.",
+    "The harder you work for something, the greater you'll feel when you achieve it.",
+    "Set your studying goals high and don't stop until you get there.",
+    "Studying is not a punishment; it's an opportunity to invest in your future.",
+    "Success in studying is not determined by how smart you are, but by how hard you work.",
+    "Failure is not the end; it's a lesson to learn from and grow stronger.",
+    "You're not just studying for today; you're investing in your future self.",
+    "Every hour spent studying is an investment in your success.",
+    "Stay focused on your goals, even when the studying gets tough.",
+    "The only way to master something is to keep at it. Don't give up on your studies.",
+    "Studying may be challenging, but regretting not studying is much worse.",
+    "You have the power to shape your future through your studying habits.",
+    "Success in studying requires determination, dedication, and perseverance.",
+    "Don't let temporary setbacks derail your long-term studying goals.",
+    "Studying is not always easy, but it's always worth it in the end.",
+    "You have the potential to achieve greatness through your studying efforts.",
+    "Believe in yourself and your ability to succeed through hard work and dedication.",
+    "Make studying a priority, and success will naturally follow.",
+    "Your attitude towards studying determines your altitude in life.",
+    "Studying is the key that unlocks the door to a brighter future.",
+    "Every hour spent studying brings you one step closer to your goals.",
+    "Success is not given; it's earned through hours of dedicated studying.",
+    "The pain of studying is temporary, but the pride of success lasts forever.",
+    "Don't let distractions derail your studying efforts. Stay focused and determined.",
+    "Studying is not just about memorizing facts; it's about understanding concepts.",
+    "Success in studying requires consistency, perseverance, and resilience.",
+    "Stay committed to your studying goals, even when it feels difficult.",
+    "Every challenge you overcome in your studying journey makes you stronger.",
+    "Make the most of every studying opportunity. Your future self will thank you.",
+    "Your studying efforts today will shape the opportunities you have tomorrow.",
+    "Studying may be hard, but regret is harder. Keep pushing forward.",
+    "Success in studying is not about luck; it's about hard work and determination.",
+    "Don't underestimate the power of small, consistent studying habits.",
+    "Every minute you spend studying is an investment in your future success.",
+    "Stay focused on your studying goals, even when the journey gets tough.",
+    "Don't let fear of failure hold you back. Embrace challenges and keep studying.",
+    "Success in studying is not about being the smartest; it's about being the most determined.",
+    "Studying is not a race; it's a journey. Enjoy the process and keep moving forward.",
+    "Every obstacle you overcome in your studying journey brings you closer to success.",
+    "Believe in yourself and your ability to overcome any challenge that comes your way.",
+    "Studying is not always easy, but it's always worth it in the end.",
+    "Success in studying requires determination, dedication, and perseverance.",
+    "Don't let temporary setbacks derail your long-term studying goals.",
+    "You have the potential to achieve greatness through your studying efforts.",
+    "Believe in yourself and your ability to succeed through hard work and dedication.",
+    "Make studying a priority, and success will naturally follow.",
+    "Your attitude towards studying determines your altitude in life.",
+    "Studying is the key that unlocks the door to a brighter future.",
+    "Every hour spent studying brings you one step closer to your goals.",
+    "Success is not given; it's earned through hours of dedicated studying.",
+    "The pain of studying is temporary, but the pride of success lasts forever.",
+    "Don't let distractions derail your studying efforts. Stay focused and determined.",
+    "Studying is not just about memorizing facts; it's about understanding concepts.",
+    "Success in studying requires consistency, perseverance, and resilience.",
+    "Stay committed to your studying goals, even when it feels difficult.",
+    "Every challenge you overcome in your studying journey makes you stronger.",
+    "Make the most of every studying opportunity. Your future self will thank you.",
+    "Your studying efforts today will shape the opportunities you have tomorrow.",
+    "Studying may be hard, but regret is harder. Keep pushing forward.",
+    "Success in studying is not about luck; it's about hard work and determination.",
+    "Don't underestimate the power of small, consistent studying habits.",
+    "Every minute you spend studying is an investment in your future success.",
+    "Stay focused on your studying goals, even when the journey gets tough.",
+    "Don't let fear of failure hold you back. Embrace challenges and keep studying.",
+    "Success in studying is not about being the smartest; it's about being the most determined.",
+    "Studying is not a race; it's a journey. Enjoy the process and keep moving forward.",
+    "Every obstacle you overcome in your studying journey brings you closer to success.",
+        "The only strategy that is guaranteed to fail is not taking risks. - Mark Zuckerberg",
+    "Your work is going to fill a large part of your life, and the only way to be truly satisfied is to do what you believe is great work. - Steve Jobs",
+    "Your most unhappy customers are your greatest source of learning. - Bill Gates",
+    "The way to get started is to quit talking and begin doing. - Walt Disney",
+    "Success is not the key to happiness. Happiness is the key to success. If you love what you are doing, you will be successful. - Albert Schweitzer",
+    "The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt",
+    "The only way to achieve the impossible is to believe it is possible. - Charles Kingsleigh",
+    "I have found no greater satisfaction than achieving success through honest dealing and strict adherence to the view that, for you to gain, those you deal with should gain as well. - Alan Greenspan",
+    "I had to make my own living and my own opportunity. But I made it! Don't sit down and wait for the opportunities to come. Get up and make them. - Madam C.J. Walker",
+    "Success is walking from failure to failure with no loss of enthusiasm. - Winston Churchill",
+    "We can't help everyone, but everyone can help someone. - Ronald Reagan",
+    "I never dreamed about success. I worked for it. - Estée Lauder",
+    "A person should set his goals as early as he can and devote all his energy and talent to getting there. - Walt Disney",
+    "You are never too old to set another goal or to dream a new dream. - C.S. Lewis",
+    "If you work hard and meet your responsibilities, you can get ahead, no matter where you come from, what you look like or who you love. - Barack Obama",
+    "Don't limit yourself. Many people limit themselves to what they think they can do. You can go as far as your mind lets you. What you believe, remember, you can achieve. - Mary Kay Ash",
+    "What you lack in talent can be made up with desire, hustle and giving 110% all the time. - Don Zimmer",
+    "The biggest risk is not taking any risk... In a world that's changing quickly, the only strategy that is guaranteed to fail is not taking risks. - Mark Zuckerberg",
+    "Your work is going to fill a large part of your life, and the only way to be truly satisfied is to do what you believe is great work. And the only way to do great work is to love what you do. - Steve Jobs",
+    "I knew that if I failed I wouldn’t regret that, but I knew the one thing I might regret is not trying. - Jeff Bezos",
+    "Your most unhappy customers are your greatest source of learning. - Bill Gates",
+    "The only strategy that is guaranteed to fail is not taking risks. - Mark Zuckerberg",
+    "The way to get started is to quit talking and begin doing. - Walt Disney",
+    "I’m convinced that about half of what separates the successful entrepreneurs from the non-successful ones is pure perseverance. - Steve Jobs",
+    "Great companies are built on great products. - Elon Musk",
+    "I have not failed. I've just found 10,000 ways that won't work. - Thomas Edison",
+    "If you’re not stubborn, you’ll give up on experiments too soon. And if you’re not flexible, you’ll pound your head against the wall and you won’t see a different solution to a problem you’re trying to solve. - Jeff Bezos",
+    "The only limit to our realization of tomorrow will be our doubts of today. - Franklin D. Roosevelt",
+    "I skate to where the puck is going to be, not where it has been. - Wayne Gretzky",
+    "Success is not the key to happiness. Happiness is the key to success. If you love what you are doing, you will be successful. - Albert Schweitzer",
+    "The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt",
+    "I feel that luck is preparation meeting opportunity. - Oprah Winfrey",
+    "The more you dream, the farther you get. - Michael Phelps",
+    "The only way to achieve the impossible is to believe it is possible. - Charles Kingsleigh",
+    "I have found no greater satisfaction than achieving success through honest dealing and strict adherence to the view that, for you to gain, those you deal with should gain as well. - Alan Greenspan",
+    "I had to make my own living and my own opportunity. But I made it! Don't sit down and wait for the opportunities to come. Get up and make them. - Madam C.J. Walker",
+    "Success is walking from failure to failure with no loss of enthusiasm. - Winston Churchill",
+    "We can't help everyone, but everyone can help someone. - Ronald Reagan",
+    "I never dreamed about success. I worked for it. - Estée Lauder",
+    "A person should set his goals as early as he can and devote all his energy and talent to getting there. - Walt Disney",
+    "You are never too old to set another goal or to dream a new dream. - C.S. Lewis",
+    "If you work hard and meet your responsibilities, you can get ahead, no matter where you come from, what you look like or who you love. - Barack Obama",
+    "Don't limit yourself. Many people limit themselves to what they think they can do. You can go as far as your mind lets you. What you believe, remember, you can achieve. - Mary Kay Ash",
+    "What you lack in talent can be made up with desire, hustle and giving 110% all the time. - Don Zimmer",
+    "The biggest risk is not taking any risk... In a world that's changing quickly, the only strategy that is guaranteed to fail is not taking risks. - Mark Zuckerberg",
+    "Your work is going to fill a large part of your life, and the only way to be truly satisfied is to do what you believe is great work. - Steve Jobs",
+    "I knew that if I failed I wouldn’t regret that, but I knew the one thing I might regret is not trying. - Jeff Bezos",
+    "Your most unhappy customers are your greatest source of learning. - Bill Gates",
+    "The only strategy that is guaranteed to fail is not taking risks. - Mark Zuckerberg",
+    "The way to get started is to quit talking and begin doing. - Walt Disney",
+    "I’m convinced that about half of what separates the successful entrepreneurs from the non-successful ones is pure perseverance. - Steve Jobs",
+    "Great companies are built on great products. - Elon Musk",
+    "I have not failed. I've just found 10,000 ways that won't work. - Thomas Edison",
+    "If you’re not stubborn, you’ll give up on experiments too soon. And if you’re not flexible, you’ll pound your head against the wall and you won’t see a different solution to a problem you’re trying to solve. - Jeff Bezos",
+    "Great dreams of great dreamers are always transcended. - APJ Abdul Kalam"
+
+];
+
+        const colors = [
+            "linear-gradient(45deg, #7F7FD5, #86A8E7, #91EAE4)",
+            "linear-gradient(45deg, #FFB6B9, #FF79C6, #833AB4)",
+            "linear-gradient(45deg, #FF5F6D, #FFC371, #6D214F)",
+            "linear-gradient(45deg, #F9627D, #1D976C, #93F9B9)",
+            "linear-gradient(45deg, #00AEFF, #FF6A00, #7A00FF)",
+            "linear-gradient(45deg, #B721FF, #21D4FD, #21D4FD)",
+            "linear-gradient(45deg, #00B4DB, #0083B0, #FF4E50)",
+            "linear-gradient(45deg, #2C3E50, #FD746C, #FFB88C)",
+            "linear-gradient(45deg, #0F2027, #203A43, #2C5364)",
+            "linear-gradient(45deg, #7028E4, #E5B2CA, #7028E4)",
+            "linear-gradient(45deg, #F9D423, #E6B980, #FE8C00)",
+            "linear-gradient(45deg, #9D50BB, #6E48AA, #6E48AA)",
+            "linear-gradient(45deg, #02AAB0, #00CDAC, #F8FFAE)",
+            "linear-gradient(45deg, #FF6B6B, #556270)", 
+            "linear-gradient(45deg, #8A2387, #E94057, #F27121)",
+            "linear-gradient(45deg, #48C6EF, #6F86D6)", 
+            "linear-gradient(45deg, #E53935, #B71C1C)", 
+            "linear-gradient(45deg, #D38312, #A83279)", 
+            "linear-gradient(45deg, #DA4453, #89216B)", 
+            "linear-gradient(45deg, #283048, #859398)", 
+            "linear-gradient(45deg, #9796f0, #fbc7d4)", 
+            "linear-gradient(45deg, #DA22FF, #9733EE)", 
+            "linear-gradient(45deg, #1e130c, #9a8478)", 
+            "linear-gradient(45deg, #4B79A1, #283E51)", 
+            "linear-gradient(45deg, #f12711, #f5af19)", 
+            "linear-gradient(45deg, #9D50BB, #6E48AA)", 
+            "linear-gradient(45deg, #005AA7, #FFFDE4)", 
+            "linear-gradient(45deg, #D38312, #A83279)", 
+            "linear-gradient(45deg, #ff8008, #ffc837)", 
+            "linear-gradient(45deg, #2b5876, #4e4376)", 
+            "linear-gradient(45deg, #2BC0E4, #EAECC6)", 
+            "linear-gradient(45deg, #FFE29F, #FFA99F)", 
+            "linear-gradient(45deg, #6190E8, #A7BFE8)", 
+            "linear-gradient(45deg, #FC5C7D, #6A82FB)", 
+            "linear-gradient(45deg, #232526, #414345)", 
+        ];
+let quoteIndex = 0;
+let shuffledQuotes = shuffleArray(quotes);
+let typingInterval;
+
+
+function shuffleArray(array) {
+    const shuffledArray = [...array];
+    for (let i = shuffledArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+    }
+    return shuffledArray;
+}
+
+function getRandomGradient() {
+    return colors[Math.floor(Math.random() * colors.length)];
+}
+document.addEventListener("DOMContentLoaded", function() {
+    const quoteElement = document.getElementById("quote");
+    let quoteIndex = 0;
+    let shuffledQuotes = shuffleArray(quotes);
+    let typingInterval;
+
+    function shuffleArray(array) {
+        const shuffledArray = [...array];
+        for (let i = shuffledArray.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+        }
+        return shuffledArray;
+    }
+
+    function typeQuote() {
+        const currentQuote = shuffledQuotes[quoteIndex];
+        let charIndex = 0;
+        quoteElement.textContent = ''; 
+
+        typingInterval = setInterval(function() {
+            if (charIndex < currentQuote.length) {
+                quoteElement.textContent += currentQuote.charAt(charIndex);
+                charIndex++;
+            } else {
+                clearInterval(typingInterval);
+            }
+        }, 50); 
+    }
+
+    function displayNewQuoteAndTheme() {
+        clearInterval(typingInterval);
+        typeQuote();
+
+        const newTheme = getRandomGradient();
+        document.body.style.background = newTheme;
+        quoteIndex = (quoteIndex + 1) % shuffledQuotes.length;
+    }
+
+    displayNewQuoteAndTheme();
+    document.getElementById("change-quote-btn").addEventListener("click", function(event) {
+        event.preventDefault();
+        displayNewQuoteAndTheme();
+    });
+    setInterval(displayNewQuoteAndTheme, 20000);
+});
+
+    </script>
+</body>
+</html>
