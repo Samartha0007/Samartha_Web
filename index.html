@@ -29,7 +29,29 @@
   <script>(function(w,d, s, id) {if(typeof(w.webpushr)!=='undefined') return;w.webpushr=w.webpushr||function(){(w.webpushr.q=w.webpushr.q||[]).push(arguments)};var js, fjs = d.getElementsByTagName(s)[0];js = d.createElement(s); js.id = id;js.async=1;js.src = "https://cdn.webpushr.com/app.min.js";
     fjs.parentNode.appendChild(js);}(window,document, 'script', 'webpushr-jssdk'));
     webpushr('setup',{'key':'BCxGMLASy6a4l7Qax8yrmkJVA95kcTWk2UMFLe9LUiRqsMcAQC5HuGsFZWJRjY1nr37CTDfR6MYyUIR6G5vxhZA' });</script>
-    
+<style>
+.slideshow {
+    position: relative;
+    width: 100%;
+    max-width: 500px; /* Set the desired width */
+    margin: auto;
+}
+
+.about_img {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.about_img.active {
+    opacity: 1;
+}
+
+   </style>
+ 
 </head>
 
 <body>
@@ -115,6 +137,14 @@
       <span class="section_subtitle">My introduction</span>
       <div class="about_container container grid">
         <img src="./assets/img/Sam.jpg" alt="headshot image" class="about_img" data-tilt />
+<img src="./assets/img/about.jpg" alt="headshot image 2" class="about_img" data-tilt />
+        <img src="./assets/img/Sam3.jpg" alt="headshot image 3" class="about_img" data-tilt />
+        <img src="./assets/img/Sam4.jpg" alt="headshot image 4" class="about_img" data-tilt />
+        <img src="./assets/img/Sam5.jpg" alt="headshot image 5" class="about_img" data-tilt />
+        <img src="./assets/img/Sam6.jpg" alt="headshot image 6" class="about_img" data-tilt />
+        <img src="./assets/img/Sam7.jpg" alt="headshot image 7" class="about_img" data-tilt />
+    </div>
+
         <div class="about_data">
           <p class="about_description">
             Hey there,👋 I'm Samartha Gs a 16-year-old who is passionate about Web Development and IoT. I'm from Golagodu. A village near Sagara town in the Shivamogga district of Karnataka, India.
@@ -419,6 +449,20 @@
   <script src="./assets/js/tilt.jquery.min.js"></script>
 
   <script src="./assets/js/main.js"></script>
+<script>
+        const images = document.querySelectorAll('.about_img');
+        let currentIndex = 0;
+
+        function showNextImage() {
+            images[currentIndex].classList.remove('active');
+            currentIndex = (currentIndex + 1) % images.length;
+            images[currentIndex].classList.add('active');
+        }
+
+        // Start the slideshow
+        images[currentIndex].classList.add('active');
+        setInterval(showNextImage, 3000);
+    </script>
 </body>
 
 </html>
