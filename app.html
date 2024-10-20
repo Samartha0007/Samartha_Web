@@ -232,10 +232,10 @@
 
         downloadButton.addEventListener("click", function() {
             // Replace the alert with the actual download logic
-            var appFilePath = 'Echolink_1_1.0.apk'; // Relative path to your apk file
+            var appFilePath = 'sam.apk'; // Relative path to your apk file
             var link = document.createElement('a');
             link.href = appFilePath;
-            link.download = 'sam.apk'; // Change the filename according to your apk file
+            link.download = 'Sam'; // Change the filename according to your apk file
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
