@@ -213,4 +213,20 @@ var typed = new Typed(".type", {
   loop: true,
  
 });
+document.getElementById('like-button').addEventListener('click', function() {
+    const likeCountElement = document.getElementById('like-count');
+    let likeCount = parseInt(likeCountElement.textContent);
+
+    // Increment the like count
+    likeCount += 1;
+    likeCountElement.textContent = likeCount;
+
+    // Add animation class for effect
+    likeCountElement.classList.add('liked');
+
+    // Remove the animation class after animation ends
+    setTimeout(() => {
+        likeCountElement.classList.remove('liked');
+    }, 500);
+});
 
