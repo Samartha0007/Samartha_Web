@@ -220,7 +220,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const heartIcon = document.querySelector('.button_icon');
 
     // Initialize like count to 463 if not stored in localStorage
-    let likeCount = localStorage.getItem("likeCount") ? parseInt(localStorage.getItem("likeCount")) : 463;
+    let likeCount = localStorage.getItem("likeCount") ? parseInt(localStorage.getItem("likeCount")) : 863;
     let liked = localStorage.getItem("liked") === "true"; // Check if the user has liked
 
     // Set the initial like count on page load
