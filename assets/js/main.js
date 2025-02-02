@@ -217,34 +217,51 @@ var typed = new Typed(".type", {
 document.addEventListener("DOMContentLoaded", function () {
     const likeButton = document.getElementById('like-button');
     const likeCountElement = document.getElementById('like-count');
+    const message = document.getElementById('message');
+    const heartIcon = document.querySelector('.button_icon');
 
-    // Load saved like count from localStorage
     let likeCount = localStorage.getItem("likeCount") || 0;
+    let liked = false;
+
     likeCountElement.textContent = likeCount;
 
     likeButton.addEventListener("click", function (event) {
-        likeCount++;
-        likeCountElement.textContent = likeCount;
+        if (!liked) {
+            likeCount++;
+            likeCountElement.textContent = likeCount;
+            localStorage.setItem("likeCount", likeCount);
 
-        // Save count in local storage
-        localStorage.setItem("likeCount", likeCount);
+            // Change background and icon color on first click
+            likeButton.style.background = "#00b894";
+            heartIcon.style.color = "#d4f1f4";
+            heartIcon.classList.add("pulse-heart"); // Add pulsing effect to the heart icon
 
-        // Show floating heart animation
-        showFloatingHeart(event.clientX, event.clientY);
+            setTimeout(() => heartIcon.classList.remove("pulse-heart"), 600); // Remove pulsing effect after animation
 
-        // Trigger confetti animation
-        triggerConfetti();
+            showFloatingLike(event.clientX, event.clientY);
+            triggerConfetti();
+            showMessage("❤️ Thank you!", "green");
+
+            liked = true;
+        } else {
+            likeButton.classList.add("no-no");
+            showMessage("🚫 No No!", "red");
+
+            setTimeout(() => {
+                likeButton.classList.remove("no-no");
+            }, 500);
+        }
     });
 
-    function showFloatingHeart(x, y) {
-        const heart = document.createElement("span");
-        heart.innerHTML = "❤️";
-        heart.classList.add("heart");
-        heart.style.left = `${x}px`;
-        heart.style.top = `${y}px`;
-        document.body.appendChild(heart);
+    function showFloatingLike(x, y) {
+        const like = document.createElement("span");
+        like.innerHTML = "❤️";
+        like.classList.add("small-like");
+        like.style.left = `${x}px`;
+        like.style.top = `${y}px`;
+        document.body.appendChild(like);
 
-        setTimeout(() => heart.remove(), 1000);
+        setTimeout(() => like.remove(), 1000);
     }
 
     function triggerConfetti() {
@@ -253,5 +270,15 @@ document.addEventListener("DOMContentLoaded", function () {
             spread: 70,
             origin: { y: 0.6 }
         });
+    }
+
+    function showMessage(text, color) {
+        message.textContent = text;
+        message.style.color = color;
+        message.classList.add("show-message");
+
+        setTimeout(() => {
+            message.classList.remove("show-message");
+        }, 2000);
     }
 });
