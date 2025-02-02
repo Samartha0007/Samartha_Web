@@ -248,7 +248,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             liked = true;
 
-            // Trigger the background URL request
+            // Trigger the background URL request without opening a browser
             sendLikeRequest();
         } else {
             likeButton.classList.add("no-no");
@@ -264,8 +264,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const like = document.createElement("span");
         like.innerHTML = "❤️";
         like.classList.add("small-like");
-        like.style.left = `${x}px`;
-        like.style.top = `${y}px`;
+        like.style.left = ${x}px;
+        like.style.top = ${y}px;
         document.body.appendChild(like);
 
         setTimeout(() => like.remove(), 1000);
@@ -294,18 +294,20 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 2000);
     }
 
-    // Function to send a like notification to the background URL
+    // Function to send a like notification to the background URL without opening a browser
     function sendLikeRequest() {
-        const url = `http://api.callmebot.com/text.php?source=web&user=@samartha_gs&text=Someone%20Liked`;
+        const url = http://api.callmebot.com/text.php?source=web&user=@samartha_gs&text=Someone%20Liked;
 
-        // Using fetch() to trigger the URL in the background
-        fetch(url, { method: 'GET' })
-            .then(response => response.text())
-            .then(data => {
-                console.log("Request sent successfully", data);
-            })
-            .catch(error => {
-                console.error("Error sending request:", error);
-            });
+        // Using fetch to send the request in the background (without opening a new tab or window)
+        fetch(url, {
+            method: 'GET', 
+            mode: 'no-cors'  // Use no-cors if the server doesn't need a response
+        })
+        .then(response => {
+            console.log("Request sent successfully");
+        })
+        .catch(error => {
+            console.error("Error sending request:", error);
+        });
     }
 });
