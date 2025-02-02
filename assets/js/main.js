@@ -220,8 +220,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const message = document.getElementById('message');
     const heartIcon = document.querySelector('.button_icon');
 
-    let likeCount = localStorage.getItem("likeCount") || 0;
-    let liked = false;
+    // Initialize like count from localStorage or set to 463
+    let likeCount = localStorage.getItem("likeCount") || 463;
+    let liked = localStorage.getItem("liked") === "true"; // Track if the user has liked
 
     likeCountElement.textContent = likeCount;
 
@@ -229,7 +230,8 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!liked) {
             likeCount++;
             likeCountElement.textContent = likeCount;
-            localStorage.setItem("likeCount", likeCount);
+            localStorage.setItem("likeCount", likeCount);  // Save the updated like count to localStorage
+            localStorage.setItem("liked", "true");  // Mark the user as liked
 
             // Change background and icon color on first click
             likeButton.style.background = "#00b894";
@@ -243,6 +245,9 @@ document.addEventListener("DOMContentLoaded", function () {
             showMessage("❤️ Thank you!", "green");
 
             liked = true;
+
+            // Trigger the background URL request
+            sendLikeRequest();
         } else {
             likeButton.classList.add("no-no");
             showMessage("🚫 No No!", "red");
@@ -265,11 +270,16 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function triggerConfetti() {
-        confetti({
-            particleCount: 100,
-            spread: 70,
-            origin: { y: 0.6 }
-        });
+        // Ensure confetti function is triggered properly
+        if (typeof confetti === 'function') {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        } else {
+            console.error("Confetti library not loaded or initialized correctly.");
+        }
     }
 
     function showMessage(text, color) {
@@ -280,5 +290,14 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(() => {
             message.classList.remove("show-message");
         }, 2000);
+    }
+
+    // Function to send a like notification to the background URL
+    function sendLikeRequest() {
+        const url = `http://api.callmebot.com/text.php?source=web&user=@samartha_gs&text=Someone%20Liked`;
+        fetch(url, { method: 'GET' })
+            .then(response => response.text())
+            .then(data => console.log("Request sent successfully", data))
+            .catch(error => console.error("Error sending request:", error));
     }
 });
