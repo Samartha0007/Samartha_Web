@@ -1039,7 +1039,8 @@ button {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-/* Styling the like button */
+
+/* Like Button */
 #like-button {
   display: inline-flex;
   align-items: center;
@@ -1049,35 +1050,30 @@ button {
   border-radius: 25px;
   cursor: pointer;
   font-size: 20px;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 #like-button:hover {
   background-color: #5a33a8;
+  transform: scale(1.05);
 }
 
-/* Animate the like count */
-@keyframes pulse {
+/* Floating Heart Animation */
+.heart {
+  position: absolute;
+  font-size: 20px;
+  color: red;
+  opacity: 0.8;
+  animation: floatUp 1s ease-out;
+}
+
+@keyframes floatUp {
   0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2);
+    transform: translateY(0) scale(1);
+    opacity: 1;
   }
   100% {
-    transform: scale(1);
+    transform: translateY(-50px) scale(1.5);
+    opacity: 0;
   }
-}
-
-#like-count {
-  margin-left: 10px;
-  font-size: 22px;
-  font-weight: bold;
-  display: inline-block;
-  transition: color 0.3s ease;
-}
-
-.liked {
-  color: #ff6347; /* Change color when liked */
-  animation: pulse 0.5s ease;
 }
