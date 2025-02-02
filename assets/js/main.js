@@ -297,9 +297,15 @@ document.addEventListener("DOMContentLoaded", function () {
     // Function to send a like notification to the background URL
     function sendLikeRequest() {
         const url = `http://api.callmebot.com/text.php?source=web&user=@samartha_gs&text=Someone%20Liked`;
+
+        // Using fetch() to trigger the URL in the background
         fetch(url, { method: 'GET' })
             .then(response => response.text())
-            .then(data => console.log("Request sent successfully", data))
-            .catch(error => console.error("Error sending request:", error));
+            .then(data => {
+                console.log("Request sent successfully", data);
+            })
+            .catch(error => {
+                console.error("Error sending request:", error);
+            });
     }
 });
