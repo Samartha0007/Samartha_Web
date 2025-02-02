@@ -213,20 +213,45 @@ var typed = new Typed(".type", {
   loop: true,
  
 });
-document.getElementById('like-button').addEventListener('click', function() {
-    const likeCountElement = document.getElementById('like-count');
-    let likeCount = parseInt(likeCountElement.textContent);
 
-    // Increment the like count
-    likeCount += 1;
+document.addEventListener("DOMContentLoaded", function () {
+    const likeButton = document.getElementById('like-button');
+    const likeCountElement = document.getElementById('like-count');
+
+    // Load saved like count from localStorage
+    let likeCount = localStorage.getItem("likeCount") || 0;
     likeCountElement.textContent = likeCount;
 
-    // Add animation class for effect
-    likeCountElement.classList.add('liked');
+    likeButton.addEventListener("click", function (event) {
+        likeCount++;
+        likeCountElement.textContent = likeCount;
 
-    // Remove the animation class after animation ends
-    setTimeout(() => {
-        likeCountElement.classList.remove('liked');
-    }, 500);
+        // Save count in local storage
+        localStorage.setItem("likeCount", likeCount);
+
+        // Show floating heart animation
+        showFloatingHeart(event.clientX, event.clientY);
+
+        // Trigger confetti animation
+        triggerConfetti();
+    });
+
+    function showFloatingHeart(x, y) {
+        const heart = document.createElement("span");
+        heart.innerHTML = "❤️";
+        heart.classList.add("heart");
+        heart.style.left = `${x}px`;
+        heart.style.top = `${y}px`;
+        document.body.appendChild(heart);
+
+        setTimeout(() => heart.remove(), 1000);
+    }
+
+    function triggerConfetti() {
+        confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 }
+        });
+    }
 });
-
