@@ -220,14 +220,16 @@ document.addEventListener("DOMContentLoaded", function () {
     const message = document.getElementById('message');
     const heartIcon = document.querySelector('.button_icon');
 
-    // Initialize like count from localStorage or set to 463
-    let likeCount = localStorage.getItem("likeCount") || 463;
-    let liked = localStorage.getItem("liked") === "true"; // Track if the user has liked
+    // Initialize like count to 463 if not stored in localStorage
+    let likeCount = localStorage.getItem("likeCount") ? parseInt(localStorage.getItem("likeCount")) : 463;
+    let liked = localStorage.getItem("liked") === "true"; // Check if the user has liked
 
+    // Set the initial like count on page load
     likeCountElement.textContent = likeCount;
 
     likeButton.addEventListener("click", function (event) {
         if (!liked) {
+            // Increment like count and save it to localStorage
             likeCount++;
             likeCountElement.textContent = likeCount;
             localStorage.setItem("likeCount", likeCount);  // Save the updated like count to localStorage
