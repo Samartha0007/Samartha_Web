@@ -213,99 +213,83 @@ var typed = new Typed(".type", {
   loop: true,
  
 });
+
+
 document.addEventListener("DOMContentLoaded", function () {
-    const likeButton = document.getElementById('like-button');
-    const likeCountElement = document.getElementById('like-count');
-    const message = document.getElementById('message');
-    const heartIcon = document.querySelector('.button_icon');
+            const likeButton = document.getElementById('like-button');
+            const heartIcon = document.querySelector('.button_icon');
+            const message = document.getElementById('message');
+            const likeCount = document.getElementById('like-count');
 
-    // Initialize like count to 463 if not stored in localStorage
-    let likeCount = localStorage.getItem("likeCount") ? parseInt(localStorage.getItem("likeCount")) : 863;
-    let liked = localStorage.getItem("liked") === "true"; // Check if the user has liked
+            // Check if liked before from local storage
+            let liked = localStorage.getItem('liked') === 'true';
 
-    // Set the initial like count on page load
-    likeCountElement.textContent = likeCount;
+            likeButton.addEventListener("click", function (event) {
+                if (!liked) {
+                    heartIcon.style.color = "var(--first-color-lighter)";
+                    heartIcon.classList.add("bounce-heart");
 
-    likeButton.addEventListener("click", function (event) {
-        if (!liked) {
-            // Increment like count and save it to localStorage
-            likeCount++;
-            likeCountElement.textContent = likeCount;
-            localStorage.setItem("likeCount", likeCount);  // Save the updated like count to localStorage
-            localStorage.setItem("liked", "true");  // Mark the user as liked
+                    setTimeout(() => heartIcon.classList.remove("bounce-heart"), 600);
 
-            // Change background and icon color on first click
-            likeButton.style.background = "#00b894";
-            heartIcon.style.color = "#d4f1f4";
-            heartIcon.classList.add("pulse-heart"); // Add pulsing effect to the heart icon
+                    triggerConfetti();
+                    createRippleEffect(event);
+                    showFloatingLike(event.clientX, event.clientY);
+                    showMessage("❤️ Thank you!", "green");
 
-            setTimeout(() => heartIcon.classList.remove("pulse-heart"), 600); // Remove pulsing effect after animation
-
-            showFloatingLike(event.clientX, event.clientY);
-            triggerConfetti();
-            showMessage("❤️ Thank you!", "green");
-
-            liked = true;
-
-            // Trigger the background URL request
-            sendLikeRequest();
-        } else {
-            likeButton.classList.add("no-no");
-            showMessage("🚫 No No!", "red");
-
-            setTimeout(() => {
-                likeButton.classList.remove("no-no");
-            }, 500);
-        }
-    });
-
-    function showFloatingLike(x, y) {
-        const like = document.createElement("span");
-        like.innerHTML = "❤️";
-        like.classList.add("small-like");
-        like.style.left = `${x}px`;
-        like.style.top = `${y}px`;
-        document.body.appendChild(like);
-
-        setTimeout(() => like.remove(), 1000);
-    }
-
-    function triggerConfetti() {
-        // Ensure confetti function is triggered properly
-        if (typeof confetti === 'function') {
-            confetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { y: 0.6 }
+                    // Store like status in local storage
+                    localStorage.setItem('liked', 'true');
+                    liked = true;
+                } else {
+                    // If already liked, shake the button
+                    likeButton.classList.add("shake");
+                    setTimeout(() => likeButton.classList.remove("shake"), 500);
+                    showMessage("🚫 Already Liked!", "red");
+                }
             });
-        } else {
-            console.error("Confetti library not loaded or initialized correctly.");
-        }
-    }
 
-    function showMessage(text, color) {
-        message.textContent = text;
-        message.style.color = color;
-        message.classList.add("show-message");
+            function triggerConfetti() {
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            }
 
-        setTimeout(() => {
-            message.classList.remove("show-message");
-        }, 2000);
-    }
+            function createRippleEffect(event) {
+                const ripple = document.createElement("div");
+                ripple.classList.add("ripple");
 
-    // Function to send a like notification to the background URL
-    function sendLikeRequest() {
-        const url = `http://api.callmebot.com/text.php?source=web&user=@samartha_gs&text=Someone%20Liked`;
+                const rect = likeButton.getBoundingClientRect();
+                ripple.style.left = `${event.clientX - rect.left - 50}px`;
+                ripple.style.top = `${event.clientY - rect.top - 50}px`;
 
-        // Using fetch() to trigger the URL in the background
-        fetch(url, { method: 'GET' })
-            .then(response => response.text())
-            .then(data => {
-                console.log("Request sent successfully", data);
-            })
-            .catch(error => {
-                console.error("Error sending request:", error);
-            });
-    }
-});
+                likeButton.appendChild(ripple);
+
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            }
+
+            function showFloatingLike(x, y) {
+                const like = document.createElement("span");
+                like.innerHTML = "❤️";
+                like.classList.add("small-like");
+                like.style.left = `${x}px`;
+                like.style.top = `${y}px`;
+                document.body.appendChild(like);
+
+                setTimeout(() => like.remove(), 1500);
+            }
+
+            function showMessage(text, color) {
+                message.textContent = text;
+                message.style.color = color;
+                message.classList.add("show-message");
+
+                setTimeout(() => {
+                    message.classList.remove("show-message");
+                    likeCount.textContent = "100";  // Reset like count after 3 seconds
+                }, 3000);
+            }
+        });
 
