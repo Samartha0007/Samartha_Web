@@ -223,9 +223,15 @@ document.addEventListener("DOMContentLoaded", function () {
     // Set a fixed start time (e.g., 1st Feb 2025, 12:00 AM IST)
     const startTime = new Date("2025-02-01T00:00:00+05:30").getTime(); 
 
-    // Retrieve like status & count from local storage
+    // Retrieve like status, color, and count from local storage
     let liked = localStorage.getItem('liked') === 'true';
+    let storedColor = localStorage.getItem('iconColor');
     let storedLikeCount = localStorage.getItem('likeCount');
+
+    // Update heart color if it was already liked
+    if (storedColor) {
+        heartIcon.style.color = storedColor;
+    }
 
     function updateLikeCount() {
         const now = new Date();
@@ -254,7 +260,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // Like button functionality with local storage check
     likeButton.addEventListener("click", function (event) {
         if (!liked) {
-            heartIcon.style.color = "var(--first-color-lighter)";
+            heartIcon.style.color = "#ff4757";  // Change color on first like
+            localStorage.setItem('iconColor', "#ff4757");  // Store color in local storage
             heartIcon.classList.add("bounce-heart");
             setTimeout(() => heartIcon.classList.remove("bounce-heart"), 600);
 
