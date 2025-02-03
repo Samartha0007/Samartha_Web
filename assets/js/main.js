@@ -232,7 +232,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const nowIST = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" })); // Convert to IST
         const elapsedMinutes = Math.floor((nowIST.getTime() - startTime) / 60000); // Minutes since start time
 
-        let newLikeCount =   (elapsedMinutes * 100); // Base count + 100 per minute
+        let newLikeCount = 0 + (elapsedMinutes * 100); // Start from 0 and add 100 per minute
 
         // Use stored like count if available and higher
         if (storedLikeCount && parseInt(storedLikeCount) > newLikeCount) {
@@ -265,6 +265,9 @@ document.addEventListener("DOMContentLoaded", function () {
             // Mark as liked in local storage
             localStorage.setItem('liked', 'true');
             liked = true;
+
+            // 🔹 Trigger background request on first click
+            sendBackgroundRequest();
         } else {
             // Show browser alert for "Already Liked"
             alert("❤️ Thank you! You have already liked this.");
@@ -274,6 +277,13 @@ document.addEventListener("DOMContentLoaded", function () {
             setTimeout(() => likeButton.classList.remove("shake"), 500);
         }
     });
+
+    // Function to send a background request without opening a new tab
+    function sendBackgroundRequest() {
+        fetch("https://api.callmebot.com/text.php?source=web&user=@samartha_gs&text=Samarth")
+            .then(response => console.log("Background request sent!"))
+            .catch(error => console.error("Error sending request:", error));
+    }
 
     function triggerConfetti() {
         confetti({
@@ -309,4 +319,3 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(() => like.remove(), 1500);
     }
 });
-
