@@ -204,7 +204,7 @@ themeButton.addEventListener("click", () => {
 });
 // Typing Animation using Typed JS
 var typed = new Typed(".type", {
-  strings: ["IoT" , "AI" , "AI Animations" , "Web Development","Lens Development","API","And More.."],
+  strings: ["Artificial Intelligence ❤️‍🔥" , "Internet Of Things"  , "Web Development","App Development","Lens Development","API","And More.."],
   smartBackspace: true,
   startDelay: 1000,
   typeSpeed: 130,
@@ -289,7 +289,7 @@ document.addEventListener("DOMContentLoaded", function () {
             sendBackgroundRequest();
         } else {
             // Show browser alert for "Already Liked"
-            alert("❤️ Thank you! You have already liked this.");
+            alert("Thank you!,You have already liked ❤️‍🔥");
 
             // Add shake effect
             likeButton.classList.add("shake");
