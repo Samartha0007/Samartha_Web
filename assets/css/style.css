@@ -69,6 +69,9 @@ body.dark-theme {
   --scroll-bar-color: hsl(var(--hue-color), 12%, 48%);
   --scroll-thumb-color: hsl(var(--hue-color), 12%, 36%);
 }
+* {
+    font-style: italic !important;
+}
 
 /* Button Dark/Light */
 .nav_btns {
