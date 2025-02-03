@@ -1040,96 +1040,152 @@ button {
   }
 }
 
-/* Like Button */
-#like-button {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    padding: 20px 40px;
-    font-size: 22px;
-    border: none;
-    border-radius: 30px;
-    background: #ff4757;
-    color: white;
-    cursor: pointer;
-    transition: transform 0.2s ease, background 0.3s ease;
-}
+ :root {
+            --hue-color: 250;
+            --first-color: hsl(var(--hue-color), 69%, 61%);
+            --first-color-alt: hsl(var(--hue-color), 57%, 53%);
+            --first-color-lighter: hsl(var(--hue-color), 92%, 85%);
+            --title-color: hsl(var(--hue-color), 8%, 15%);
+            --body-color: hsl(var(--hue-color), 60%, 99%);
+        }
 
-#like-button:hover {
-    transform: scale(1.05);
-}
+        body {
+            text-align: center;
+            background: var(--body-color);
+            font-family: Arial, sans-serif;
+        }
 
-.button_icon {
-    font-size: 40px;
-    transition: transform 0.3s ease, color 0.3s ease;
-}
+        h1 {
+            color: var(--title-color);
+        }
 
-#like-count {
-    font-size: 24px;
-    font-weight: bold;
-}
+        /* Like Button Styling */
+        #like-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 20px;
+            font-size: 22px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(45deg, var(--first-color), var(--first-color-alt));
+            color: white;
+            cursor: pointer;
+            width: 160px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px var(--first-color-lighter);
+            position: relative;
+            overflow: hidden;
+        }
 
-/* Small Floating Likes */
-.small-like {
-    position: absolute;
-    font-size: 18px;
-    color: red;
-    opacity: 1;
-    animation: floatUp 1s ease-out;
-}
+        #like-button:hover {
+            box-shadow: 0 0 80px var(--first-color);
+        }
 
-@keyframes floatUp {
-    0% { transform: translateY(0) scale(1); opacity: 1; }
-    100% { transform: translateY(-30px) scale(1.5); opacity: 0; }
-}
+        .like-content {
+            display: ;
+            align-items: center;
+            gap: 10px;
+            font-size: 10px;
+        }
 
-/* Thank You & No No Message */
-#message {
-    font-size: 20px;
-    margin-top: 10px;
-    font-weight: bold;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-}
+        .button_icon {
+            font-size: 35px;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
 
-.show-message {
-    opacity: 1;
-}
+        #like-count {
+            font-family: "Courier New", Courier, monospace;   font-size: 20px; /* Increase size */  
+font-weight: bold;  
+color: lightwhite;  
+    font-size:15px;  
+transition: transform 0.3s ease, color 0.3s ease;
+        }
 
-/* No No Animation */
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-8px); }
-    50% { transform: translateX(8px); }
-    75% { transform: translateX(-4px); }
-}
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
 
-.no-no {
-    animation: shake 0.4s ease-in-out;
-    background: #e74c3c !important;
-}
+        /* Floating Like Effect */
+        .small-like {
+            position: absolute;
+            font-size: 14px;
+            color: var(--first-color);
+            opacity: 1;
+            animation: floatUp 1.5s ease-out;
+        }
 
-/* Likes Text Below */
-.likes-text {
-    font-size: 14px;
-    color: #666;
-}
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-40px) scale(1.5); opacity: 0; }
+        }
 
-/* Pulsing Heart Effect */
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.3);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
+        /* Ripple Effect */
+        .ripple {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.5);
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            transform: scale(0);
+            animation: rippleEffect 0.6s linear;
+        }
 
-.pulse-heart {
-    animation: pulse 0.6s ease;
-}
+        @keyframes rippleEffect {
+            from { transform: scale(0); opacity: 1; }
+            to { transform: scale(3); opacity: 0; }
+        }
+
+        /* Shake Animation for Second Click */
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+
+        .shake {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        /* Pulse effect on button click */
+        .pulse {
+            animation: pulseEffect 0.5s ease-out;
+        }
+
+        @keyframes pulseEffect {
+            0% { transform: scale(1); box-shadow: 0 0 10px var(--first-color); }
+            50% { transform: scale(1.05); box-shadow: 0 0 30px var(--first-color-lighter); }
+            100% { transform: scale(1); box-shadow: 0 0 10px var(--first-color); }
+        }
+
+        /* Likes Text Styling */
+        .likes-text {
+            display: block;
+            font-size: 4px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: bold;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            margin-top: -2px;
+            
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        /* Thank You and Already Liked Message Styling */
+        #message {
+            font-size: 18px;
+            margin-top: 10px;
+            font-weight: bold;
+            opacity: 0;
+            font-family: 'Poppins', sans-serif;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .show-message {
+            opacity: 1;
+        }
