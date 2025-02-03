@@ -221,7 +221,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const likeCount = document.getElementById('like-count');
 
     // Set the like count to a constant value of 22
-    const constantLikeCount = 22;
+    const constantLikeCount = 32;
 
     // Set the like count initially
     likeCount.textContent = constantLikeCount;
