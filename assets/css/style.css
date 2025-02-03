@@ -1040,24 +1040,7 @@ button {
   }
 }
 
- :root {
-            --hue-color: 250;
-            --first-color: hsl(var(--hue-color), 69%, 61%);
-            --first-color-alt: hsl(var(--hue-color), 57%, 53%);
-            --first-color-lighter: hsl(var(--hue-color), 92%, 85%);
-            --title-color: hsl(var(--hue-color), 8%, 15%);
-            --body-color: hsl(var(--hue-color), 60%, 99%);
-        }
-
-        body {
-            text-align: center;
-            background: var(--body-color);
-            font-family: Arial, sans-serif;
-        }
-
-        h1 {
-            color: var(--title-color);
-        }
+ 
 
         /* Like Button Styling */
         #like-button {
