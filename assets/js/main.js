@@ -220,8 +220,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const heartIcon = document.querySelector('.button_icon');
     const likeCount = document.getElementById('like-count');
 
-    // Set a fixed start time (e.g., 1st Feb 2025, 12:00 AM IST)
-    const startTime = new Date("2025-02-01T00:00:00+05:30").getTime(); 
+    const startDate = new Date("2025-02-01T00:00:00+05:30").getTime(); // Fixed start time
+    const tomorrow = new Date("2025-02-04T00:00:00+05:30").getTime(); // Tomorrow's date
 
     // Retrieve like status, color, and count from local storage
     let liked = localStorage.getItem('liked') === 'true';
@@ -230,24 +230,50 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Update heart color if it was already liked
     if (storedColor) {
-        heartIcon.style.fill = storedColor;  // Set the fill color for the heart
-        heartIcon.style.color = storedColor; // Set the color property for icon's outer color
+        heartIcon.style.fill = storedColor;
+        heartIcon.style.color = storedColor;
     }
 
+    // Function to calculate like count
     function updateLikeCount() {
         const now = new Date();
-        const nowIST = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" })); // Convert to IST
-        const elapsedMinutes = Math.floor((nowIST.getTime() - startTime) / 60000); // Minutes since start time
+        const nowIST = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
 
-        // Calculate likes for before 3:00 PM
-        let newLikeCount = 0 + (elapsedMinutes * 100); // Start from 0 and add 100 per minute
+        // Get the time elapsed since the start date
+        const elapsedTime = nowIST.getTime() - startDate;
+        const elapsedDays = Math.floor(elapsedTime / (1000 * 3600 * 24));
 
-        // If the time is after 3:00 PM, apply a new count rule
-        if (nowIST.getHours() >= 15) {
-            // Get the time since 3:00 PM
-            const timeSince3PM = (nowIST.getHours() - 15) * 60 + nowIST.getMinutes();
-            // Add 35 likes per hour after 3:00 PM, reset after each hour
-            newLikeCount = Math.floor(timeSince3PM / 60) * 35;
+        // Calculate the likes based on fixed points for tomorrow (Feb 4)
+        let newLikeCount = 1; // Start with 1 like
+
+        if (nowIST.getTime() < tomorrow) {
+            // Schedule for tomorrow (Feb 4) only
+            const hours = nowIST.getHours();
+            const minutes = nowIST.getMinutes();
+
+            // Specific scheduled times for tomorrow only
+            if (hours === 2 && minutes === 0) newLikeCount = 34;
+            else if (hours === 6 && minutes === 0) newLikeCount = 112;
+            else if (hours === 9 && minutes === 0) newLikeCount = 343;
+            else if (hours === 13 && minutes === 0) newLikeCount = 740;
+            else if (hours === 16 && minutes === 0) newLikeCount = 1213;
+        } else {
+            // After Feb 4, use alternating daily increments
+            if (elapsedDays >= 3) { // After Feb 4th (starts from the 5th day)
+                // Generate random number between different ranges
+                const isEvenDay = elapsedDays % 2 === 0;
+
+                let increment = 0;
+                if (isEvenDay) {
+                    // On even days (e.g., Feb 5, 7, 9, ...), increase by a range between 10 and 50
+                    increment = Math.floor(Math.random() * 41) + 10;  // Random between 10 and 50
+                } else {
+                    // On odd days (e.g., Feb 6, 8, 10, ...), increase by a range between 100 and 150
+                    increment = Math.floor(Math.random() * 51) + 100;  // Random between 100 and 150
+                }
+
+                newLikeCount += increment;
+            }
         }
 
         // Use stored like count if available and higher
@@ -255,14 +281,15 @@ document.addEventListener("DOMContentLoaded", function () {
             newLikeCount = parseInt(storedLikeCount);
         }
 
+        // Update the like count on the page and store it
         likeCount.textContent = newLikeCount;
-        localStorage.setItem('likeCount', newLikeCount); // Store updated count
+        localStorage.setItem('likeCount', newLikeCount);
     }
 
     // Update count immediately and every minute
     updateLikeCount();
     setInterval(() => {
-        updateLikeCount(); // Update the like count
+        updateLikeCount();
     }, 60000); // Update every minute
 
     // Like button functionality with local storage check
@@ -270,9 +297,9 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!liked) {
             const fillColor = "#FF00FF"; // Set color for the heart icon to fill fully
 
-            heartIcon.style.fill = fillColor;  // Fill the heart icon
-            heartIcon.style.color = fillColor;  // Ensure the color also applies to the surrounding areas
-            localStorage.setItem('iconColor', fillColor);  // Store the color in local storage
+            heartIcon.style.fill = fillColor;
+            heartIcon.style.color = fillColor;
+            localStorage.setItem('iconColor', fillColor); // Store the color
 
             heartIcon.classList.add("bounce-heart");
             setTimeout(() => heartIcon.classList.remove("bounce-heart"), 600);
