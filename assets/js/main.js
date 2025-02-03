@@ -220,81 +220,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const heartIcon = document.querySelector('.button_icon');
     const likeCount = document.getElementById('like-count');
 
-    const startDate = new Date("2025-02-01T00:00:00+05:30").getTime(); // Fixed start time
-    const tomorrow = new Date("2025-02-04T00:00:00+05:30").getTime(); // Tomorrow's date
+    // Set the like count to a constant value of 22
+    const constantLikeCount = 22;
 
-    // Retrieve like status, color, and count from local storage
-    let liked = localStorage.getItem('liked') === 'true';
-    let storedColor = localStorage.getItem('iconColor');
-    let storedLikeCount = localStorage.getItem('likeCount');
-
-    // Update heart color if it was already liked
-    if (storedColor) {
-        heartIcon.style.fill = storedColor;
-        heartIcon.style.color = storedColor;
-    }
-
-    // Function to calculate like count
-    function updateLikeCount() {
-        const now = new Date();
-        const nowIST = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
-
-        // Get the time elapsed since the start date
-        const elapsedTime = nowIST.getTime() - startDate;
-        const elapsedDays = Math.floor(elapsedTime / (1000 * 3600 * 24));
-
-        // Calculate the likes based on fixed points for tomorrow (Feb 4)
-        let newLikeCount = 1; // Start with 1 like
-
-        if (nowIST.getTime() < tomorrow) {
-            // Schedule for tomorrow (Feb 4) only
-            const hours = nowIST.getHours();
-            const minutes = nowIST.getMinutes();
-
-            // Specific scheduled times for tomorrow only
-            if (hours === 2 && minutes === 0) newLikeCount = 34;
-            else if (hours === 6 && minutes === 0) newLikeCount = 112;
-            else if (hours === 9 && minutes === 0) newLikeCount = 343;
-            else if (hours === 13 && minutes === 0) newLikeCount = 740;
-            else if (hours === 16 && minutes === 0) newLikeCount = 1213;
-        } else {
-            // After Feb 4, use alternating daily increments
-            if (elapsedDays >= 3) { // After Feb 4th (starts from the 5th day)
-                // Generate random number between different ranges
-                const isEvenDay = elapsedDays % 2 === 0;
-
-                let increment = 0;
-                if (isEvenDay) {
-                    // On even days (e.g., Feb 5, 7, 9, ...), increase by a range between 10 and 50
-                    increment = Math.floor(Math.random() * 41) + 10;  // Random between 10 and 50
-                } else {
-                    // On odd days (e.g., Feb 6, 8, 10, ...), increase by a range between 100 and 150
-                    increment = Math.floor(Math.random() * 51) + 100;  // Random between 100 and 150
-                }
-
-                newLikeCount += increment;
-            }
-        }
-
-        // Use stored like count if available and higher
-        if (storedLikeCount && parseInt(storedLikeCount) > newLikeCount) {
-            newLikeCount = parseInt(storedLikeCount);
-        }
-
-        // Update the like count on the page and store it
-        likeCount.textContent = newLikeCount;
-        localStorage.setItem('likeCount', newLikeCount);
-    }
-
-    // Update count immediately and every minute
-    updateLikeCount();
-    setInterval(() => {
-        updateLikeCount();
-    }, 60000); // Update every minute
+    // Set the like count initially
+    likeCount.textContent = constantLikeCount;
 
     // Like button functionality with local storage check
     likeButton.addEventListener("click", function (event) {
-        if (!liked) {
+        if (!localStorage.getItem('liked')) {
             const fillColor = "#FF00FF"; // Set color for the heart icon to fill fully
 
             heartIcon.style.fill = fillColor;
@@ -310,10 +244,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Mark as liked in local storage
             localStorage.setItem('liked', 'true');
-            liked = true;
-
-            // 🔹 Trigger background request on first click
-            sendBackgroundRequest();
         } else {
             // Show browser alert for "Already Liked"
             alert("Thank you 😊 - You have already liked ❤️‍🔥");
@@ -324,13 +254,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Function to send a background request without opening a new tab
-    function sendBackgroundRequest() {
-        fetch("https://api.callmebot.com/text.php?source=web&user=@samartha_gs&text=Samarth")
-            .then(response => console.log("Background request sent!"))
-            .catch(error => console.error("Error sending request:", error));
-    }
-
+    // Function to trigger confetti effect
     function triggerConfetti() {
         confetti({
             particleCount: 100,
@@ -339,6 +263,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    // Function to create ripple effect
     function createRippleEffect(event) {
         const ripple = document.createElement("div");
         ripple.classList.add("ripple");
@@ -354,6 +279,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 600);
     }
 
+    // Function to show floating like
     function showFloatingLike(x, y) {
         const like = document.createElement("span");
         like.innerHTML = "+1 ❤️‍🔥";
