@@ -230,7 +230,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Update heart color if it was already liked
     if (storedColor) {
-        heartIcon.style.color = storedColor;
+        heartIcon.style.fill = storedColor;  // Set the fill color for the heart
+        heartIcon.style.color = storedColor; // Set the color property for icon's outer color
     }
 
     function updateLikeCount() {
@@ -260,8 +261,12 @@ document.addEventListener("DOMContentLoaded", function () {
     // Like button functionality with local storage check
     likeButton.addEventListener("click", function (event) {
         if (!liked) {
-            heartIcon.style.color = "#ff4757";  // Change color on first like
-            localStorage.setItem('iconColor', "#ff4757");  // Store color in local storage
+            const fillColor = "#ff4757"; // Set color for the heart icon to fill fully
+
+            heartIcon.style.fill = fillColor;  // Fill the heart icon
+            heartIcon.style.color = fillColor;  // Ensure the color also applies to the surrounding areas
+            localStorage.setItem('iconColor', fillColor);  // Store the color in local storage
+
             heartIcon.classList.add("bounce-heart");
             setTimeout(() => heartIcon.classList.remove("bounce-heart"), 600);
 
