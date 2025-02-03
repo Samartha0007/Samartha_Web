@@ -239,7 +239,16 @@ document.addEventListener("DOMContentLoaded", function () {
         const nowIST = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" })); // Convert to IST
         const elapsedMinutes = Math.floor((nowIST.getTime() - startTime) / 60000); // Minutes since start time
 
+        // Calculate likes for before 3:00 PM
         let newLikeCount = 0 + (elapsedMinutes * 100); // Start from 0 and add 100 per minute
+
+        // If the time is after 3:00 PM, apply a new count rule
+        if (nowIST.getHours() >= 15) {
+            // Get the time since 3:00 PM
+            const timeSince3PM = (nowIST.getHours() - 15) * 60 + nowIST.getMinutes();
+            // Add 35 likes per hour after 3:00 PM, reset after each hour
+            newLikeCount = Math.floor(timeSince3PM / 60) * 35;
+        }
 
         // Use stored like count if available and higher
         if (storedLikeCount && parseInt(storedLikeCount) > newLikeCount) {
@@ -253,10 +262,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // Update count immediately and every minute
     updateLikeCount();
     setInterval(() => {
-        let currentCount = parseInt(likeCount.textContent) + 100;
-        likeCount.textContent = currentCount;
-        localStorage.setItem('likeCount', currentCount);
-    }, 60000);
+        updateLikeCount(); // Update the like count
+    }, 60000); // Update every minute
 
     // Like button functionality with local storage check
     likeButton.addEventListener("click", function (event) {
@@ -283,7 +290,7 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
             // Show browser alert for "Already Liked"
             alert("❤️ Thank you! You have already liked this.");
-            
+
             // Add shake effect
             likeButton.classList.add("shake");
             setTimeout(() => likeButton.classList.remove("shake"), 500);
