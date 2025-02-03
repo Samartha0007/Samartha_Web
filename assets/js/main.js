@@ -204,7 +204,7 @@ themeButton.addEventListener("click", () => {
 });
 // Typing Animation using Typed JS
 var typed = new Typed(".type", {
-  strings: ["Artificial Intelligence ❤️‍🔥" , "Internet Of Things"  , "Web Development","App Development","Lens Development","API","And More.."],
+  strings: ["Artificial Intelligence" , "Internet Of Things"  , "Web Development","App Development","Lens Development","API","And More.."],
   smartBackspace: true,
   startDelay: 1000,
   typeSpeed: 130,
@@ -268,7 +268,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Like button functionality with local storage check
     likeButton.addEventListener("click", function (event) {
         if (!liked) {
-            const fillColor = "#40E0D0"; // Set color for the heart icon to fill fully
+            const fillColor = "pink"; // Set color for the heart icon to fill fully
 
             heartIcon.style.fill = fillColor;  // Fill the heart icon
             heartIcon.style.color = fillColor;  // Ensure the color also applies to the surrounding areas
@@ -289,7 +289,7 @@ document.addEventListener("DOMContentLoaded", function () {
             sendBackgroundRequest();
         } else {
             // Show browser alert for "Already Liked"
-            alert("Thank you!,You have already liked ❤️‍🔥");
+            alert("Thank you 😊 ,You have already liked ❤️‍🔥");
 
             // Add shake effect
             likeButton.classList.add("shake");
@@ -329,7 +329,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function showFloatingLike(x, y) {
         const like = document.createElement("span");
-        like.innerHTML = "❤️";
+        like.innerHTML = "+1 ❤️‍🔥";
         like.classList.add("small-like");
         like.style.left = `${x}px`;
         like.style.top = `${y}px`;
