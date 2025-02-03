@@ -216,80 +216,83 @@ var typed = new Typed(".type", {
 
 
 document.addEventListener("DOMContentLoaded", function () {
-            const likeButton = document.getElementById('like-button');
-            const heartIcon = document.querySelector('.button_icon');
-            const message = document.getElementById('message');
-            const likeCount = document.getElementById('like-count');
+    const likeButton = document.getElementById('like-button');
+    const heartIcon = document.querySelector('.button_icon');
+    const likeCount = document.getElementById('like-count');
 
-            // Check if liked before from local storage
-            let liked = localStorage.getItem('liked') === 'true';
+    // Set a fixed start time (e.g., 1st Feb 2025, 12:00 AM IST)
+    const startTime = new Date("2025-02-01T00:00:00+05:30").getTime(); 
 
-            likeButton.addEventListener("click", function (event) {
-                if (!liked) {
-                    heartIcon.style.color = "var(--first-color-lighter)";
-                    heartIcon.classList.add("bounce-heart");
+    // Retrieve stored like count from local storage
+    let storedLikeCount = localStorage.getItem('likeCount');
 
-                    setTimeout(() => heartIcon.classList.remove("bounce-heart"), 600);
+    function updateLikeCount() {
+        const now = new Date();
+        const nowIST = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" })); // Convert to IST
+        const elapsedMinutes = Math.floor((nowIST.getTime() - startTime) / 60000); // Minutes since start time
 
-                    triggerConfetti();
-                    createRippleEffect(event);
-                    showFloatingLike(event.clientX, event.clientY);
-                    showMessage("❤️ Thank you!", "green");
+        let newLikeCount = 350 + (elapsedMinutes * 100); // Base count + 100 per minute
 
-                    // Store like status in local storage
-                    localStorage.setItem('liked', 'true');
-                    liked = true;
-                } else {
-                    // If already liked, shake the button
-                    likeButton.classList.add("shake");
-                    setTimeout(() => likeButton.classList.remove("shake"), 500);
-                    showMessage("🚫 Already Liked!", "red");
-                }
-            });
+        // Use stored like count if available and higher
+        if (storedLikeCount && parseInt(storedLikeCount) > newLikeCount) {
+            newLikeCount = parseInt(storedLikeCount);
+        }
 
-            function triggerConfetti() {
-                confetti({
-                    particleCount: 100,
-                    spread: 70,
-                    origin: { y: 0.6 }
-                });
-            }
+        likeCount.textContent = newLikeCount;
+        localStorage.setItem('likeCount', newLikeCount); // Store updated count
+    }
 
-            function createRippleEffect(event) {
-                const ripple = document.createElement("div");
-                ripple.classList.add("ripple");
+    // Update count immediately and every minute
+    updateLikeCount();
+    setInterval(() => {
+        let currentCount = parseInt(likeCount.textContent) + 100;
+        likeCount.textContent = currentCount;
+        localStorage.setItem('likeCount', currentCount);
+    }, 60000);
 
-                const rect = likeButton.getBoundingClientRect();
-                ripple.style.left = `${event.clientX - rect.left - 50}px`;
-                ripple.style.top = `${event.clientY - rect.top - 50}px`;
+    // Like button animations without adding extra likes
+    likeButton.addEventListener("click", function (event) {
+        heartIcon.style.color = "var(--first-color-lighter)";
+        heartIcon.classList.add("bounce-heart");
+        setTimeout(() => heartIcon.classList.remove("bounce-heart"), 600);
 
-                likeButton.appendChild(ripple);
+        triggerConfetti();
+        createRippleEffect(event);
+        showFloatingLike(event.clientX, event.clientY);
+    });
 
-                setTimeout(() => {
-                    ripple.remove();
-                }, 600);
-            }
-
-            function showFloatingLike(x, y) {
-                const like = document.createElement("span");
-                like.innerHTML = "❤️";
-                like.classList.add("small-like");
-                like.style.left = `${x}px`;
-                like.style.top = `${y}px`;
-                document.body.appendChild(like);
-
-                setTimeout(() => like.remove(), 1500);
-            }
-
-            function showMessage(text, color) {
-                message.textContent = text;
-                message.style.color = color;
-                message.classList.add("show-message");
-
-                setTimeout(() => {
-                    message.classList.remove("show-message");
-                    likeCount.textContent = "100";  // Reset like count after 3 seconds
-                }, 3000);
-            }
+    function triggerConfetti() {
+        confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 }
         });
+    }
+
+    function createRippleEffect(event) {
+        const ripple = document.createElement("div");
+        ripple.classList.add("ripple");
+
+        const rect = likeButton.getBoundingClientRect();
+        ripple.style.left = `${event.clientX - rect.left - 50}px`;
+        ripple.style.top = `${event.clientY - rect.top - 50}px`;
+
+        likeButton.appendChild(ripple);
+
+        setTimeout(() => {
+            ripple.remove();
+        }, 600);
+    }
+
+    function showFloatingLike(x, y) {
+        const like = document.createElement("span");
+        like.innerHTML = "❤️";
+        like.classList.add("small-like");
+        like.style.left = `${x}px`;
+        like.style.top = `${y}px`;
+        document.body.appendChild(like);
+
+        setTimeout(() => like.remove(), 1500);
+    }
+});
 
