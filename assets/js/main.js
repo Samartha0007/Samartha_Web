@@ -223,7 +223,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // Set a fixed start time (e.g., 1st Feb 2025, 12:00 AM IST)
     const startTime = new Date("2025-02-01T00:00:00+05:30").getTime(); 
 
-    // Retrieve stored like count from local storage
+    // Retrieve like status & count from local storage
+    let liked = localStorage.getItem('liked') === 'true';
     let storedLikeCount = localStorage.getItem('likeCount');
 
     function updateLikeCount() {
@@ -231,7 +232,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const nowIST = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" })); // Convert to IST
         const elapsedMinutes = Math.floor((nowIST.getTime() - startTime) / 60000); // Minutes since start time
 
-        let newLikeCount = 350 + (elapsedMinutes * 100); // Base count + 100 per minute
+        let newLikeCount =   (elapsedMinutes * 100); // Base count + 100 per minute
 
         // Use stored like count if available and higher
         if (storedLikeCount && parseInt(storedLikeCount) > newLikeCount) {
@@ -250,15 +251,28 @@ document.addEventListener("DOMContentLoaded", function () {
         localStorage.setItem('likeCount', currentCount);
     }, 60000);
 
-    // Like button animations without adding extra likes
+    // Like button functionality with local storage check
     likeButton.addEventListener("click", function (event) {
-        heartIcon.style.color = "var(--first-color-lighter)";
-        heartIcon.classList.add("bounce-heart");
-        setTimeout(() => heartIcon.classList.remove("bounce-heart"), 600);
+        if (!liked) {
+            heartIcon.style.color = "var(--first-color-lighter)";
+            heartIcon.classList.add("bounce-heart");
+            setTimeout(() => heartIcon.classList.remove("bounce-heart"), 600);
 
-        triggerConfetti();
-        createRippleEffect(event);
-        showFloatingLike(event.clientX, event.clientY);
+            triggerConfetti();
+            createRippleEffect(event);
+            showFloatingLike(event.clientX, event.clientY);
+
+            // Mark as liked in local storage
+            localStorage.setItem('liked', 'true');
+            liked = true;
+        } else {
+            // Show browser alert for "Already Liked"
+            alert("❤️ Thank you! You have already liked this.");
+            
+            // Add shake effect
+            likeButton.classList.add("shake");
+            setTimeout(() => likeButton.classList.remove("shake"), 500);
+        }
     });
 
     function triggerConfetti() {
