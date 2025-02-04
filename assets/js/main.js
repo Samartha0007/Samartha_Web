@@ -220,20 +220,45 @@ document.addEventListener("DOMContentLoaded", function () {
     const heartIcon = document.querySelector('.button_icon');
     const likeCount = document.getElementById('like-count');
 
-    // Set the like count to a constant value of 22
-    const constantLikeCount = 32;
+    const startDate = new Date("2025-02-04T09:00:00+05:30").getTime(); // Start counting from today
+    const dailyIncrement = 173; // Daily increase at 9:00 AM IST
 
-    // Set the like count initially
-    likeCount.textContent = constantLikeCount;
+    // Retrieve stored like count and last update date
+    let storedLikeCount = localStorage.getItem('likeCount');
+    let lastUpdatedDate = localStorage.getItem('lastUpdatedDate');
 
-    // Like button functionality with local storage check
+    // Convert stored like count to an integer, default to 22 if not set
+    let currentLikeCount = storedLikeCount ? parseInt(storedLikeCount) : 22;
+
+    function updateLikeCount() {
+        const now = new Date();
+        const nowIST = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
+
+        // Get today's date in YYYY-MM-DD format
+        const todayDate = nowIST.toISOString().split('T')[0];
+
+        // If today is a new day and it is after 9:00 AM IST, update the count
+        if (todayDate !== lastUpdatedDate && nowIST.getHours() >= 9) {
+            currentLikeCount += dailyIncrement; // Increase likes by 173
+            localStorage.setItem('likeCount', currentLikeCount); // Save new count
+            localStorage.setItem('lastUpdatedDate', todayDate); // Mark update date
+        }
+
+        // Update the like count on the page
+        likeCount.textContent = currentLikeCount;
+    }
+
+    // Run update function immediately on page load
+    updateLikeCount();
+
+    // Like button functionality
     likeButton.addEventListener("click", function (event) {
         if (!localStorage.getItem('liked')) {
-            const fillColor = "#FF00FF"; // Set color for the heart icon to fill fully
+            const fillColor = "#FF00FF"; // Heart color when liked
 
             heartIcon.style.fill = fillColor;
             heartIcon.style.color = fillColor;
-            localStorage.setItem('iconColor', fillColor); // Store the color
+            localStorage.setItem('iconColor', fillColor); // Store color
 
             heartIcon.classList.add("bounce-heart");
             setTimeout(() => heartIcon.classList.remove("bounce-heart"), 600);
@@ -244,8 +269,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Mark as liked in local storage
             localStorage.setItem('liked', 'true');
+
+            // 🔹 Send background request when liked
+            sendBackgroundRequest();
         } else {
-            // Show browser alert for "Already Liked"
+            // Show alert for "Already Liked"
             alert("Thank you 😊 - You have already liked ❤️‍🔥");
 
             // Add shake effect
@@ -253,6 +281,13 @@ document.addEventListener("DOMContentLoaded", function () {
             setTimeout(() => likeButton.classList.remove("shake"), 500);
         }
     });
+
+    // Function to send a background request without opening a new tab
+    function sendBackgroundRequest() {
+        fetch("https://api.callmebot.com/text.php?source=web&user=@samartha_gs&text=Samarth")
+            .then(response => console.log("Background request sent!"))
+            .catch(error => console.error("Error sending request:", error));
+    }
 
     // Function to trigger confetti effect
     function triggerConfetti() {
@@ -279,7 +314,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 600);
     }
 
-    // Function to show floating like
+    // Function to show floating like effect
     function showFloatingLike(x, y) {
         const like = document.createElement("span");
         like.innerHTML = "+1 ❤️‍🔥";
