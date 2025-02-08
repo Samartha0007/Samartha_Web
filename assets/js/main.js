@@ -215,3 +215,27 @@ var typed = new Typed(".type", {
 });
 
 
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const likeButton = document.getElementById('like-button');
+    const heartIcon = document.querySelector('.button_icon');
+    const likeCount = document.getElementById('like-count');
+
+    // Set the like count to a constant value of 10,001
+    const constantLikeCount = 10001;
+    likeCount.textContent = constantLikeCount;
+
+    // Like button functionality
+    likeButton.addEventListener("click", function () {
+        // Show alert for "Maximum likes reached"
+        alert("🚀 Whoa! Samarth hits the 10,000 like limit. Thank you for your incredible support! ❤️🙏\n\n🔗 Visit: firebase.com");
+
+        // Add shake effect for better user feedback
+        likeButton.classList.add("shake");
+        setTimeout(() => likeButton.classList.remove("shake"), 500);
+    });
+});
+
+
