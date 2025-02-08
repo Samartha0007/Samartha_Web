@@ -220,109 +220,17 @@ document.addEventListener("DOMContentLoaded", function () {
     const heartIcon = document.querySelector('.button_icon');
     const likeCount = document.getElementById('like-count');
 
-    const startDate = new Date("2025-02-04T09:00:00+05:30").getTime(); // Start counting from today
-    const dailyIncrement = 173; // Daily increase at 9:00 AM IST
-
-    // Retrieve stored like count and last update date
-    let storedLikeCount = localStorage.getItem('likeCount');
-    let lastUpdatedDate = localStorage.getItem('lastUpdatedDate');
-
-    // Convert stored like count to an integer, default to 22 if not set
-    let currentLikeCount = storedLikeCount ? parseInt(storedLikeCount) : 22;
-
-    function updateLikeCount() {
-        const now = new Date();
-        const nowIST = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
-
-        // Get today's date in YYYY-MM-DD format
-        const todayDate = nowIST.toISOString().split('T')[0];
-
-        // If today is a new day and it is after 9:00 AM IST, update the count
-        if (todayDate !== lastUpdatedDate && nowIST.getHours() >= 9) {
-            currentLikeCount += dailyIncrement; // Increase likes by 173
-            localStorage.setItem('likeCount', currentLikeCount); // Save new count
-            localStorage.setItem('lastUpdatedDate', todayDate); // Mark update date
-        }
-
-        // Update the like count on the page
-        likeCount.textContent = currentLikeCount;
-    }
-
-    // Run update function immediately on page load
-    updateLikeCount();
+    // Set the like count to a constant value of 10,001
+    const constantLikeCount = 10001;
+    likeCount.textContent = constantLikeCount;
 
     // Like button functionality
-    likeButton.addEventListener("click", function (event) {
-        if (!localStorage.getItem('liked')) {
-            const fillColor = "#FF00FF"; // Heart color when liked
-
-            heartIcon.style.fill = fillColor;
-            heartIcon.style.color = fillColor;
-            localStorage.setItem('iconColor', fillColor); // Store color
-
-            heartIcon.classList.add("bounce-heart");
-            setTimeout(() => heartIcon.classList.remove("bounce-heart"), 600);
-
-            triggerConfetti();
-            createRippleEffect(event);
-            showFloatingLike(event.clientX, event.clientY);
-
-            // Mark as liked in local storage
-            localStorage.setItem('liked', 'true');
-
-            // 🔹 Send background request when liked
-            sendBackgroundRequest();
-        } else {
-            // Show alert for "Already Liked"
-            alert("Thank you 😊 - You have already liked ❤️‍🔥");
-
-            // Add shake effect
-            likeButton.classList.add("shake");
-            setTimeout(() => likeButton.classList.remove("shake"), 500);
-        }
+    likeButton.addEventListener("click", function () {
+        // Show alert for "Maximum likes reached"
+        alert("⚠️ Maximum likes reached!");
+        
+        // Add shake effect for better user feedback
+        likeButton.classList.add("shake");
+        setTimeout(() => likeButton.classList.remove("shake"), 500);
     });
-
-    // Function to send a background request without opening a new tab
-    function sendBackgroundRequest() {
-        fetch("https://api.callmebot.com/text.php?source=web&user=@samartha_gs&text=Samarth")
-            .then(response => console.log("Background request sent!"))
-            .catch(error => console.error("Error sending request:", error));
-    }
-
-    // Function to trigger confetti effect
-    function triggerConfetti() {
-        confetti({
-            particleCount: 100,
-            spread: 70,
-            origin: { y: 0.6 }
-        });
-    }
-
-    // Function to create ripple effect
-    function createRippleEffect(event) {
-        const ripple = document.createElement("div");
-        ripple.classList.add("ripple");
-
-        const rect = likeButton.getBoundingClientRect();
-        ripple.style.left = `${event.clientX - rect.left - 50}px`;
-        ripple.style.top = `${event.clientY - rect.top - 50}px`;
-
-        likeButton.appendChild(ripple);
-
-        setTimeout(() => {
-            ripple.remove();
-        }, 600);
-    }
-
-    // Function to show floating like effect
-    function showFloatingLike(x, y) {
-        const like = document.createElement("span");
-        like.innerHTML = "+1 ❤️‍🔥";
-        like.classList.add("small-like");
-        like.style.left = `${x}px`;
-        like.style.top = `${y}px`;
-        document.body.appendChild(like);
-
-        setTimeout(() => like.remove(), 1500);
-    }
 });
