@@ -229,13 +229,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Like button functionality
     likeButton.addEventListener("click", function () {
-        // Show alert for "Maximum likes reached"
-        alert("🚀 Whoa! Samarth hits the 10,000 like limit. Thank you for your incredible support! ❤️🙏\n\n🔗 Visit: firebase.com");
-
+        // Show alert with hyperlink
+        alert("🚀 Whoa! Samartha hits the 10,000 like limit. Thank you for your incredible support! ❤️🙏\n\n View Users Database: https://firebase.com");
+        
         // Add shake effect for better user feedback
         likeButton.classList.add("shake");
         setTimeout(() => likeButton.classList.remove("shake"), 500);
     });
 });
+
 
 
