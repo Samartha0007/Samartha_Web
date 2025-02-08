@@ -227,7 +227,9 @@ document.addEventListener("DOMContentLoaded", function () {
     // Like button functionality
     likeButton.addEventListener("click", function () {
         // Show alert for "Maximum likes reached"
-        alert("⚠️ Maximum likes reached!");
+        alert("🚀 Whoa! We've hit the 10,000 like limit. Thank you for your incredible support! ❤️🙏"
+
+firebase.com");
         
         // Add shake effect for better user feedback
         likeButton.classList.add("shake");
