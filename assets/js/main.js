@@ -218,25 +218,41 @@ var typed = new Typed(".type", {
 
 
 
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
+
+// Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyDh7L_p4bVaLDu8W4HxWMrNWLYjmWZuZ14",
+    authDomain: "ggfhfd-36058.firebaseapp.com",
+    databaseURL: "https://ggfhfd-36058-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "ggfhfd-36058",
+    storageBucket: "ggfhfd-36058.firebasestorage.app",
+    messagingSenderId: "914143870224",
+    appId: "1:914143870224:web:7a93d62dabd5397fedf995",
+    measurementId: "G-L3ZJQ266WX"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const likeRef = ref(db, "likes");
+
 document.addEventListener("DOMContentLoaded", function () {
-    const likeButton = document.getElementById('like-button');
-    const heartIcon = document.querySelector('.button_icon');
-    const likeCount = document.getElementById('like-count');
+    const likeButton = document.getElementById("like-button");
+    const likeCount = document.getElementById("like-count");
 
-    // Set the like count to a constant value of 10,001
-    const constantLikeCount = 10001;
-    likeCount.textContent = constantLikeCount;
+    // Listen for real-time changes
+    onValue(likeRef, (snapshot) => {
+        likeCount.textContent = snapshot.val() || 0;
+    });
 
-    // Like button functionality
+    // Like button functionality with Firebase
     likeButton.addEventListener("click", function () {
-        // Show alert with hyperlink
-        alert("🚀 Whoa! Samartha hits the 10,000 like limit. Thank you for your incredible support! ❤️🙏\n\n View Users Database: https://firebase.com");
-        
-        // Add shake effect for better user feedback
-        likeButton.classList.add("shake");
-        setTimeout(() => likeButton.classList.remove("shake"), 500);
+        runTransaction(likeRef, (currentLikes) => {
+            return (currentLikes || 0) + 1;
+        });
     });
 });
-
 
 
