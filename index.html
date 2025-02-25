@@ -391,7 +391,7 @@ window.likePost = function () {
 
     // Check if the user has already liked
     if (localStorage.getItem("hasLiked") === "true") {
-        showPopup("❤️ Oops! You've already liked. Thanks for the support! 🙌😊");
+        showPopup("Oops! You've already liked ❤️‍🔥 Thanks for your support! 🙌😊");
         return;
     }
 
@@ -419,7 +419,7 @@ function showPopup(message) {
     popup.style.transform = "translateX(-50%)";
     popup.style.background = "hsl(250, 69%, 61%)"; // Updated color
     popup.style.color = "#fff";
-    popup.style.padding = "10px 20px";
+    popup.style.padding = "10px 15px";
     popup.style.borderRadius = "5px";
     popup.style.boxShadow = "0 2px 8px rgba(0,0,0,0.2)";
     popup.style.zIndex = "1000";
