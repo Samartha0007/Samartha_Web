@@ -218,29 +218,37 @@ var typed = new Typed(".type", {
 
 
 
-window.likePost = function () {
+window.likePost = function (event) {
     const button = document.getElementById("likeButton");
     const likeCount = document.getElementById("likeCount");
 
     // Disable button while updating
     button.disabled = true;
 
-    // Add bounce effect to count
+    // Add bounce effect to like count
     likeCount.classList.add("bounce");
-
-    // Remove bounce effect after animation ends
     setTimeout(() => {
         likeCount.classList.remove("bounce");
     }, 300);
 
-    // Apply ripple effect
-    const ripple = document.createElement("span");
-    ripple.classList.add("ripple");
-    button.appendChild(ripple);
-    
+    // Get click position for animations
+    const x = event.clientX;
+    const y = event.clientY;
+
+    // Show floating like effect
+    showFloatingLike(x, y);
+
+    // Show spark effect
+    showSparkAnimation(x, y);
+
+    // Apply ripple effect on button
+    createRipple(button);
+
+    // Apply shake effect
+    button.classList.add("shake");
     setTimeout(() => {
-        ripple.remove();
-    }, 600); // Remove ripple after animation
+        button.classList.remove("shake");
+    }, 500);
 
     // Run Firebase transaction
     runTransaction(ref(db, "likes"), (currentLikes) => {
@@ -252,3 +260,51 @@ window.likePost = function () {
         button.disabled = false;
     });
 };
+
+// Function to show floating like effect
+function showFloatingLike(x, y) {
+    const like = document.createElement("span");
+    like.innerHTML = "+1 ❤️‍🔥";
+    like.classList.add("small-like");
+
+    like.style.left = `${x}px`;
+    like.style.top = `${y}px`;
+
+    document.body.appendChild(like);
+
+    setTimeout(() => {
+        like.remove();
+    }, 1500);
+}
+
+// Function to show spark animation
+function showSparkAnimation(x, y) {
+    for (let i = 0; i < 8; i++) {
+        const spark = document.createElement("span");
+        spark.classList.add("spark");
+
+        // Randomize spark position and rotation
+        const angle = Math.random() * 360;
+        const distance = Math.random() * 20 + 10;
+        spark.style.left = `${x}px`;
+        spark.style.top = `${y}px`;
+        spark.style.transform = `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px) rotate(${angle}deg)`;
+
+        document.body.appendChild(spark);
+
+        setTimeout(() => {
+            spark.remove();
+        }, 800);
+    }
+}
+
+// Function to create ripple effect on button
+function createRipple(button) {
+    const ripple = document.createElement("span");
+    ripple.classList.add("ripple");
+
+    button.appendChild(ripple);
+    setTimeout(() => {
+        ripple.remove();
+    }, 600);
+}
