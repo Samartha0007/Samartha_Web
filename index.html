@@ -371,6 +371,19 @@
     onValue(likeRef, (snapshot) => {
         document.getElementById("likeCount").innerText = snapshot.val() || 0;
     });
+   window.likePost = function () {
+        const button = document.getElementById("likeButton");
+        button.disabled = true;
+
+        runTransaction(likeRef, (currentLikes) => {
+            return (currentLikes || 0) + 1;
+        }).then(() => {
+            button.disabled = false;
+        }).catch((error) => {
+            console.error("Error updating likes:", error);
+            button.disabled = false;
+        });
+    };
 </script>
  
   </body>  </html>
