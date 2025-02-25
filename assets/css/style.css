@@ -1167,4 +1167,49 @@ transition: transform 0.3s ease, color 0.3s ease;
             transition: transform 0.3s ease, opacity 0.3s ease;
         }
 
+/* Floating Like Animation */
+.small-like {
+    position: absolute;
+    font-size: 14px;
+    font-weight: bold;
+    color: #ff4500;
+    animation: floatUp 1.5s ease-out;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-40px) scale(1.5); opacity: 0; }
+}
+
+/* Spark Effect */
+.spark {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: yellow;
+    border-radius: 50%;
+    opacity: 1;
+    animation: sparkFade 0.8s ease-out;
+}
+
+@keyframes sparkFade {
+    0% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(2); }
+}
+
+/* Ripple Effect */
+.ripple {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.5);
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    transform: scale(0);
+    animation: rippleEffect 0.6s linear;
+}
+
+@keyframes rippleEffect {
+    from { transform: scale(0); opacity: 1; }
+    to { transform: scale(3); opacity: 0; }
+}
   
