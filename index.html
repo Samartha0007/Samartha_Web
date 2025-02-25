@@ -414,16 +414,16 @@ function showPopup(message) {
     const popup = document.createElement("div");
     popup.innerText = message;
     popup.style.position = "fixed";
-    popup.style.bottom = "20px";
+    popup.style.bottom = "50px";
     popup.style.left = "50%";
     popup.style.transform = "translateX(-50%)";
     popup.style.background = "hsl(250, 69%, 61%)"; // Updated color
     popup.style.color = "#fff";
     popup.style.padding = "10px 20px";
     popup.style.borderRadius = "5px";
-    popup.style.boxShadow = "0 2px 10px rgba(0,0,0,0.2)";
+    popup.style.boxShadow = "0 2px 8px rgba(0,0,0,0.2)";
     popup.style.zIndex = "1000";
-    popup.style.fontSize = "14px";
+    popup.style.fontSize = "12px";
     document.body.appendChild(popup);
 
     setTimeout(() => {
