@@ -417,13 +417,13 @@ function showPopup(message) {
     popup.style.bottom = "20px";
     popup.style.left = "50%";
     popup.style.transform = "translateX(-50%)";
-    popup.style.background: linear-gradient(45deg, var(--first-color), var(--first-color-alt));  
-    popup.style.color = "black";
+    popup.style.background = "hsl(250, 69%, 61%)"; // Updated color
+    popup.style.color = "#fff";
     popup.style.padding = "10px 20px";
     popup.style.borderRadius = "5px";
-    popup.style.boxShadow = "0 2px 8px rgba(0,0,0,0.2)";
+    popup.style.boxShadow = "0 2px 10px rgba(0,0,0,0.2)";
     popup.style.zIndex = "1000";
-    popup.style.fontSize = "12px";
+    popup.style.fontSize = "14px";
     document.body.appendChild(popup);
 
     setTimeout(() => {
