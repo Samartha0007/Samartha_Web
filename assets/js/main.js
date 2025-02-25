@@ -218,94 +218,45 @@ var typed = new Typed(".type", {
 
 
 
-window.likePost = function (event) {
+let liked = false;
+let likeCount = 0;
+
+function likePost(event) {
     const button = document.getElementById("likeButton");
-    const likeCount = document.getElementById("likeCount");
+    const countElement = document.getElementById("likeCount");
 
-    // Disable button while updating
-    button.disabled = true;
-
-    // Get click position relative to viewport
-    const x = event.clientX;
-    const y = event.clientY;
-
-    // Show floating like effect
-    showFloatingLike(x, y);
-
-    // Show spark animation
-    showSparkAnimation(x, y);
-
-    // Apply ripple effect on button
-    createRipple(button, event);
-
-    // Apply bounce effect to like count
-    likeCount.classList.add("bounce");
-    setTimeout(() => {
-        likeCount.classList.remove("bounce");
-    }, 300);
-
-    // Run Firebase transaction
-    runTransaction(ref(db, "likes"), (currentLikes) => {
-        return (currentLikes || 0) + 1;
-    }).then(() => {
-        button.disabled = false;
-    }).catch((error) => {
-        console.error("Error updating likes:", error);
-        button.disabled = false;
-    });
-};
-
-// Floating Like Effect
-function showFloatingLike(x, y) {
-    const like = document.createElement("span");
-    like.innerHTML = "+1 ❤️‍🔥";
-    like.classList.add("small-like");
-    
-    like.style.position = "absolute";
-    like.style.left = `${x}px`;
-    like.style.top = `${y}px`;
-    
-    document.body.appendChild(like);
-
-    setTimeout(() => {
-        like.remove();
-    }, 1500);
-}
-
-// Spark Effect
-function showSparkAnimation(x, y) {
-    for (let i = 0; i < 8; i++) {
-        const spark = document.createElement("span");
-        spark.classList.add("spark");
-
-        // Random movement
-        const angle = Math.random() * 360;
-        const distance = Math.random() * 30 + 10;
-        spark.style.position = "absolute";
-        spark.style.left = `${x}px`;
-        spark.style.top = `${y}px`;
-        spark.style.transform = `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px) rotate(${angle}deg)`;
-
-        document.body.appendChild(spark);
-
-        setTimeout(() => {
-            spark.remove();
-        }, 800);
+    if (!liked) {
+        likeCount++;
+        button.classList.add("liked");
+    } else {
+        likeCount--;
+        button.classList.remove("liked");
     }
-}
 
-// Ripple Effect
-function createRipple(button, event) {
+    liked = !liked;
+    
+    countElement.textContent = likeCount;
+    countElement.classList.add("like-count-anim");
+
+    // Remove animation class after it runs
+    setTimeout(() => countElement.classList.remove("like-count-anim"), 500);
+
+    // Create Ripple Effect
     const ripple = document.createElement("span");
     ripple.classList.add("ripple");
 
     const rect = button.getBoundingClientRect();
-    ripple.style.left = `${event.clientX - rect.left}px`;
-    ripple.style.top = `${event.clientY - rect.top}px`;
+    const size = Math.max(rect.width, rect.height);
+    ripple.style.width = ripple.style.height = `${size}px`;
+
+    const x = event.clientX - rect.left - size / 2;
+    const y = event.clientY - rect.top - size / 2;
+
+    ripple.style.left = `${x}px`;
+    ripple.style.top = `${y}px`;
 
     button.appendChild(ripple);
 
-    setTimeout(() => {
-        ripple.remove();
-    }, 600);
+    // Remove ripple after animation
+    setTimeout(() => ripple.remove(), 600);
 }
