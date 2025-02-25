@@ -385,6 +385,50 @@
             button.disabled = false;
         });
     };
+
+
+let liked = false;
+let likeCount = 0;
+
+function likePost(event) {
+    const button = document.getElementById("likeButton");
+    const countElement = document.getElementById("likeCount");
+
+    if (!liked) {
+        likeCount++;
+        button.classList.add("liked");
+    } else {
+        likeCount--;
+        button.classList.remove("liked");
+    }
+
+    liked = !liked;
+
+    countElement.textContent = likeCount;
+    countElement.classList.add("like-count-anim");
+
+    // Remove animation class after it runs
+    setTimeout(() => countElement.classList.remove("like-count-anim"), 500);
+
+    // Create Ripple Effect
+    const ripple = document.createElement("span");
+    ripple.classList.add("ripple");
+
+    const rect = button.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    ripple.style.width = ripple.style.height = `${size}px`;
+
+    const x = event.clientX - rect.left - size / 2;
+    const y = event.clientY - rect.top - size / 2;
+
+    ripple.style.left = `${x}px`;
+    ripple.style.top = `${y}px`;
+
+    button.appendChild(ripple);
+
+    // Remove ripple after animation
+    setTimeout(() => ripple.remove(), 600);
+}
 </script>
  
   </body>  </html>
