@@ -1043,8 +1043,15 @@ button {
 
  
 
+
+
+
+
+
+
+
         /* Like Button Styling */
-        #like-button {
+        #likeButton {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -1063,7 +1070,7 @@ button {
             overflow: hidden;
         }
 
-        #like-button:hover {
+        #likeButton:hover {
             box-shadow: 0 0 80px var(--first-color);
         }
 
