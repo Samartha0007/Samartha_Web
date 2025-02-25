@@ -1167,16 +1167,4 @@ transition: transform 0.3s ease, color 0.3s ease;
             transition: transform 0.3s ease, opacity 0.3s ease;
         }
 
-        /* Thank You and Already Liked Message Styling */
-        #message {
-            font-size: 18px;
-            margin-top: 10px;
-            font-weight: bold;
-            opacity: 0;
-            font-family: 'Poppins', sans-serif;
-            transition: opacity 0.5s ease-in-out;
-        }
-
-        .show-message {
-            opacity: 1;
-        }
+  
