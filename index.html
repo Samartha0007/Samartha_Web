@@ -430,26 +430,7 @@ function showPopup(message) {
         popup.remove();
     }, 3000); // Remove after 3 seconds
 }
-function likePost(event) {
-    let likeCount = document.getElementById("likeCount");
-    likeCount.innerText = parseInt(likeCount.innerText) + 1;
 
-    let button = event.currentTarget;
-    for (let i = 0; i < 6; i++) {
-        let sparkle = document.createElement("div");
-        sparkle.classList.add("sparkle");
-
-        let x = Math.random() * 50 - 25; // Random X position around the button
-        let y = Math.random() * 50 - 25; // Random Y position around the button
-
-        sparkle.style.left = `${event.offsetX + x}px`;
-        sparkle.style.top = `${event.offsetY + y}px`;
-
-        button.appendChild(sparkle);
-
-        setTimeout(() => sparkle.remove(), 600);
-    }
-}
 </script>
  
   </body>  </html>
