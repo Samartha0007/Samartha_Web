@@ -1079,7 +1079,7 @@ button {
             transition: transform 0.3s ease, color 0.3s ease;
         }
 
-        #like-count {
+        #likecount {
             font-family: "Courier New", Courier, monospace;   font-size: 20px; /* Increase size */  
 font-weight: bold;  
 color: lightwhite;  
