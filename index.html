@@ -384,6 +384,52 @@
             button.disabled = false;
         });
     };
+
+window.likePost = function () {
+    const button = document.getElementById("likeButton");
+    const likeCount = document.getElementById("likeCount");
+
+    // Check if the user has already liked
+    if (localStorage.getItem("hasLiked") === "true") {
+        showPopup("Already liked! Can't like more than once.");
+        return;
+    }
+
+    button.disabled = true;
+
+    runTransaction(likeRef, (currentLikes) => {
+        return (currentLikes || 0) + 1;
+    }).then(() => {
+        // Store in local storage to prevent multiple likes
+        localStorage.setItem("hasLiked", "true");
+        button.disabled = false;
+    }).catch((error) => {
+        console.error("Error updating likes:", error);
+        button.disabled = false;
+    });
+};
+
+// Function to show a popup message at the bottom
+function showPopup(message) {
+    const popup = document.createElement("div");
+    popup.innerText = message;
+    popup.style.position = "fixed";
+    popup.style.bottom = "20px";
+    popup.style.left = "50%";
+    popup.style.transform = "translateX(-50%)";
+    popup.style.background = "#333";
+    popup.style.color = "#fff";
+    popup.style.padding = "10px 20px";
+    popup.style.borderRadius = "5px";
+    popup.style.boxShadow = "0 2px 10px rgba(0,0,0,0.2)";
+    popup.style.zIndex = "1000";
+    popup.style.fontSize = "14px";
+    document.body.appendChild(popup);
+
+    setTimeout(() => {
+        popup.remove();
+    }, 3000); // Remove after 3 seconds
+}
 </script>
  
   </body>  </html>
