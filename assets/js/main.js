@@ -213,3 +213,42 @@ var typed = new Typed(".type", {
   loop: true,
  
 });
+
+
+
+
+
+window.likePost = function () {
+    const button = document.getElementById("likeButton");
+    const likeCount = document.getElementById("likeCount");
+
+    // Disable button while updating
+    button.disabled = true;
+
+    // Add bounce effect to count
+    likeCount.classList.add("bounce");
+
+    // Remove bounce effect after animation ends
+    setTimeout(() => {
+        likeCount.classList.remove("bounce");
+    }, 300);
+
+    // Apply ripple effect
+    const ripple = document.createElement("span");
+    ripple.classList.add("ripple");
+    button.appendChild(ripple);
+    
+    setTimeout(() => {
+        ripple.remove();
+    }, 600); // Remove ripple after animation
+
+    // Run Firebase transaction
+    runTransaction(ref(db, "likes"), (currentLikes) => {
+        return (currentLikes || 0) + 1;
+    }).then(() => {
+        button.disabled = false;
+    }).catch((error) => {
+        console.error("Error updating likes:", error);
+        button.disabled = false;
+    });
+};
