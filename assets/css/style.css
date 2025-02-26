@@ -1117,9 +1117,9 @@ transition: transform 0.3s ease, color 0.3s ease;
 /* Floating heart animation */
 .floating-heart {
     position: absolute;
-    font-size: 24px;
+    font-size: 14px;
     font-weight: bold;
-    color: red;
+    color: white;
     animation: floatUp 1.5s ease-out;
 }
 
