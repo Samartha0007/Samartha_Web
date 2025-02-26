@@ -1313,16 +1313,17 @@ to { transform: scale(3); opacity: 0; }
     animation: clickDown 0.1s ease-in-out;
 }
 
-@keyframes clickDown {
-    0% { transform: scale(1); }
-    50% { transform: scale(0.95); }
-    100% { transform: scale(1); }
-}
 @keyframes heartbeat {
     0% {
         transform: scale(1);
     }
+    30% {
+        transform: scale(1.3);
+    }
     50% {
+        transform: scale(1);
+    }
+    70% {
         transform: scale(1.2);
     }
     100% {
@@ -1332,5 +1333,5 @@ to { transform: scale(3); opacity: 0; }
 
 .button_icon {
     display: inline-block;
-    animation: heartbeat 1s infinite ease-in-out;
+    animation: heartbeat 1.3s infinite ease-in-out;
 }
