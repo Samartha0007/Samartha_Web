@@ -1245,4 +1245,21 @@ to { transform: scale(3); opacity: 0; }
         transform: scale(0.5);
     }
 }
+.floating-heart {
+    position: absolute;
+    font-size: 20px;
+    color: red;
+    animation: floatUp 1.5s ease-out forwards;
+    opacity: 1;
+}
 
+@keyframes floatUp {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+}
