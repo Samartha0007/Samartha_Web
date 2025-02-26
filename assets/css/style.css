@@ -1101,6 +1101,19 @@ font-size:15px;
 transition: transform 0.3s ease, color 0.3s ease;
 }
 
+
+.likes-text {  
+        display: block;  
+        font-size: 8px;  
+        font-family: 'Poppins', sans-serif;  
+        font-weight: bold;  
+        color: white;  
+        text-transform: uppercase;  
+        letter-spacing: 8px;  
+        margin-top: -2px;  
+
+        transition: transform 0.3s ease, opacity 0.3s ease;  
+    }
 /* Floating heart animation */
 .floating-heart {
     position: absolute;
