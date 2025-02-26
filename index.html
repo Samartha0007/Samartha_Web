@@ -372,30 +372,48 @@
         document.getElementById("likeCount").innerText = snapshot.val() || 0;
     });
    window.likePost = function () {
-    const button = document.getElementById("likeButton");
-
-    // Prevent multiple likes from the same user
     if (localStorage.getItem("hasLiked") === "true") {
         alert("Oops! You've already liked ❤️‍🔥 Thanks for your support! 🙌😊");
         return;
     }
 
-    // Store like in local storage
+    // Store in local storage to prevent multiple likes
     localStorage.setItem("hasLiked", "true");
 
-    button.disabled = true; // Temporarily disable to prevent spam clicks
+    // Create the floating heart element
+    const heart = document.createElement("div");
+    heart.classList.add("floating-heart");
+    heart.innerHTML = "+1 ❤️‍🔥";
+
+    // Position the heart above the button
+    const button = document.getElementById("likeButton");
+    const rect = button.getBoundingClientRect();
+    heart.style.left = `${rect.left + rect.width / 2}px`;
+    heart.style.top = `${rect.top - 10}px`;
+
+    // Append heart to body
+    document.body.appendChild(heart);
+
+    // Remove after animation completes
+    setTimeout(() => {
+        heart.remove();
+    }, 1500);
+
+    // Firebase like update
+    const buttonElement = document.getElementById("likeButton");
+    buttonElement.disabled = true;
 
     runTransaction(likeRef, (currentLikes) => {
         return (currentLikes || 0) + 1;
-    }).then(() => {
-        button.disabled = false; // Re-enable after updating
-    }).catch((error) => {
+    })
+    .then(() => {
+        buttonElement.disabled = false;
+    })
+    .catch((error) => {
         console.error("Error updating likes:", error);
-        button.disabled = false; // Re-enable on error
-        localStorage.removeItem("hasLiked"); // Allow retry if error occurs
+        buttonElement.disabled = false;
     });
 };
-
 
 
 </script>
