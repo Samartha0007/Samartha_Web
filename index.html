@@ -386,49 +386,24 @@
     };
 
 window.likePost = function () {
-    const button = document.getElementById("likeButton");
-    const likeCount = document.getElementById("likeCount");
-
-    // Check if the user has already liked
     if (localStorage.getItem("hasLiked") === "true") {
-        showPopup("Oops! You've already liked ❤️‍🔥 Thanks for your support! 🙌😊");
+        showToast("Oops! You've already liked ❤️‍🔥 Thanks for your support! 🙌😊");
         return;
     }
 
-    button.disabled = true;
-
-    runTransaction(likeRef, (currentLikes) => {
-        return (currentLikes || 0) + 1;
-    }).then(() => {
-        // Store in local storage to prevent multiple likes
-        localStorage.setItem("hasLiked", "true");
-        button.disabled = false;
-    }).catch((error) => {
-        console.error("Error updating likes:", error);
-        button.disabled = false;
-    });
+    // Store in local storage to prevent multiple likes
+    localStorage.setItem("hasLiked", "true");
 };
 
-// Function to show a popup message at the bottom
-function showPopup(message) {
-    const popup = document.createElement("div");
-    popup.innerText = message;
-    popup.style.position = "fixed";
-    popup.style.bottom = "60px";
-    popup.style.left = "50%";
-    popup.style.transform = "translateX(-50%)";
-    popup.style.background = "hsl(250, 69%, 61%)"; // Updated color
-    popup.style.color = "#fff";
-    popup.style.padding = "5px 15px";
-    popup.style.borderRadius = "5px";
-    popup.style.boxShadow = "0 2px 8px rgba(0,0,0,0.2)";
-    popup.style.zIndex = "1000";
-    popup.style.fontSize = "12px";
-    document.body.appendChild(popup);
+// Function to show toast notification (like samarthags.cloud)
+function showToast(message) {
+    const toast = document.getElementById("toast");
+    toast.innerText = message;
+    toast.style.display = "block";
 
     setTimeout(() => {
-        popup.remove();
-    }, 3000); // Remove after 3 seconds
+        toast.style.display = "none";
+    }, 3000); // Hide after 3 seconds
 }
 
 </script>
