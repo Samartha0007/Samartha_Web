@@ -372,28 +372,30 @@
         document.getElementById("likeCount").innerText = snapshot.val() || 0;
     });
    window.likePost = function () {
-        const button = document.getElementById("likeButton");
-        button.disabled = true;
+    const button = document.getElementById("likeButton");
 
-        runTransaction(likeRef, (currentLikes) => {
-            return (currentLikes || 0) + 1;
-        }).then(() => {
-            button.disabled = false;
-        }).catch((error) => {
-            console.error("Error updating likes:", error);
-            button.disabled = false;
-        });
-    };
-
-window.likePost = function () {
+    // Prevent multiple likes from the same user
     if (localStorage.getItem("hasLiked") === "true") {
         alert("Oops! You've already liked ❤️‍🔥 Thanks for your support! 🙌😊");
         return;
     }
 
-    // Store in local storage to prevent multiple likes
+    // Store like in local storage
     localStorage.setItem("hasLiked", "true");
+
+    button.disabled = true; // Temporarily disable to prevent spam clicks
+
+    runTransaction(likeRef, (currentLikes) => {
+        return (currentLikes || 0) + 1;
+    }).then(() => {
+        button.disabled = false; // Re-enable after updating
+    }).catch((error) => {
+        console.error("Error updating likes:", error);
+        button.disabled = false; // Re-enable on error
+        localStorage.removeItem("hasLiked"); // Allow retry if error occurs
+    });
 };
+
 
 
 </script>
