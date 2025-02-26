@@ -1263,3 +1263,58 @@ to { transform: scale(3); opacity: 0; }
         opacity: 0;
     }
 }
+/* Floating heart animation inside button */
+.floating-heart {
+    position: absolute;
+    font-size: 18px;
+    color: red;
+    animation: floatUp 1.5s ease-out forwards;
+    opacity: 1;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -20px);
+        opacity: 0;
+    }
+}
+
+/* Shake animation when clicking again */
+.shake {
+    animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+}
+
+/* Always beating heart */
+.beating-heart {
+    display: inline-block;
+    animation: beat 1s infinite alternate ease-in-out;
+}
+
+@keyframes beat {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.2); }
+}
+
+/* Button click animation */
+.click-effect {
+    animation: clickDown 0.1s ease-in-out;
+}
+
+@keyframes clickDown {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+}
