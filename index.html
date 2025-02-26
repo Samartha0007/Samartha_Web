@@ -406,7 +406,7 @@
         heart.remove();
     }, 1500);
 
-    // Add full-screen spark effect
+    // Trigger spark effect on every click
     showFullScreenSparks();
 
     // Disable button temporarily
@@ -416,8 +416,8 @@
     runTransaction(likeRef, (currentLikes) => {
         return (currentLikes || 0) + 1;
     })
-    .then((newLikes) => {
-        likeCountSpan.textContent = newLikes; // Update UI count
+    .then(({ snapshot }) => {
+        likeCountSpan.textContent = snapshot.val(); // Fixes object issue
         likeButton.disabled = false;
     })
     .catch((error) => {
@@ -426,11 +426,11 @@
     });
 };
 
-// Function to create full-screen spark effect
+// Function to create full-screen spark effect on every click
 function showFullScreenSparks() {
     const sparkContainer = document.createElement("div");
     sparkContainer.classList.add("spark-container");
-    
+
     for (let i = 0; i < 30; i++) { // Create multiple sparks
         const spark = document.createElement("div");
         spark.classList.add("spark");
