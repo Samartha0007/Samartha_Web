@@ -385,26 +385,6 @@
         });
     };
 
-window.likePost = function () {
-    if (localStorage.getItem("hasLiked") === "true") {
-        showToast("Oops! You've already liked ❤️‍🔥 Thanks for your support! 🙌😊");
-        return;
-    }
-
-    // Store in local storage to prevent multiple likes
-    localStorage.setItem("hasLiked", "true");
-};
-
-// Function to show toast notification (like samarthags.cloud)
-function showToast(message) {
-    const toast = document.getElementById("toast");
-    toast.innerText = message;
-    toast.style.display = "block";
-
-    setTimeout(() => {
-        toast.style.display = "none";
-    }, 3000); // Hide after 3 seconds
-}
 
 </script>
  
