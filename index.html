@@ -372,46 +372,54 @@
         document.getElementById("likeCount").innerText = snapshot.val() || 0;
     });
    window.likePost = function () {
+    const button = document.getElementById("likeButton");
+    const heartIcon = document.getElementById("heartIcon");
+
+    // Apply click effect
+    button.classList.add("click-effect");
+    setTimeout(() => {
+        button.classList.remove("click-effect");
+    }, 100);
+
     if (localStorage.getItem("hasLiked") === "true") {
-        alert("Oops! You've already liked ❤️‍🔥 Thanks for your support! 🙌😊");
+        // Already liked: Apply shake animation
+        button.classList.add("shake");
+        setTimeout(() => {
+            button.classList.remove("shake");
+        }, 500);
         return;
     }
 
     // Store in local storage to prevent multiple likes
     localStorage.setItem("hasLiked", "true");
 
-    // Create the floating heart element
-    const heart = document.createElement("div");
+    // Create the floating heart element inside the button
+    const heart = document.createElement("span");
     heart.classList.add("floating-heart");
     heart.innerHTML = "+1 ❤️‍🔥";
 
-    // Position the heart above the button
-    const button = document.getElementById("likeButton");
-    const rect = button.getBoundingClientRect();
-    heart.style.left = `${rect.left + rect.width / 2}px`;
-    heart.style.top = `${rect.top - 10}px`;
+    // Append heart inside the button
+    button.appendChild(heart);
 
-    // Append heart to body
-    document.body.appendChild(heart);
-
-    // Remove after animation completes
+    // Remove heart after animation completes
     setTimeout(() => {
         heart.remove();
     }, 1500);
 
-    // Firebase like update
-    const buttonElement = document.getElementById("likeButton");
-    buttonElement.disabled = true;
+    // Add a continuous beating effect to the heart icon
+    heartIcon.classList.add("beating-heart");
 
+    // Firebase like update
+    button.disabled = true;
     runTransaction(likeRef, (currentLikes) => {
         return (currentLikes || 0) + 1;
     })
     .then(() => {
-        buttonElement.disabled = false;
+        button.disabled = false;
     })
     .catch((error) => {
         console.error("Error updating likes:", error);
-        buttonElement.disabled = false;
+        button.disabled = false;
     });
 };
 
