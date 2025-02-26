@@ -406,8 +406,8 @@
         heart.remove();
     }, 1500);
 
-    // Trigger spark effect on every click
-    showFullScreenSparks();
+    // Trigger ripple effect on every click
+    showRippleEffect(likeButton);
 
     // Disable button temporarily
     likeButton.disabled = true;
@@ -426,26 +426,21 @@
     });
 };
 
-// Function to create full-screen spark effect on every click
-function showFullScreenSparks() {
-    const sparkContainer = document.createElement("div");
-    sparkContainer.classList.add("spark-container");
+// Function to create ripple effect
+function showRippleEffect(button) {
+    const ripple = document.createElement("span");
+    ripple.classList.add("ripple");
+    
+    // Get button position
+    const rect = button.getBoundingClientRect();
+    ripple.style.left = `${rect.width / 2}px`;
+    ripple.style.top = `${rect.height / 2}px`;
 
-    for (let i = 0; i < 30; i++) { // Create multiple sparks
-        const spark = document.createElement("div");
-        spark.classList.add("spark");
-        spark.style.left = `${Math.random() * 100}vw`;
-        spark.style.top = `${Math.random() * 100}vh`;
-        spark.style.animationDelay = `${Math.random()}s`;
-
-        sparkContainer.appendChild(spark);
-    }
-
-    document.body.appendChild(sparkContainer);
+    button.appendChild(ripple);
 
     setTimeout(() => {
-        sparkContainer.remove();
-    }, 1000); // Remove sparks after animation
+        ripple.remove();
+    }, 600); // Remove after animation
 }
 </script>
  
