@@ -385,6 +385,16 @@
         });
     };
 
+window.likePost = function () {
+    if (localStorage.getItem("hasLiked") === "true") {
+        alert("Oops! You've already liked ❤️‍🔥 Thanks for your support! 🙌😊");
+        return;
+    }
+
+    // Store in local storage to prevent multiple likes
+    localStorage.setItem("hasLiked", "true");
+};
+
 
 </script>
  
