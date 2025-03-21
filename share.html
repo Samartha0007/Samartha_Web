@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Open Graph Meta Tags for Snapchat Preview -->
+    <meta property="og:title" content="Samartha's Website">
+    <meta property="og:description" content="Check out my latest project!">
+    <meta property="og:image" content="https://yourwebsite.com/image.jpg">
+    <meta property="og:url" content="https://yourwebsite.com">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Samartha's Website">
+    <meta name="twitter:description" content="Check out my latest project!">
+    <meta name="twitter:image" content="https://yourwebsite.com/image.jpg">
+    
+    <title>Snapchat Link Preview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #1c1c1c;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background: #333;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+        }
+
+        input {
+            background: #444;
+            color: white;
+        }
+
+        button {
+            background: #ffcc00;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .preview {
+            display: none;
+            background: white;
+            color: black;
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+
+        .preview img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .preview a {
+            display: block;
+            background: #ffcc00;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            color: black;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Create Your Snapchat Link</h1>
+        
+        <label for="title">Title:</label>
+        <input type="text" id="title" placeholder="Enter title">
+
+        <label for="description">Description:</label>
+        <input type="text" id="description" placeholder="Enter description">
+
+        <label for="image">Image URL:</label>
+        <input type="text" id="image" placeholder="Enter image link">
+
+        <label for="link">Website URL:</label>
+        <input type="text" id="link" placeholder="Enter website link">
+
+        <button onclick="generateLink()">Generate Link</button>
+
+        <div id="preview" class="preview">
+            <img id="preview-img" src="" alt="">
+            <h2 id="preview-title"></h2>
+            <p id="preview-desc"></p>
+            <a id="preview-btn" href="#" target="_blank">Visit</a>
+        </div>
+
+        <p id="share-link"></p>
+    </div>
+
+    <script>
+        function generateLink() {
+            const title = document.getElementById("title").value;
+            const description = document.getElementById("description").value;
+            const image = document.getElementById("image").value;
+            const link = document.getElementById("link").value;
+
+            if (!title || !description || !image || !link) {
+                alert("Please fill all fields!");
+                return;
+            }
+
+            // Update Open Graph Meta Tags dynamically (optional)
+            document.querySelector('meta[property="og:title"]').setAttribute("content", title);
+            document.querySelector('meta[property="og:description"]').setAttribute("content", description);
+            document.querySelector('meta[property="og:image"]').setAttribute("content", image);
+            document.querySelector('meta[property="og:url"]').setAttribute("content", link);
+
+            // Update Twitter Meta Tags
+            document.querySelector('meta[name="twitter:title"]').setAttribute("content", title);
+            document.querySelector('meta[name="twitter:description"]').setAttribute("content", description);
+            document.querySelector('meta[name="twitter:image"]').setAttribute("content", image);
+
+            // Show Preview
+            document.getElementById("preview-title").textContent = title;
+            document.getElementById("preview-desc").textContent = description;
+            document.getElementById("preview-img").src = image;
+            document.getElementById("preview-btn").href = link;
+            document.getElementById("preview").style.display = "block";
+
+            // Generate a Shareable Link
+            const shareLink = `https://yourwebsite.com/?title=${encodeURIComponent(title)}&desc=${encodeURIComponent(description)}&img=${encodeURIComponent(image)}&url=${encodeURIComponent(link)}`;
+            
+            document.getElementById("share-link").innerHTML = `Share this link: <a href="${shareLink}" target="_blank">${shareLink}</a>`;
+        }
+    </script>
+
+</body>
+</html>
