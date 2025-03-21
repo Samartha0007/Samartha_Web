@@ -3,58 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snapchat Link Share</title>
+    <title>Samarth's Profile</title>
+
+    <!-- Snapchat Preview Metadata -->
+    <meta property="og:title" content="Samarth" />
+    <meta property="og:description" content="Check out my profile!" />
+    <meta property="og:image" content="https://yourwebsite.com/profile-pic.jpg" />
+    <meta property="og:url" content="https://yourwebsite.com/my-profile" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Styling -->
     <style>
         body {
-            font-family: Arial, sans-serif;
             text-align: center;
-            background: #1c1c1c;
-            color: white;
-            padding: 50px;
-        }
-        input, button {
-            width: 80%;
-            padding: 10px;
-            margin: 10px;
-            border-radius: 5px;
-            border: none;
-        }
-        input {
-            background: #444;
+            font-family: Arial, sans-serif;
+            background-color: black;
             color: white;
         }
-        button {
-            background: #ffcc00;
-            color: black;
+        .container {
+            margin-top: 50px;
+        }
+        .profile-card {
+            background-color: #2a2a2a;
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+            text-align: center;
+        }
+        .profile-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+        }
+        .name {
+            font-size: 24px;
             font-weight: bold;
-            cursor: pointer;
+            margin-top: 10px;
+        }
+        .button {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #fffc00;
+            color: black;
+            font-size: 18px;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
 
-    <h1>Share on Snapchat</h1>
-
-    <label>Enter Website URL:</label>
-    <input type="text" id="link" placeholder="https://yourwebsite.com">
-
-    <button onclick="shareOnSnapchat()">📸 Share on Snapchat</button>
-
-    <script>
-        function shareOnSnapchat() {
-            const url = document.getElementById("link").value;
-            
-            if (!url) {
-                alert("Please enter a valid URL!");
-                return;
-            }
-
-            const snapchatLink = `https://www.snapchat.com/create?attachmentUrl=${encodeURIComponent(url)}`;
-            
-            // Open Snapchat Camera with Link
-            window.open(snapchatLink, "_blank");
-        }
-    </script>
+    <div class="container">
+        <div class="profile-card">
+            <img src="https://yourwebsite.com/profile-pic.jpg" alt="Samarth" class="profile-image">
+            <h1 class="name">Samarth</h1>
+            <p>linktr.ee/samarthags</p>
+            <a href="https://linktr.ee/samarthags" class="button">Open</a>
+        </div>
+    </div>
 
 </body>
 </html>
