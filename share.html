@@ -49,10 +49,10 @@
                 return;
             }
 
-            const snapchatLink = `https://www.snapchat.com/scan?attachmentUrl=${encodeURIComponent(url)}`;
+            const snapchatLink = `https://www.snapchat.com/create?attachmentUrl=${encodeURIComponent(url)}`;
             
             // Open Snapchat Camera with Link
-            window.location.href = snapchatLink;
+            window.open(snapchatLink, "_blank");
         }
     </script>
 
