@@ -82,7 +82,7 @@ body.hide-header .header {
 }
 
 .chat-list .message.outgoing .text {
-  color: #fff;
+  color: black;
   background-color: var(--outgoing-color);
   border-radius: 18px 0 18px 18px;
   padding: 0.8rem 1.2rem;
