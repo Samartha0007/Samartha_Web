@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Samarth</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    /* Global Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #0a0e12;
+      background-attachment: fixed;
+      transition: background 15s ease !important;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    /* Optional: Add subtle vignette */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at center, rgba(0,0,0,0) 60%, rgba(0,0,0,0.5) 100%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Text Container Styles */
+    .text-container {
+      position: relative;
+      width: 80%;
+      max-width: 800px;
+      text-align: center;
+      z-index: 2;
+      margin-bottom: 2rem;
+    }
+
+    .text-display {
+      color: white;
+      font-size: 3rem;
+      font-weight: 300;
+      line-height: 1.3;
+      min-height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .text-item {
+      position: absolute;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.8s ease;
+      width: 100%;
+    }
+
+    .text-item.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .text-item.inactive {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+
+    .countdown {
+      font-size: 2.5rem;
+      font-weight: 400;
+      color: #ff6b6b;
+    }
+
+    /* Goodbye message */
+    .goodbye-message {
+      position: fixed;
+      bottom: 5%;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 1.5rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 1s ease;
+      z-index: 3;
+    }
+
+    .goodbye-message.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Background Colors */
+    .bg-color-1 { background: linear-gradient(135deg, #0a0e12 0%, #1a2a3a 100%); }
+    .bg-color-2 { background: linear-gradient(135deg, #0a0e12 0%, #1a3a2a 100%); }
+    .bg-color-3 { background: linear-gradient(135deg, #0a0e12 0%, #3a1a2a 100%); }
+    .bg-color-4 { background: linear-gradient(135deg, #0a0e12 0%, #3a2a1a 100%); }
+    .bg-color-5 { background: linear-gradient(135deg, #0a0e12 0%, #2a1a3a 100%); }
+    .bg-color-6 { background: linear-gradient(135deg, #0a0e12 0%, #1a2a3a 100%); }
+  
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .text-display {
+        font-size: 2rem;
+        min-height: 150px;
+      }
+      .countdown {
+        font-size: 1.8rem;
+      }
+      .goodbye-message {
+        font-size: 1.2rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .text-display {
+        font-size: 1.5rem;
+        min-height: 120px;
+      }
+      .countdown {
+        font-size: 1.5rem;
+      }
+      .goodbye-message {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="text-container">
+    <div class="text-display">
+      <div class="text-item active" data-bg="bg-color-1">Hi, I'm Samarth</div>
+      <div class="text-item" data-bg="bg-color-2">This</div>
+      <div class="text-item" data-bg="bg-color-3">Is</div>
+      <div class="text-item" data-bg="bg-color-4">My</div>
+      <div class="text-item" data-bg="bg-color-5">Final Note !</div>
+      <div class="text-item" id="countdown-item" data-bg="bg-color-6">
+        <span class="countdown" id="countdown"></span>
+        <span> days. That's it</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="goodbye-message">Bye bye! See you soon...</div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const textItems = document.querySelectorAll('.text-item');
+      const textDisplay = document.querySelector('.text-display');
+      const body = document.body;
+      const countdownElement = document.getElementById('countdown');
+      const goodbyeMessage = document.querySelector('.goodbye-message');
+      let currentIndex = 0;
+      let intervalId;
+      
+      // Set initial background
+      body.classList.add(textItems[currentIndex].dataset.bg);
+      
+      // Calculate days until June 1, 2026
+      function updateCountdown() {
+        const targetDate = new Date('June 1, 2026 00:00:00').getTime();
+        const now = new Date().getTime();
+        const distance = targetDate - now;
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        countdownElement.textContent = days;
+        return days >= 0; // Return false if date has passed
+      }
+      
+      // Initialize countdown
+      updateCountdown();
+      
+      function changeText() {
+        // Get next index
+        const nextIndex = currentIndex + 1;
+        
+        // Transition current text out
+        textItems[currentIndex].classList.remove('active');
+        textItems[currentIndex].classList.add('inactive');
+        
+        // Transition next text in
+        textItems[nextIndex].classList.remove('inactive');
+        textItems[nextIndex].classList.add('active');
+        
+        // Change background
+        body.className = ''; // Remove all classes
+        body.classList.add(textItems[nextIndex].dataset.bg);
+        
+        // Update current index
+        currentIndex = nextIndex;
+        
+        // Reset classes after animation completes
+        setTimeout(() => {
+          textItems.forEach((item, index) => {
+            if (index !== currentIndex) {
+              item.classList.remove('active', 'inactive');
+            }
+          });
+        }, 1000);
+        
+        // If this is the countdown item, show goodbye message and update countdown continuously
+        if (currentIndex === textItems.length - 1) {
+          goodbyeMessage.classList.add('show');
+          // Update countdown every hour
+          setInterval(updateCountdown, 3600000);
+          clearInterval(intervalId); // Stop the text rotation
+        }
+      }
+      
+      // Change text every 2 seconds
+      intervalId = setInterval(changeText, 2000);
+      
+      // Optional: Add click event to manually change text
+      textDisplay.addEventListener('click', function() {
+        if (currentIndex < textItems.length - 1) {
+          changeText();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
