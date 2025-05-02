@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Samarth | Duo</title>
+  <!-- Linking Google Fonts For Icons -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="shortcut icon" href="https://i.ibb.co/2ZrGMjH/icon.jpg" type="image/webp">
+  <link rel="icon" href="https://i.ibb.co/JkJPs03/images-2.jpg" type="image/webp">
+      <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header class="header">
+    <!-- Header Greetings -->
+    <h1 class="title">Hello, I'm Duo</h1>
+    <p class="subtitle">How can I help you now?</p>
+  </header>
+
+  <!-- Chat List / Container -->
+  <div class="chat-list"></div>
+
+  <!-- Typing Area -->
+  <div class="typing-area">
+    <form action="#" class="typing-form">
+      <div class="input-wrapper">
+        <input type="text" placeholder="Ask Me Anything" class="typing-input" required />
+      </div>
+      <div class="action-buttons">
+      </div>
+    </form>
+    <p class="disclaimer-text">
+      Made with ❤️‍🔥 by Samartha Gs </p>
+  </div>
+
+
+</div>
+ <script> 
+const typingForm = document.querySelector(".typing-form");
+const chatContainer = document.querySelector(".chat-list");
+
+let userMessage = null;
+let isResponseGenerating = false;
+
+const API_KEY = "AIzaSyAGt-0uYeWcj1olFe-yzbmbmW3R9k8Jmb8";
+const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-pro:generateContent?key=${API_KEY}`;
+
+const predefinedResponses = {
+  "who are you": "I am Duo, your personal assistant created to assist you . I was developed by Samartha Gs. Learn more at [samarthags.in](https://samarthags.in).",
+  "who developed you": "I was developed by Samartha Gs, a 17-year-old tech enthusiast who loves web development, IoT, and AI . He has completed over 50 amazing projects!",
+  "where are you from": "I am from Golagodu, a beautiful village near Sagara in Karnataka, India .",
+  "what can you do": "I can answer your questions, provide information, and chat about various topics . Let me know how I can assist you!",
+  "who is samartha gs": "Samartha Gs is a talented 17-year-old passionate about web development, IoT, and AI. He has completed over 50 projects, including websites and apps.",
+  "do you know samartha gs": "Yes, Samartha Gs is my creator! A skilled individual passionate about technology and innovation. Learn more about him at [samarthags.in](https://samarthags.in).",
+  "samartha gs": "Samartha Gs - I am here because of him !",
+  "hi":"Hi I'm Duo-Developed by Samartha, How can I help you today?",
+  "hello":"Hello I'm Duo-Developed by Samartha, How can I help you today?",
+};
+
+const findPredefinedResponse = (message) => {
+  // Normalize the message
+  message = message.toLowerCase();
+
+  // Common prefixes to ignore
+  const commonPrefixes = [
+    "tell me about",
+    "can you explain",
+    "what do you know about",
+    "do you know about",
+    "i want to know about",
+  ];
+
+  // Remove common prefixes from the user message
+  for (const prefix of commonPrefixes) {
+    if (message.startsWith(prefix)) {
+      message = message.replace(prefix, "").trim();
+      break;
+    }
+  }
+
+  const calculateSimilarity = (a, b) => {
+    const wordsA = new Set(a.split(" "));
+    const wordsB = new Set(b.split(" "));
+    const intersection = new Set([...wordsA].filter((word) => wordsB.has(word)));
+    return intersection.size / Math.max(wordsA.size, wordsB.size);
+  };
+
+  const threshold = 0.5; // Minimum similarity threshold (0 to 1)
+  let bestMatch = null;
+  let highestSimilarity = 0;
+
+  // Check each predefined response for similarity
+  for (const key in predefinedResponses) {
+    const similarity = calculateSimilarity(message, key);
+    if (similarity > highestSimilarity && similarity >= threshold) {
+      highestSimilarity = similarity;
+      bestMatch = predefinedResponses[key];
+    }
+  }
+
+  return bestMatch;
+};
+
+const createMessageElement = (content, ...classes) => {
+  const div = document.createElement("div");
+  div.classList.add("message", ...classes);
+  div.innerHTML = content;
+  return div;
+};
+
+const showTypingEffect = (text, textElement, incomingMessageDiv) => {
+  const words = text.split(" ");
+  let currentWordIndex = 0;
+
+  const typingInterval = setInterval(() => {
+    textElement.innerText +=
+      (currentWordIndex === 0 ? "" : " ") + words[currentWordIndex++];
+    incomingMessageDiv.querySelector(".icon").classList.add("hide");
+
+    if (currentWordIndex === words.length) {
+      clearInterval(typingInterval);
+      isResponseGenerating = false;
+      incomingMessageDiv.querySelector(".icon").classList.remove("hide");
+      localStorage.setItem("saved-chats", chatContainer.innerHTML);
+    }
+    chatContainer.scrollTo(0, chatContainer.scrollHeight);
+  }, 50); // Typing interval
+};
+
+const generateDelayedResponse = (response, incomingMessageDiv) => {
+  setTimeout(() => {
+    const textElement = incomingMessageDiv.querySelector(".text");
+    showTypingEffect(response, textElement, incomingMessageDiv);
+  }, 1500); // Delay of 1.5 seconds
+};
+
+const generateAPIResponse = async (incomingMessageDiv) => {
+  const textElement = incomingMessageDiv.querySelector(".text");
+  incomingMessageDiv.classList.add("loading");
+
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [
+          {
+            role: "user",
+            parts: [{ text: userMessage }],
+          },
+        ],
+      }),
+    });
+
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error.message);
+
+    const apiResponse = data.candidates[0].content.parts[0].text.replace(
+      /\*\*(.*?)\*\*/g,
+      "$1"
+    );
+    generateDelayedResponse(apiResponse, incomingMessageDiv);
+  } catch (error) {
+    isResponseGenerating = false;
+    textElement.innerText = error.message;
+    incomingMessageDiv.classList.add("error");
+  } finally {
+    incomingMessageDiv.classList.remove("loading");
+  }
+};
+
+const showLoadingAnimation = () => {
+  const html = `<div class="message-content">
+               <p class="text"></p>
+                </div>
+                <span onClick="copyMessage(this)" class="icon material-symbols-rounded">content_copy</span>`;
+
+  const incomingMessageDiv = createMessageElement(html, "incoming");
+  chatContainer.appendChild(incomingMessageDiv);
+
+  chatContainer.scrollTo(0, chatContainer.scrollHeight); // Scroll to the bottom
+  generateAPIResponse(incomingMessageDiv); // Call the API immediately
+};
+
+const copyMessage = (copyButton) => {
+  const messageText = copyButton.parentElement.querySelector(".text").innerText;
+
+  navigator.clipboard.writeText(messageText);
+  copyButton.innerText = "done";
+  setTimeout(() => (copyButton.innerText = "content_copy"), 1000);
+};
+
+const handleOutgoingChat = () => {
+  userMessage = typingForm.querySelector(".typing-input").value.trim();
+  if (!userMessage || isResponseGenerating) return;
+
+  isResponseGenerating = true;
+
+  const html = `<div class="message-content">
+
+                  <p class="text"></p>
+                </div>`;
+
+  const outgoingMessageDiv = createMessageElement(html, "outgoing");
+  outgoingMessageDiv.querySelector(".text").innerText = userMessage;
+  chatContainer.appendChild(outgoingMessageDiv);
+
+  typingForm.reset();
+  document.body.classList.add("hide-header");
+  chatContainer.scrollTo(0, chatContainer.scrollHeight);
+
+  // Check for predefined response
+  const predefinedResponse = findPredefinedResponse(userMessage);
+  if (predefinedResponse) {
+    const incomingMessageDiv = createMessageElement(
+      `<div class="message-content">
+         <p class="text"></p>
+       </div>
+       <span onClick="copyMessage(this)" class="icon material-symbols-rounded">content_copy</span>`,
+      "incoming"
+    );
+    chatContainer.appendChild(incomingMessageDiv);
+    chatContainer.scrollTo(0, chatContainer.scrollHeight);
+    generateDelayedResponse(predefinedResponse, incomingMessageDiv);
+  } else {
+    // Otherwise, call the API
+    showLoadingAnimation();
+  }
+};
+
+typingForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  handleOutgoingChat();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const modal = document.getElementById("download-modal");
+
+  // Show modal after 3 seconds (example)
+  setTimeout(() => {
+    modal.classList.add("show");
+  }, 3000);
+
+  // Close modal function
+  window.closeModal = function () {
+    modal.classList.remove("show");
+  };
+});
+
+</script>
+</body>
+</html>
