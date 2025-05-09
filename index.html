@@ -188,13 +188,12 @@ webpushr('setup',{'key':'BHj-Cu4KkNzKmV6Ouy2GOhCUQ32SBr7Exe8cFvg2j5aAzPVrfJDTPgG
          
       </div>  
     </div>  
-
 <div style="left: 0; width: 100%; height: 352px; position: relative;">
   <iframe 
     id="spotifyPlayer" 
     style="top: 0; left: 0; width: 100%; height: 100%; position: absolute; border: 0;" 
     allowfullscreen 
-    allow="clipboard-write; encrypted-media; fullscreen; picture-in-picture;"
+    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture;"
   ></iframe>
 </div>
 
@@ -203,6 +202,8 @@ webpushr('setup',{'key':'BHj-Cu4KkNzKmV6Ouy2GOhCUQ32SBr7Exe8cFvg2j5aAzPVrfJDTPgG
   const CLIENT_ID = "afc043b5fb0b4b7c8380761cc4b0de28";
   const CLIENT_SECRET = "cf1579c569cf48bd9636084426ce7a60"; // ⚠️ Never expose this publicly!
   const PLAYLIST_ID = "0lEhuR7L2fjrAq4aX1kUXX"; // Your playlist ID
+  let currentTrackId = null;
+  let checkInterval;
 
   async function fetchRandomTrack() {
     try {
@@ -224,12 +225,20 @@ webpushr('setup',{'key':'BHj-Cu4KkNzKmV6Ouy2GOhCUQ32SBr7Exe8cFvg2j5aAzPVrfJDTPgG
       );
       const { items } = await playlistResponse.json();
 
-      // 3. Pick a random track
-      const randomTrack = items[Math.floor(Math.random() * items.length)].track;
+      // 3. Pick a random track (excluding current one)
+      let randomTrack;
+      do {
+        randomTrack = items[Math.floor(Math.random() * items.length)].track;
+      } while (items.length > 1 && randomTrack.id === currentTrackId);
+      
+      currentTrackId = randomTrack.id;
 
-      // 4. Load only that track in the player
+      // 4. Load the track in the player
       document.getElementById("spotifyPlayer").src = 
         `https://open.spotify.com/embed/track/${randomTrack.id}?utm_source=oembed`;
+      
+      // 5. Start checking if song ended
+      startPlaybackMonitor();
     } catch (error) {
       console.error("Error fetching random track:", error);
       // Fallback: Load the full playlist if API fails
@@ -238,9 +247,26 @@ webpushr('setup',{'key':'BHj-Cu4KkNzKmV6Ouy2GOhCUQ32SBr7Exe8cFvg2j5aAzPVrfJDTPgG
     }
   }
 
+  function startPlaybackMonitor() {
+    // Clear any existing interval
+    if (checkInterval) clearInterval(checkInterval);
+    
+    // Check every 5 seconds if we should load a new song
+    checkInterval = setInterval(() => {
+      const iframe = document.getElementById('spotifyPlayer');
+      try {
+        // This is a hack - the embed doesn't expose playback state directly
+        // So we'll just assume the song ends after 5 minutes and load a new one
+        setTimeout(fetchRandomTrack, 5 * 60 * 1000); // 5 minutes timeout
+      } catch (e) {
+        console.log("Couldn't check playback state", e);
+      }
+    }, 5000);
+  }
+
+  // Initial load
   fetchRandomTrack();
 </script>
-
   </div>  
 </section>
         <!-- Portfolio -->
