@@ -188,15 +188,59 @@ webpushr('setup',{'key':'BHj-Cu4KkNzKmV6Ouy2GOhCUQ32SBr7Exe8cFvg2j5aAzPVrfJDTPgG
          
       </div>  
     </div>  
+
 <div style="left: 0; width: 100%; height: 352px; position: relative;">
   <iframe 
     id="spotifyPlayer" 
     style="top: 0; left: 0; width: 100%; height: 100%; position: absolute; border: 0;" 
     allowfullscreen 
     allow="clipboard-write; encrypted-media; fullscreen; picture-in-picture;"
-    src="https://open.spotify.com/embed/playlist/0lEhuR7L2fjrAq4aX1kUXX?utm_source=oembed&view=list&highlight=spotify:track:random"
   ></iframe>
 </div>
+
+<script>
+  // Replace with your credentials
+  const CLIENT_ID = "afc043b5fb0b4b7c8380761cc4b0de28";
+  const CLIENT_SECRET = "cf1579c569cf48bd9636084426ce7a60"; // ⚠️ Never expose this publicly!
+  const PLAYLIST_ID = "0lEhuR7L2fjrAq4aX1kUXX"; // Your playlist ID
+
+  async function fetchRandomTrack() {
+    try {
+      // 1. Get Spotify API access token
+      const authResponse = await fetch("https://accounts.spotify.com/api/token", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Authorization": "Basic " + btoa(`${CLIENT_ID}:${CLIENT_SECRET}`)
+        },
+        body: "grant_type=client_credentials"
+      });
+      const { access_token } = await authResponse.json();
+
+      // 2. Fetch all tracks from your playlist
+      const playlistResponse = await fetch(
+        `https://api.spotify.com/v1/playlists/${PLAYLIST_ID}/tracks`,
+        { headers: { "Authorization": `Bearer ${access_token}` } }
+      );
+      const { items } = await playlistResponse.json();
+
+      // 3. Pick a random track
+      const randomTrack = items[Math.floor(Math.random() * items.length)].track;
+
+      // 4. Load only that track in the player
+      document.getElementById("spotifyPlayer").src = 
+        `https://open.spotify.com/embed/track/${randomTrack.id}?utm_source=oembed`;
+    } catch (error) {
+      console.error("Error fetching random track:", error);
+      // Fallback: Load the full playlist if API fails
+      document.getElementById("spotifyPlayer").src = 
+        `https://open.spotify.com/embed/playlist/${PLAYLIST_ID}?utm_source=oembed`;
+    }
+  }
+
+  fetchRandomTrack();
+</script>
+
   </div>  
 </section>
         <!-- Portfolio -->
