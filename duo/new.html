@@ -3,22 +3,142 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Samarth | Duo</title>
-  <!-- Linking Google Fonts For Icons -->
+  <title>Samarth | Duo 2.0</title>
+  <!-- Font Awesome for enhanced icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
-    <link rel="shortcut icon" href="https://i.ibb.co/2ZrGMjH/icon.jpg" type="image/webp">
+  <link rel="shortcut icon" href="https://i.ibb.co/2ZrGMjH/icon.jpg" type="image/webp">
   <link rel="icon" href="https://i.ibb.co/JkJPs03/images-2.jpg" type="image/webp">
-      <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./style.css">
 </head>
 <body>
   <header class="header">
     <!-- Header Greetings -->
     <h1 class="title">Hello, I'm Duo</h1>
-    <p class="subtitle">How can I help you now?</p>
+    <p class="subtitle">Your personal AI assistant</p>
   </header>
 
   <!-- Chat List / Container -->
-  <div class="chat-list"></div>
+  <div class="chat-list">
+    <!-- Welcome message -->
+    <div class="message incoming">
+      <div class="avatar">
+        <i class="fas fa-robot"></i>
+      </div>
+      <div class="message-content">
+        <p class="text">Hi there! I'm Duo, your AI assistant created by Samartha Gs. How can I help you today?</p>
+      </div>
+      <span onclick="copyMessage(this)" class="icon material-symbols-rounded">content_copy</span>
+    </div>
+  </div>
+
+  <!-- Suggestion Chips -->
+  <div class="suggestion-chips">
+    <div class="suggestion-chip" onclick="useChip('Who are you?')">Who are you?</div>
+    <div class="suggestion-chip" onclick="useChip('Tell me about Samartha Gs')">About Samartha</div>
+    <div class="suggestion-chip" onclick="useChip('What can you do?')">What can you do?</div>
+    <div class="suggestion-chip" onclick="useChip('Tell me a joke')">Tell me a joke</div>
+  </div>
+
+  <!-- Floating Settings Button -->
+  <div class="floating-button" onclick="toggleSettings()">
+    <i class="fas fa-cog"></i>
+  </div>
+
+  <!-- Settings Panel -->
+  <div class="settings-panel" id="settings-panel">
+    <div class="settings-header">
+      <div class="settings-title">Settings</div>
+      <button class="settings-close" onclick="toggleSettings()">×</button>
+    </div>
+    
+    <div class="settings-section">
+      <div class="settings-section-title">Appearance</div>
+      <div class="settings-option">
+        <div class="settings-label">Dark Mode</div>
+        <label class="settings-toggle">
+          <input type="checkbox" id="dark-mode-toggle" onchange="toggleDarkMode()">
+          <span class="settings-slider"></span>
+        </label>
+      </div>
+    </div>
+    
+    <div class="settings-section">
+      <div class="settings-section-title">AI Settings</div>
+      <div class="ai-settings">
+        <div class="ai-setting">
+          <div class="ai-setting-label">
+            <span>Creativity</span>
+            <span id="creativity-value">5</span>
+          </div>
+          <input type="range" min="0" max="10" value="5" class="ai-setting-slider" id="creativity-slider" oninput="updateSliderValue('creativity')">
+        </div>
+        <div class="ai-setting">
+          <div class="ai-setting-label">
+            <span>Response Length</span>
+            <span id="length-value">5</span>
+          </div>
+          <input type="range" min="0" max="10" value="5" class="ai-setting-slider" id="length-slider" oninput="updateSliderValue('length')">
+        </div>
+      </div>
+    </div>
+    
+    <div class="settings-section">
+      <div class="settings-section-title">Features</div>
+      <div class="settings-option">
+        <div class="settings-label">Voice Input</div>
+        <label class="settings-toggle">
+          <input type="checkbox" id="voice-toggle" checked>
+          <span class="settings-slider"></span>
+        </label>
+      </div>
+      <div class="settings-option">
+        <div class="settings-label">Auto-scroll</div>
+        <label class="settings-toggle">
+          <input type="checkbox" id="scroll-toggle" checked>
+          <span class="settings-slider"></span>
+        </label>
+      </div>
+      <div class="settings-option">
+        <div class="settings-label">Markdown Support</div>
+        <label class="settings-toggle">
+          <input type="checkbox" id="markdown-toggle" checked>
+          <span class="settings-slider"></span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Welcome Modal -->
+  <div class="modal" id="welcome-modal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal('welcome-modal')">×</button>
+      <div class="modal-header">
+        <h2>Welcome to Duo 2.0!</h2>
+        <p>Your enhanced AI assistant by Samartha Gs</p>
+      </div>
+      <p>Discover the new features in this upgraded version:</p>
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fas fa-moon"></i></div>
+          <div>Dark Mode support for comfortable night-time use</div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fas fa-microphone"></i></div>
+          <div>Voice commands for hands-free interaction</div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fas fa-sliders-h"></i></div>
+          <div>Customize AI behavior (creativity, response length)</div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fas fa-code"></i></div>
+          <div>Markdown support for rich text formatting</div>
+        </div>
+      </div>
+      <button class="send-btn" style="width: 100% !important; border-radius: 0.5rem;" onclick="closeModal('welcome-modal')">Get Started</button>
+    </div>
+  </div>
 
   <!-- Typing Area -->
   <div class="typing-area">
@@ -27,40 +147,83 @@
         <input type="text" placeholder="Ask Me Anything" class="typing-input" required />
       </div>
       <div class="action-buttons">
+        <button type="button" class="voice-btn" id="voice-btn">
+          <i class="fas fa-microphone"></i>
+        </button>
+        <button type="button" class="theme-btn" onclick="toggleDarkMode()">
+          <i class="fas fa-moon"></i>
+        </button>
+        <button type="button" class="clear-btn" onclick="clearChat()">
+          <i class="fas fa-trash"></i>
+        </button>
+        <button type="submit" class="send-btn">
+          <i class="fas fa-paper-plane"></i>
+        </button>
       </div>
     </form>
     <p class="disclaimer-text">
-      Made with ❤️‍🔥 by Samartha Gs </p>
+      Made with ❤️‍🔥 by Samartha Gs
+    </p>
   </div>
 
+  <script>
 
-</div>
- <script> 
+// DOM Elements
 const typingForm = document.querySelector(".typing-form");
 const chatContainer = document.querySelector(".chat-list");
+const voiceButton = document.getElementById("voice-btn");
+const typingInput = document.querySelector(".typing-input");
 
+// App State
 let userMessage = null;
 let isResponseGenerating = false;
-
-const API_KEY = "AIzaSyAGt-0uYeWcj1olFe-yzbmbmW3R9k8Jmb8";
-const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-pro:generateContent?key=${API_KEY}`;
-
-const predefinedResponses = {
-  "who are you": "I am Duo, your personal assistant created to assist you . I was developed by Samartha Gs. Learn more at [samarthags.in](https://samarthags.in).",
-  "who developed you": "I was developed by Samartha Gs, a 17-year-old tech enthusiast who loves web development, IoT, and AI . He has completed over 50 amazing projects!",
-  "where are you from": "I am from Golagodu, a beautiful village near Sagara in Karnataka, India .",
-  "what can you do": "I can answer your questions, provide information, and chat about various topics . Let me know how I can assist you!",
-  "who is samartha gs": "Samartha Gs is a talented 17-year-old passionate about web development, IoT, and AI. He has completed over 50 projects, including websites and apps.",
-  "do you know samartha gs": "Yes, Samartha Gs is my creator! A skilled individual passionate about technology and innovation. Learn more about him at [samarthags.in](https://samarthags.in).",
-  "samartha gs": "Samartha Gs - I am here because of him !",
-  "hi":"Hi I'm Duo-Developed by Samartha, How can I help you today?",
-  "hello":"Hello I'm Duo-Developed by Samartha, How can I help you today?",
+let isListening = false;
+let recognition = null;
+let aiSettings = {
+  creativity: 5,
+  length: 5
 };
 
+// Initialize theme from local storage or system preference
+function initTheme() {
+  const savedTheme = localStorage.getItem('duo-theme');
+  if (savedTheme) {
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    document.getElementById('dark-mode-toggle').checked = savedTheme === 'dark';
+  } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    document.getElementById('dark-mode-toggle').checked = true;
+  }
+}
+
+// API Configuration
+const API_KEY = "AIzaSyAGt-0uYeWcj1olFe-yzbmbmW3R9k8Jmb8"; // Reusing your existing API key
+const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-pro:generateContent?key=${API_KEY}`;
+
+// Enhanced predefined responses
+const predefinedResponses = {
+  "who are you": "I am Duo, your personal assistant created to assist you. I was developed by Samartha Gs. Learn more at [samarthags.in](https://samarthags.in).",
+  "who developed you": "I was developed by Samartha Gs, a 17-year-old tech enthusiast who loves web development, IoT, and AI. He has completed over 50 amazing projects!",
+  "where are you from": "I am from Golagodu, a beautiful village near Sagara in Karnataka, India.",
+  "what can you do": "I can answer your questions, provide information, and chat about various topics. I now support voice input, dark mode, and customizable AI responses. Let me know how I can assist you!",
+  "who is samartha gs": "Samartha Gs is a talented 17-year-old passionate about web development, IoT, and AI. He has completed over 50 projects, including websites and apps. I'm proud to be one of his creations!",
+  "do you know samartha gs": "Yes, Samartha Gs is my creator! A skilled individual passionate about technology and innovation. Learn more about him at [samarthags.in](https://samarthags.in).",
+  "samartha gs": "Samartha Gs - I am here because of him! He's an innovative developer who created me to help people.",
+  "hi": "Hi there! I'm Duo - developed by Samartha. How can I help you today?",
+  "hello": "Hello! I'm Duo - developed by Samartha. How can I assist you today?",
+  "tell me a joke": "Why don't scientists trust atoms? Because they make up everything! 😄",
+  "how are you": "I'm doing well, thank you for asking! As an AI, I'm always ready to help. How about you?",
+  "thank you": "You're welcome! I'm happy I could help. Feel free to ask if you need anything else.",
+  "good morning": "Good morning! Hope your day is off to a great start. How can I assist you today?",
+  "good afternoon": "Good afternoon! Hope you're having a pleasant day. What can I help you with?",
+  "good evening": "Good evening! How can I make your evening better? I'm here to help."
+};
+
+// Enhanced similarity function for predefined responses
 const findPredefinedResponse = (message) => {
   // Normalize the message
-  message = message.toLowerCase();
-
+  message = message.toLowerCase().trim();
+  
   // Common prefixes to ignore
   const commonPrefixes = [
     "tell me about",
@@ -68,12 +231,16 @@ const findPredefinedResponse = (message) => {
     "what do you know about",
     "do you know about",
     "i want to know about",
+    "please tell me about",
+    "information on",
+    "give me details on"
   ];
 
   // Remove common prefixes from the user message
+  let processedMessage = message;
   for (const prefix of commonPrefixes) {
     if (message.startsWith(prefix)) {
-      message = message.replace(prefix, "").trim();
+      processedMessage = message.replace(prefix, "").trim();
       break;
     }
   }
@@ -91,7 +258,11 @@ const findPredefinedResponse = (message) => {
 
   // Check each predefined response for similarity
   for (const key in predefinedResponses) {
-    const similarity = calculateSimilarity(message, key);
+    // Check both original and processed message
+    const similarityOriginal = calculateSimilarity(message, key);
+    const similarityProcessed = calculateSimilarity(processedMessage, key);
+    const similarity = Math.max(similarityOriginal, similarityProcessed);
+    
     if (similarity > highestSimilarity && similarity >= threshold) {
       highestSimilarity = similarity;
       bestMatch = predefinedResponses[key];
@@ -101,44 +272,159 @@ const findPredefinedResponse = (message) => {
   return bestMatch;
 };
 
+// Create message element with enhanced styling and functionality
 const createMessageElement = (content, ...classes) => {
   const div = document.createElement("div");
   div.classList.add("message", ...classes);
-  div.innerHTML = content;
+  
+  if (classes.includes("incoming")) {
+    const avatar = document.createElement("div");
+    avatar.classList.add("avatar");
+    avatar.innerHTML = '<i class="fas fa-robot"></i>';
+    div.appendChild(avatar);
+  } else if (classes.includes("outgoing")) {
+    const avatar = document.createElement("div");
+    avatar.classList.add("avatar", "user-avatar");
+    avatar.innerHTML = '<i class="fas fa-user"></i>';
+    div.appendChild(avatar);
+  }
+  
+  div.innerHTML += content;
   return div;
 };
 
+// Typing effect with improved animation
 const showTypingEffect = (text, textElement, incomingMessageDiv) => {
-  const words = text.split(" ");
-  let currentWordIndex = 0;
+  // Process markdown if enabled
+  const useMarkdown = document.getElementById("markdown-toggle").checked;
+  const processedText = useMarkdown ? processMarkdown(text) : text;
+  
+  if (useMarkdown) {
+    textElement.classList.add("markdown");
+    // Show all at once for markdown to render properly
+    textElement.innerHTML = processedText;
+    incomingMessageDiv.querySelector(".icon").classList.remove("hide");
+    isResponseGenerating = false;
+    saveChat();
+  } else {
+    // Word-by-word typing effect for non-markdown
+    const words = processedText.split(" ");
+    let currentWordIndex = 0;
 
-  const typingInterval = setInterval(() => {
-    textElement.innerText +=
-      (currentWordIndex === 0 ? "" : " ") + words[currentWordIndex++];
-    incomingMessageDiv.querySelector(".icon").classList.add("hide");
+    const typingInterval = setInterval(() => {
+      textElement.innerText +=
+        (currentWordIndex === 0 ? "" : " ") + words[currentWordIndex++];
+      incomingMessageDiv.querySelector(".icon").classList.add("hide");
 
-    if (currentWordIndex === words.length) {
-      clearInterval(typingInterval);
-      isResponseGenerating = false;
-      incomingMessageDiv.querySelector(".icon").classList.remove("hide");
-      localStorage.setItem("saved-chats", chatContainer.innerHTML);
-    }
-    chatContainer.scrollTo(0, chatContainer.scrollHeight);
-  }, 50); // Typing interval
+      if (currentWordIndex === words.length) {
+        clearInterval(typingInterval);
+        isResponseGenerating = false;
+        incomingMessageDiv.querySelector(".icon").classList.remove("hide");
+        saveChat();
+      }
+      scrollToBottom();
+    }, 50); // Typing interval
+  }
 };
 
+// Simple markdown processor
+function processMarkdown(text) {
+  // Handle links - [text](url)
+  text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+  
+  // Handle bold - **text**
+  text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  
+  // Handle italic - *text*
+  text = text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+  
+  // Handle code blocks - ```code```
+  text = text.replace(/```([\s\S]*?)```/g, '<pre>$1</pre>');
+  
+  // Handle inline code - `code`
+  text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+  
+  // Handle lists
+  const lines = text.split('\n');
+  let inList = false;
+  let listType = '';
+  let processedLines = [];
+  
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    
+    // Ordered list item
+    if (line.match(/^\d+\.\s/)) {
+      if (!inList || listType !== 'ol') {
+        if (inList) processedLines.push(`</${listType}>`);
+        processedLines.push('<ol>');
+        inList = true;
+        listType = 'ol';
+      }
+      processedLines.push(`<li>${line.replace(/^\d+\.\s/, '')}</li>`);
+    }
+    // Unordered list item
+    else if (line.match(/^[\*\-]\s/)) {
+      if (!inList || listType !== 'ul') {
+        if (inList) processedLines.push(`</${listType}>`);
+        processedLines.push('<ul>');
+        inList = true;
+        listType = 'ul';
+      }
+      processedLines.push(`<li>${line.replace(/^[\*\-]\s/, '')}</li>`);
+    }
+    // Not a list item
+    else {
+      if (inList) {
+        processedLines.push(`</${listType}>`);
+        inList = false;
+      }
+      
+      // Handle headers - # Header
+      if (line.match(/^#{1,6}\s/)) {
+        const level = line.match(/^(#{1,6})\s/)[1].length;
+        processedLines.push(`<h${level}>${line.replace(/^#{1,6}\s/, '')}</h${level}>`);
+      } else if (line.trim() === '') {
+        processedLines.push('<br>');
+      } else {
+        processedLines.push(`<p>${line}</p>`);
+      }
+    }
+  }
+  
+  if (inList) {
+    processedLines.push(`</${listType}>`);
+  }
+  
+  return processedLines.join('');
+}
+
+// Generate response with improved delay simulation
 const generateDelayedResponse = (response, incomingMessageDiv) => {
+  // Show typing indicator
+  const textElement = incomingMessageDiv.querySelector(".text");
+  textElement.innerHTML = '<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
+  
   setTimeout(() => {
-    const textElement = incomingMessageDiv.querySelector(".text");
+    textElement.innerHTML = ''; // Clear typing indicator
     showTypingEffect(response, textElement, incomingMessageDiv);
   }, 1500); // Delay of 1.5 seconds
 };
 
+// Enhanced API response generation with AI parameters
 const generateAPIResponse = async (incomingMessageDiv) => {
   const textElement = incomingMessageDiv.querySelector(".text");
   incomingMessageDiv.classList.add("loading");
 
   try {
+    // Prepare prompt with AI settings
+    const promptWithSettings = `[System: You are Duo, an AI assistant created by Samartha Gs. 
+    Creativity level: ${aiSettings.creativity}/10. 
+    Preferred response length: ${aiSettings.length}/10 (where 1 is very brief and 10 is comprehensive).
+    Use markdown formatting when appropriate.]
+    
+    User question: ${userMessage}`;
+    
     const response = await fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -146,7 +432,7 @@ const generateAPIResponse = async (incomingMessageDiv) => {
         contents: [
           {
             role: "user",
-            parts: [{ text: userMessage }],
+            parts: [{ text: promptWithSettings }],
           },
         ],
       }),
@@ -156,19 +442,21 @@ const generateAPIResponse = async (incomingMessageDiv) => {
     if (!response.ok) throw new Error(data.error.message);
 
     const apiResponse = data.candidates[0].content.parts[0].text.replace(
-      /\*\*(.*?)\*\*/g,
-      "$1"
+      /\[System:.*?\]\s*/s, ""  // Remove system prompt if it got included
     );
+    
     generateDelayedResponse(apiResponse, incomingMessageDiv);
   } catch (error) {
     isResponseGenerating = false;
-    textElement.innerText = error.message;
+    textElement.innerText = "Sorry, I encountered an error. Please try again later.";
     incomingMessageDiv.classList.add("error");
+    console.error("API Error:", error);
   } finally {
     incomingMessageDiv.classList.remove("loading");
   }
 };
 
+// Show loading animation with improved visual feedback
 const showLoadingAnimation = () => {
   const html = `<div class="message-content">
                <p class="text"></p>
@@ -178,10 +466,11 @@ const showLoadingAnimation = () => {
   const incomingMessageDiv = createMessageElement(html, "incoming");
   chatContainer.appendChild(incomingMessageDiv);
 
-  chatContainer.scrollTo(0, chatContainer.scrollHeight); // Scroll to the bottom
-  generateAPIResponse(incomingMessageDiv); // Call the API immediately
+  scrollToBottom();
+  generateAPIResponse(incomingMessageDiv);
 };
 
+// Copy message functionality
 const copyMessage = (copyButton) => {
   const messageText = copyButton.parentElement.querySelector(".text").innerText;
 
@@ -190,6 +479,7 @@ const copyMessage = (copyButton) => {
   setTimeout(() => (copyButton.innerText = "content_copy"), 1000);
 };
 
+// Handle outgoing chat with enhanced functionality
 const handleOutgoingChat = () => {
   userMessage = typingForm.querySelector(".typing-input").value.trim();
   if (!userMessage || isResponseGenerating) return;
@@ -197,7 +487,6 @@ const handleOutgoingChat = () => {
   isResponseGenerating = true;
 
   const html = `<div class="message-content">
-
                   <p class="text"></p>
                 </div>`;
 
@@ -207,7 +496,7 @@ const handleOutgoingChat = () => {
 
   typingForm.reset();
   document.body.classList.add("hide-header");
-  chatContainer.scrollTo(0, chatContainer.scrollHeight);
+  scrollToBottom();
 
   // Check for predefined response
   const predefinedResponse = findPredefinedResponse(userMessage);
@@ -220,7 +509,7 @@ const handleOutgoingChat = () => {
       "incoming"
     );
     chatContainer.appendChild(incomingMessageDiv);
-    chatContainer.scrollTo(0, chatContainer.scrollHeight);
+    scrollToBottom();
     generateDelayedResponse(predefinedResponse, incomingMessageDiv);
   } else {
     // Otherwise, call the API
@@ -228,24 +517,161 @@ const handleOutgoingChat = () => {
   }
 };
 
-typingForm.addEventListener("submit", (e) => {
-  e.preventDefault();
+// Voice recognition setup
+function setupVoiceRecognition() {
+  if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = true;
+    
+    recognition.onstart = function() {
+      isListening = true;
+      voiceButton.classList.add('voice-pulse');
+      typingInput.placeholder = "Listening...";
+    };
+    
+    recognition.onresult = function(event) {
+      const transcript = Array.from(event.results)
+        .map(result => result[0])
+        .map(result => result.transcript)
+        .join('');
+      
+      typingInput.value = transcript;
+    };
+    
+    recognition.onend = function() {
+      isListening = false;
+      voiceButton.classList.remove('voice-pulse');
+      typingInput.placeholder = "Ask Me Anything";
+      
+      // If we have text, automatically submit after voice input ends
+      if (typingInput.value.trim() !== '') {
+        handleOutgoingChat();
+      }
+    };
+    
+    recognition.onerror = function(event) {
+      console.error('Speech recognition error', event.error);
+      isListening = false;
+      voiceButton.classList.remove('voice-pulse');
+      typingInput.placeholder = "Ask Me Anything";
+    };
+  } else {
+    console.log('Speech recognition not supported');
+    document.getElementById('voice-toggle').checked = false;
+    voiceButton.style.display = 'none';
+  }
+}
+
+// Toggle voice recognition
+function toggleVoiceInput() {
+  if (!recognition) {
+    setupVoiceRecognition();
+  }
+  
+  if (isListening) {
+    recognition.stop();
+  } else {
+    recognition.start();
+  }
+}
+
+// Toggle dark mode
+function toggleDarkMode() {
+  const isDarkMode = document.documentElement.getAttribute('data-theme') === 'dark';
+  document.documentElement.setAttribute('data-theme', isDarkMode ? 'light' : 'dark');
+  document.getElementById('dark-mode-toggle').checked = !isDarkMode;
+  localStorage.setItem('duo-theme', isDarkMode ? 'light' : 'dark');
+}
+
+// Toggle settings panel
+function toggleSettings() {
+  const panel = document.getElementById('settings-panel');
+  panel.classList.toggle('open');
+}
+
+// Clear chat history
+function clearChat() {
+  if (confirm('Are you sure you want to clear the chat history?')) {
+    const welcomeMessage = chatContainer.firstElementChild;
+    chatContainer.innerHTML = '';
+    chatContainer.appendChild(welcomeMessage);
+    localStorage.removeItem('saved-chats');
+  }
+}
+
+// Update slider values
+function updateSliderValue(type) {
+  const slider = document.getElementById(`${type}-slider`);
+  const valueDisplay = document.getElementById(`${type}-value`);
+  valueDisplay.textContent = slider.value;
+  aiSettings[type] = parseInt(slider.value);
+}
+
+// Use suggestion chip
+function useChip(text) {
+  typingInput.value = text;
   handleOutgoingChat();
-});
+}
 
-document.addEventListener("DOMContentLoaded", () => {
-  const modal = document.getElementById("download-modal");
+// Close modal
+function closeModal(modalId) {
+  document.getElementById(modalId).classList.remove('show');
+}
 
-  // Show modal after 3 seconds (example)
+// Save chat to localStorage
+function saveChat() {
+  localStorage.setItem('saved-chats', chatContainer.innerHTML);
+}
+
+// Load chat from localStorage
+function loadChat() {
+  const savedChats = localStorage.getItem('saved-chats');
+  if (savedChats) {
+    chatContainer.innerHTML = savedChats;
+  }
+}
+
+// Auto-scroll to bottom if enabled
+function scrollToBottom() {
+  if (document.getElementById('scroll-toggle').checked) {
+    chatContainer.scrollTo(0, chatContainer.scrollHeight);
+  }
+}
+
+// Event Listeners
+document.addEventListener('DOMContentLoaded', () => {
+  // Initialize theme
+  initTheme();
+  
+  // Load saved chats
+  loadChat();
+  
+  // Show welcome modal
   setTimeout(() => {
-    modal.classList.add("show");
-  }, 3000);
-
-  // Close modal function
-  window.closeModal = function () {
-    modal.classList.remove("show");
-  };
+    document.getElementById('welcome-modal').classList.add('show');
+  }, 1000);
+  
+  // Voice button click
+  voiceButton.addEventListener('click', toggleVoiceInput);
+  
+  // Form submission
+  typingForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    handleOutgoingChat();
+  });
+  
+  // Expose functions to window for use in HTML
+  window.copyMessage = copyMessage;
+  window.toggleSettings = toggleSettings;
+  window.toggleDarkMode = toggleDarkMode;
+  window.clearChat = clearChat;
+  window.updateSliderValue = updateSliderValue;
+  window.useChip = useChip;
+  window.closeModal = closeModal;
 });
+
 
 </script>
 </body>
