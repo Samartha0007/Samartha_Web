@@ -204,12 +204,12 @@ webpushr('setup',{'key':'BHj-Cu4KkNzKmV6Ouy2GOhCUQ32SBr7Exe8cFvg2j5aAzPVrfJDTPgG
 </div>
 
 <script>
-  // Replace with your credentials
   const CLIENT_ID = "afc043b5fb0b4b7c8380761cc4b0de28";
   const CLIENT_SECRET = "cf1579c569cf48bd9636084426ce7a60"; // ⚠️ Never expose this publicly!
-  const PLAYLIST_ID = "0lEhuR7L2fjrAq4aX1kUXX"; // Your playlist ID
+  const PLAYLIST_ID = "0lEhuR7L2fjrAq4aX1kUXX";
   let currentTrackId = null;
   let checkInterval;
+  const RECENT_TRACK_COUNT = 20; // How many recent tracks to prioritize
 
   async function fetchRandomTrack() {
     try {
@@ -225,26 +225,27 @@ webpushr('setup',{'key':'BHj-Cu4KkNzKmV6Ouy2GOhCUQ32SBr7Exe8cFvg2j5aAzPVrfJDTPgG
       const { access_token } = await authResponse.json();
 
       // 2. Fetch all tracks from your playlist
-      const playlistResponse = await fetch(
-        `https://api.spotify.com/v1/playlists/${PLAYLIST_ID}/tracks`,
-        { headers: { "Authorization": `Bearer ${access_token}` } }
-      );
-      const { items } = await playlistResponse.json();
+      const allItems = await fetchAllPlaylistTracks(access_token);
 
-      // 3. Pick a random track (excluding current one)
+      if (!allItems || allItems.length === 0) throw new Error("No tracks found!");
+
+      // 3. Pick a random track from top RECENT_TRACK_COUNT tracks
+      const recentTracks = allItems.slice(0, RECENT_TRACK_COUNT).map(item => item.track);
+
       let randomTrack;
       do {
-        randomTrack = items[Math.floor(Math.random() * items.length)].track;
-      } while (items.length > 1 && randomTrack.id === currentTrackId);
-      
+        randomTrack = recentTracks[Math.floor(Math.random() * recentTracks.length)];
+      } while (recentTracks.length > 1 && randomTrack.id === currentTrackId);
+
       currentTrackId = randomTrack.id;
 
       // 4. Load the track in the player
       document.getElementById("spotifyPlayer").src = 
         `https://open.spotify.com/embed/track/${randomTrack.id}?utm_source=oembed`;
-      
+
       // 5. Start checking if song ended
       startPlaybackMonitor();
+
     } catch (error) {
       console.error("Error fetching random track:", error);
       // Fallback: Load the full playlist if API fails
@@ -253,16 +254,37 @@ webpushr('setup',{'key':'BHj-Cu4KkNzKmV6Ouy2GOhCUQ32SBr7Exe8cFvg2j5aAzPVrfJDTPgG
     }
   }
 
+  async function fetchAllPlaylistTracks(access_token) {
+    let allItems = [];
+    let limit = 100;
+    let offset = 0;
+    let total = 0;
+
+    do {
+      const response = await fetch(
+        `https://api.spotify.com/v1/playlists/${PLAYLIST_ID}/tracks?limit=${limit}&offset=${offset}`,
+        {
+          headers: { "Authorization": `Bearer ${access_token}` }
+        }
+      );
+      const data = await response.json();
+
+      if (!data.items) throw new Error("Failed to fetch playlist tracks.");
+
+      allItems = allItems.concat(data.items);
+      total = data.total;
+      offset += limit;
+    } while (offset < total);
+
+    return allItems;
+  }
+
   function startPlaybackMonitor() {
-    // Clear any existing interval
     if (checkInterval) clearInterval(checkInterval);
-    
-    // Check every 5 seconds if we should load a new song
+
     checkInterval = setInterval(() => {
       const iframe = document.getElementById('spotifyPlayer');
       try {
-        // This is a hack - the embed doesn't expose playback state directly
-        // So we'll just assume the song ends after 5 minutes and load a new one
         setTimeout(fetchRandomTrack, 5 * 60 * 1000); // 5 minutes timeout
       } catch (e) {
         console.log("Couldn't check playback state", e);
