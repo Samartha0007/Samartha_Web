@@ -191,15 +191,10 @@ webpushr('setup',{'key':'BHj-Cu4KkNzKmV6Ouy2GOhCUQ32SBr7Exe8cFvg2j5aAzPVrfJDTPgG
          
       </div>  
     </div>  
-<div style="left: 0; width: 100%; height: 352px; position: relative;">
-  <iframe 
-    id="spotifyPlayer" 
-    style="top: 0; left: 0; width: 100%; height: 100%; position: absolute; border: 0;" 
-    allowfullscreen 
-    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture;"
-  ></iframe>
+<!-- HTML part -->
+<div id="spotifyPlayerContainer" style="width: 100%; max-width: 500px; margin: auto; overflow: hidden;">
+  <iframe id="spotifyPlayer" width="100%" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
 </div>
-
 
 </div>
 
@@ -207,13 +202,14 @@ webpushr('setup',{'key':'BHj-Cu4KkNzKmV6Ouy2GOhCUQ32SBr7Exe8cFvg2j5aAzPVrfJDTPgG
   const CLIENT_ID = "afc043b5fb0b4b7c8380761cc4b0de28";
   const CLIENT_SECRET = "cf1579c569cf48bd9636084426ce7a60"; // ⚠️ Never expose this publicly!
   const PLAYLIST_ID = "0lEhuR7L2fjrAq4aX1kUXX";
+  const RECENT_TRACK_COUNT = 20;
   let currentTrackId = null;
+  let trackHistory = [];
+  let currentHistoryIndex = -1;
   let checkInterval;
-  const RECENT_TRACK_COUNT = 20; // How many recent tracks to prioritize
 
-  async function fetchRandomTrack() {
+  async function fetchRandomTrack(forward = true) {
     try {
-      // 1. Get Spotify API access token
       const authResponse = await fetch("https://accounts.spotify.com/api/token", {
         method: "POST",
         headers: {
@@ -224,32 +220,50 @@ webpushr('setup',{'key':'BHj-Cu4KkNzKmV6Ouy2GOhCUQ32SBr7Exe8cFvg2j5aAzPVrfJDTPgG
       });
       const { access_token } = await authResponse.json();
 
-      // 2. Fetch all tracks from your playlist
       const allItems = await fetchAllPlaylistTracks(access_token);
-
       if (!allItems || allItems.length === 0) throw new Error("No tracks found!");
 
-      // 3. Pick a random track from top RECENT_TRACK_COUNT tracks
       const recentTracks = allItems.slice(0, RECENT_TRACK_COUNT).map(item => item.track);
+
+      let playedTracks = JSON.parse(localStorage.getItem("playedTracks")) || [];
+
+      let availableTracks = recentTracks.filter(track => !playedTracks.includes(track.id));
+
+      // If all tracks have been played, reset history
+      if (availableTracks.length === 0) {
+        localStorage.removeItem("playedTracks");
+        playedTracks = [];
+        availableTracks = [...recentTracks];
+      }
 
       let randomTrack;
       do {
-        randomTrack = recentTracks[Math.floor(Math.random() * recentTracks.length)];
-      } while (recentTracks.length > 1 && randomTrack.id === currentTrackId);
+        randomTrack = availableTracks[Math.floor(Math.random() * availableTracks.length)];
+      } while (availableTracks.length > 1 && randomTrack.id === currentTrackId);
 
       currentTrackId = randomTrack.id;
 
-      // 4. Load the track in the player
-      document.getElementById("spotifyPlayer").src = 
+      // Update history
+      if (forward) {
+        // If moving forward, add to history
+        trackHistory = trackHistory.slice(0, currentHistoryIndex + 1); // Clear forward history
+        trackHistory.push(randomTrack.id);
+        currentHistoryIndex++;
+      }
+
+      // Save to played tracks
+      playedTracks.push(randomTrack.id);
+      localStorage.setItem("playedTracks", JSON.stringify(playedTracks));
+
+      // Load the track
+      document.getElementById("spotifyPlayer").src =
         `https://open.spotify.com/embed/track/${randomTrack.id}?utm_source=oembed`;
 
-      // 5. Start checking if song ended
       startPlaybackMonitor();
 
     } catch (error) {
       console.error("Error fetching random track:", error);
-      // Fallback: Load the full playlist if API fails
-      document.getElementById("spotifyPlayer").src = 
+      document.getElementById("spotifyPlayer").src =
         `https://open.spotify.com/embed/playlist/${PLAYLIST_ID}?utm_source=oembed`;
     }
   }
@@ -283,18 +297,61 @@ webpushr('setup',{'key':'BHj-Cu4KkNzKmV6Ouy2GOhCUQ32SBr7Exe8cFvg2j5aAzPVrfJDTPgG
     if (checkInterval) clearInterval(checkInterval);
 
     checkInterval = setInterval(() => {
-      const iframe = document.getElementById('spotifyPlayer');
-      try {
-        setTimeout(fetchRandomTrack, 5 * 60 * 1000); // 5 minutes timeout
-      } catch (e) {
-        console.log("Couldn't check playback state", e);
-      }
+      setTimeout(() => fetchRandomTrack(), 5 * 60 * 1000);
     }, 5000);
   }
 
+  // Swipe Support
+  function addSwipeListeners() {
+    const playerContainer = document.getElementById('spotifyPlayerContainer');
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    playerContainer.addEventListener('touchstart', e => {
+      touchStartX = e.changedTouches[0].screenX;
+    });
+
+    playerContainer.addEventListener('touchend', e => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipeGesture();
+    });
+  }
+
+  function handleSwipeGesture() {
+    const swipeDistance = touchEndX - touchStartX;
+    const swipeThreshold = 50; // px
+
+    if (swipeDistance > swipeThreshold) {
+      // Swipe Right → Next track
+      console.log("Swipe Right → Next Track");
+      fetchRandomTrack(true);
+    } else if (swipeDistance < -swipeThreshold) {
+      // Swipe Left → Previous track
+      console.log("Swipe Left → Previous Track");
+      loadPreviousTrack();
+    }
+  }
+
+  function loadPreviousTrack() {
+    if (currentHistoryIndex > 0) {
+      currentHistoryIndex--;
+      const previousTrackId = trackHistory[currentHistoryIndex];
+      currentTrackId = previousTrackId;
+      document.getElementById("spotifyPlayer").src =
+        `https://open.spotify.com/embed/track/${previousTrackId}?utm_source=oembed`;
+    } else {
+      console.log("No previous track.");
+    }
+  }
+
   // Initial load
-  fetchRandomTrack();
+  window.onload = () => {
+    addSwipeListeners();
+    fetchRandomTrack();
+  };
 </script>
+
+
   </div>  
 </section>
         <!-- Portfolio -->
