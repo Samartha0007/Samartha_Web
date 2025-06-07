@@ -519,153 +519,148 @@ webpushr('setup',{'key':'BHj-Cu4KkNzKmV6Ouy2GOhCUQ32SBr7Exe8cFvg2j5aAzPVrfJDTPgG
 
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
-import { getDatabase, ref, onValue, runTransaction, get, set, child } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-analytics.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+    import { getDatabase, ref, onValue, runTransaction, get, set, child } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-analytics.js";
+    import FingerprintJS from 'https://esm.sh/@fingerprintjs/fingerprintjs@3/dist/fp.mjs';
 
-// Include FingerprintJS
-const fpPromise = FingerprintJS.load();
+    // Firebase config
+    const firebaseConfig = {
+        apiKey: "AIzaSyD6XevtiU5_5T3qsPrrgZNrcTXOUcI_jaY",
+        authDomain: "sammu-database.firebaseapp.com",
+        databaseURL: "https://sammu-database-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "sammu-database",
+        storageBucket: "sammu-database.firebasestorage.app",
+        messagingSenderId: "975899243226",
+        appId: "1:975899243226:web:c81d3263a3e30a271a6be3",
+        measurementId: "G-B85J29F4RB"
+    };
 
-// Firebase config
-const firebaseConfig = {
-    apiKey: "AIzaSyD6XevtiU5_5T3qsPrrgZNrcTXOUcI_jaY",
-    authDomain: "sammu-database.firebaseapp.com",
-    databaseURL: "https://sammu-database-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "sammu-database",
-    storageBucket: "sammu-database.firebasestorage.app",
-    messagingSenderId: "975899243226",
-    appId: "1:975899243226:web:c81d3263a3e30a271a6be3",
-    measurementId: "G-B85J29F4RB"
-};
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const analytics = getAnalytics(app);
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-const analytics = getAnalytics(app);
+    // References
+    const likeRef = ref(db, "likesCount");
+    const likedDevicesRef = ref(db, "likedDevices");
 
-// References
-const likeRef = ref(db, "likesCount");
-const likedDevicesRef = ref(db, "likedDevices");
-
-// Initial load of like count
-get(likeRef).then((snapshot) => {
-    if (snapshot.exists()) {
-        document.getElementById("likeCount").innerText = snapshot.val();
-    }
-});
-
-// Real-time update
-onValue(likeRef, (snapshot) => {
-    const likes = snapshot.val();
-    if (likes !== null) {
-        document.getElementById("likeCount").innerText = likes;
-    }
-});
-
-window.likePost = async function () {
-    const likeButton = document.getElementById("likeButton");
-    const likeCountSpan = document.getElementById("likeCount");
-
-    // Get device fingerprint
-    let fingerprint = "";
-    try {
-        const fp = await fpPromise;
-        const result = await fp.get();
-        fingerprint = result.visitorId;
-        console.log("Device Fingerprint:", fingerprint);
-    } catch (error) {
-        console.error("Error getting fingerprint:", error);
-        alert("Could not verify your device. Please try again.");
-        return;
-    }
-
-    // Check if this fingerprint already liked
-    get(child(ref(db), `likedDevices/${fingerprint}`)).then((snapshot) => {
+    // Initial load of like count
+    get(likeRef).then((snapshot) => {
         if (snapshot.exists()) {
-            // Already liked
-            likeButton.classList.add("shake");
-            setTimeout(() => {
-                likeButton.classList.remove("shake");
-            }, 500);
-
-            alert("Oops! You've already liked ❤️‍🔥 Thanks for your support! 🙌😊");
-        } else {
-            // Not liked yet → proceed
-            processLike(fingerprint);
+            document.getElementById("likeCount").innerText = snapshot.val();
         }
-    }).catch((error) => {
-        console.error("Error checking fingerprint:", error);
     });
-};
 
-function processLike(fingerprint) {
-    const likeButton = document.getElementById("likeButton");
-    const likeCountSpan = document.getElementById("likeCount");
-
-    // Floating heart animation
-    const heart = document.createElement("div");
-    heart.classList.add("floating-heart");
-    heart.innerHTML = "+1 ❤️‍🔥";
-
-    const rect = likeButton.getBoundingClientRect();
-    heart.style.left = `${rect.left + rect.width / 2}px`;
-    heart.style.top = `${rect.top - 10}px`;
-
-    document.body.appendChild(heart);
-
-    setTimeout(() => {
-        heart.remove();
-    }, 1500);
-
-    // Ripple effect
-    showRippleEffect(likeButton);
-
-    likeButton.disabled = true;
-
-    // Update like count safely
-    runTransaction(likeRef, (currentLikes) => {
-        return (currentLikes || 0) + 1;
-    })
-    .then(({ snapshot }) => {
-        likeCountSpan.textContent = snapshot.val();
-
-        // Store fingerprint in database
-        const deviceRef = ref(db, `likedDevices/${fingerprint}`);
-        set(deviceRef, true)
-            .then(() => {
-                console.log("Fingerprint stored:", fingerprint);
-                likeButton.disabled = false;
-            })
-            .catch((error) => {
-                console.error("Error storing fingerprint:", error);
-                likeButton.disabled = false;
-            });
-    })
-    .catch((error) => {
-        console.error("Error updating likes:", error);
-        likeButton.disabled = false;
+    // Real-time update
+    onValue(likeRef, (snapshot) => {
+        const likes = snapshot.val();
+        if (likes !== null) {
+            document.getElementById("likeCount").innerText = likes;
+        }
     });
-}
 
-// Ripple effect function
-function showRippleEffect(button) {
-    const ripple = document.createElement("span");
-    ripple.classList.add("ripple");
+    // Function to get device fingerprint
+    async function getFingerprint() {
+        const fp = await FingerprintJS.load();
+        const result = await fp.get();
+        return result.visitorId; // unique device fingerprint
+    }
 
-    const rect = button.getBoundingClientRect();
-    ripple.style.left = `${rect.width / 2}px`;
-    ripple.style.top = `${rect.height / 2}px`;
+    // Main Like function
+    window.likePost = async function () {
+        const likeButton = document.getElementById("likeButton");
+        const likeCountSpan = document.getElementById("likeCount");
 
-    button.appendChild(ripple);
+        // Get fingerprint
+        const fingerprint = await getFingerprint();
+        console.log("Device Fingerprint:", fingerprint);
 
-    setTimeout(() => {
-        ripple.remove();
-    }, 600);
-}
+        // Check if this device already liked
+        get(child(ref(db), `likedDevices/${fingerprint}`)).then((snapshot) => {
+            if (snapshot.exists()) {
+                // Already liked → show animation & alert
+                likeButton.classList.add("shake");
+                setTimeout(() => {
+                    likeButton.classList.remove("shake");
+                }, 500);
+
+                alert("Oops! You've already liked ❤️‍🔥 Thanks for your support! 🙌😊");
+            } else {
+                // Not liked yet → proceed to like
+                processLike(fingerprint);
+            }
+        }).catch((error) => {
+            console.error("Error checking fingerprint:", error);
+        });
+    };
+
+    // Process like and store device fingerprint
+    function processLike(fingerprint) {
+        const likeButton = document.getElementById("likeButton");
+        const likeCountSpan = document.getElementById("likeCount");
+
+        // Floating heart animation
+        const heart = document.createElement("div");
+        heart.classList.add("floating-heart");
+        heart.innerHTML = "+1 ❤️‍🔥";
+
+        const rect = likeButton.getBoundingClientRect();
+        heart.style.left = `${rect.left + rect.width / 2}px`;
+        heart.style.top = `${rect.top - 10}px`;
+
+        document.body.appendChild(heart);
+
+        setTimeout(() => {
+            heart.remove();
+        }, 1500);
+
+        // Ripple effect
+        showRippleEffect(likeButton);
+
+        likeButton.disabled = true;
+
+        // Update like count safely
+        runTransaction(likeRef, (currentLikes) => {
+            return (currentLikes || 0) + 1;
+        })
+        .then(({ snapshot }) => {
+            likeCountSpan.textContent = snapshot.val();
+
+            // Store fingerprint in database
+            const deviceRef = ref(db, `likedDevices/${fingerprint}`);
+            set(deviceRef, true)
+                .then(() => {
+                    console.log("Fingerprint stored:", fingerprint);
+                    likeButton.disabled = false;
+                })
+                .catch((error) => {
+                    console.error("Error storing fingerprint:", error);
+                    likeButton.disabled = false;
+                });
+        })
+        .catch((error) => {
+            console.error("Error updating likes:", error);
+            likeButton.disabled = false;
+        });
+    }
+
+    // Ripple effect function
+    function showRippleEffect(button) {
+        const ripple = document.createElement("span");
+        ripple.classList.add("ripple");
+
+        const rect = button.getBoundingClientRect();
+        ripple.style.left = `${rect.width / 2}px`;
+        ripple.style.top = `${rect.height / 2}px`;
+
+        button.appendChild(ripple);
+
+        setTimeout(() => {
+            ripple.remove();
+        }, 600);
+    }
 </script>
-
-<!-- FingerprintJS script include (put it above this script) -->
-<script src="https://openfpcdn.io/fingerprintjs/v3"></script>
 
  
   </body>  </html>
