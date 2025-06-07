@@ -1206,3 +1206,17 @@ transition: transform 0.3s ease, color 0.3s ease;
         transform: scaleY(1);
     }
 }
+
+
+.footer_container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.footer_spotify {
+  justify-self: center; /* or flex-end, or start depending where you want it */
+  text-align: center;
+  padding-top: 10px;
+}
