@@ -549,6 +549,8 @@ webpushr('setup',{'key':'BHj-Cu4KkNzKmV6Ouy2GOhCUQ32SBr7Exe8cFvg2j5aAzPVrfJDTPgG
     get(likeRef).then((snapshot) => {
         if (snapshot.exists()) {
             document.getElementById("likeCount").innerText = snapshot.val();
+        } else {
+            document.getElementById("likeCount").innerText = "0";
         }
     });
 
@@ -633,6 +635,7 @@ webpushr('setup',{'key':'BHj-Cu4KkNzKmV6Ouy2GOhCUQ32SBr7Exe8cFvg2j5aAzPVrfJDTPgG
                 .then(() => {
                     console.log("Fingerprint stored:", fingerprint);
                     likeButton.disabled = false;
+                    alert("Thank you for liking! ❤️‍🔥");
                 })
                 .catch((error) => {
                     console.error("Error storing fingerprint:", error);
@@ -661,6 +664,5 @@ webpushr('setup',{'key':'BHj-Cu4KkNzKmV6Ouy2GOhCUQ32SBr7Exe8cFvg2j5aAzPVrfJDTPgG
         }, 600);
     }
 </script>
-
  
   </body>  </html>
