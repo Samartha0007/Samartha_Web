@@ -518,12 +518,13 @@ webpushr('setup',{'key':'BHj-Cu4KkNzKmV6Ouy2GOhCUQ32SBr7Exe8cFvg2j5aAzPVrfJDTPgG
     </script>
 
 
-
-
- <script type="module">
+<script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
-import { getDatabase, ref, onValue, runTransaction, get, set, child, update } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
+import { getDatabase, ref, onValue, runTransaction, get, set, child } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-analytics.js";
+
+// Include FingerprintJS
+const fpPromise = FingerprintJS.load();
 
 // Firebase config
 const firebaseConfig = {
@@ -544,7 +545,7 @@ const analytics = getAnalytics(app);
 
 // References
 const likeRef = ref(db, "likesCount");
-const likedIPsRef = ref(db, "likedIPs");
+const likedDevicesRef = ref(db, "likedDevices");
 
 // Initial load of like count
 get(likeRef).then((snapshot) => {
@@ -553,7 +554,7 @@ get(likeRef).then((snapshot) => {
     }
 });
 
-// Listen for real-time updates
+// Real-time update
 onValue(likeRef, (snapshot) => {
     const likes = snapshot.val();
     if (likes !== null) {
@@ -565,20 +566,21 @@ window.likePost = async function () {
     const likeButton = document.getElementById("likeButton");
     const likeCountSpan = document.getElementById("likeCount");
 
-    // Get user IP address
-    let ipAddress = "";
+    // Get device fingerprint
+    let fingerprint = "";
     try {
-        const response = await fetch("https://api.ipify.org?format=json");
-        const data = await response.json();
-        ipAddress = data.ip;
+        const fp = await fpPromise;
+        const result = await fp.get();
+        fingerprint = result.visitorId;
+        console.log("Device Fingerprint:", fingerprint);
     } catch (error) {
-        console.error("Error getting IP address:", error);
-        alert("Could not verify your identity to like. Please try again.");
+        console.error("Error getting fingerprint:", error);
+        alert("Could not verify your device. Please try again.");
         return;
     }
 
-    // Check if this IP already liked
-    get(child(ref(db), `likedIPs/${ipAddress.replace(/\./g, "_")}`)).then((snapshot) => {
+    // Check if this fingerprint already liked
+    get(child(ref(db), `likedDevices/${fingerprint}`)).then((snapshot) => {
         if (snapshot.exists()) {
             // Already liked
             likeButton.classList.add("shake");
@@ -589,14 +591,14 @@ window.likePost = async function () {
             alert("Oops! You've already liked ❤️‍🔥 Thanks for your support! 🙌😊");
         } else {
             // Not liked yet → proceed
-            processLike(ipAddress);
+            processLike(fingerprint);
         }
     }).catch((error) => {
-        console.error("Error checking IP:", error);
+        console.error("Error checking fingerprint:", error);
     });
 };
 
-function processLike(ipAddress) {
+function processLike(fingerprint) {
     const likeButton = document.getElementById("likeButton");
     const likeCountSpan = document.getElementById("likeCount");
 
@@ -620,23 +622,22 @@ function processLike(ipAddress) {
 
     likeButton.disabled = true;
 
-    // Run transaction to update like count safely
+    // Update like count safely
     runTransaction(likeRef, (currentLikes) => {
         return (currentLikes || 0) + 1;
     })
     .then(({ snapshot }) => {
         likeCountSpan.textContent = snapshot.val();
 
-        // Store IP in database to prevent double-like
-        const sanitizedIP = ipAddress.replace(/\./g, "_"); // Firebase keys can't have "."
-        const updateRef = ref(db, `likedIPs/${sanitizedIP}`);
-        set(updateRef, true)
+        // Store fingerprint in database
+        const deviceRef = ref(db, `likedDevices/${fingerprint}`);
+        set(deviceRef, true)
             .then(() => {
-                console.log("IP stored:", ipAddress);
+                console.log("Fingerprint stored:", fingerprint);
                 likeButton.disabled = false;
             })
             .catch((error) => {
-                console.error("Error storing IP:", error);
+                console.error("Error storing fingerprint:", error);
                 likeButton.disabled = false;
             });
     })
@@ -662,6 +663,9 @@ function showRippleEffect(button) {
     }, 600);
 }
 </script>
+
+<!-- FingerprintJS script include (put it above this script) -->
+<script src="https://openfpcdn.io/fingerprintjs/v3"></script>
 
  
   </body>  </html>
