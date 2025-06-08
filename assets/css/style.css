@@ -975,8 +975,7 @@ button {
   }
 
 
-  /* For medium devices (example breakpoint, adjust as needed) */
-@media screen and (min-width: 768px) {
+  
   .footer_container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -1052,7 +1051,7 @@ button {
 
 
 /* Like Button Styling */  
-    #likeButton {  
+  #likeButton {  
         display: flex;  
         flex-direction: column;  
         align-items: center;  
