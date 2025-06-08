@@ -1202,4 +1202,92 @@ transition: transform 0.3s ease, color 0.3s ease;
 }
 
 
+
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #0f0f0f;
+  margin: 0;
+}
+
+.image-button {
+  width: 80px;
+  height: 80px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  box-shadow: 0 0 15px rgba(255,255,255,0.1);
+}
+
+.image-button img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+}
+
+.image-button:hover {
+  transform: scale(1.2) rotate(5deg);
+  box-shadow: 0 0 25px rgba(0, 255, 200, 0.6);
+}
+
+.fade-out {
+  opacity: 0;
+  transform: scale(0.9) rotate(-5deg);
+}
+
+/* Modal styles */
+.modal {
+  display: none; 
+  position: fixed; 
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%; 
+  overflow: hidden;
+  background-color: rgba(0,0,0,0.85); 
+}
+
+.modal-content {
+  position: relative;
+  margin: 5% auto;
+  width: 90%;
+  height: 90%;
+  max-width: 1200px;
+  background-color: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 25px rgba(255,255,255,0.3);
+}
+
+.modal-content iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  color: white;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.close-btn:hover {
+  color: red;
+}
+
+
   
