@@ -140,6 +140,17 @@ webpushr('setup',{'key':'BHj-Cu4KkNzKmV6Ouy2GOhCUQ32SBr7Exe8cFvg2j5aAzPVrfJDTPgG
         <span class="likes-text">Likes</span>  
     </div>  
 </button>
+
+<button class="image-button" id="animatedButton">
+  <img src="https://i.ibb.co/tMzwJ34n/launch.gif" alt="icon" id="buttonIcon">
+</button>
+
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" id="closeModal">&times;</span>
+    <iframe src="https://samarthags.in" allowfullscreen></iframe>
+  </div>
+</div>
       </div>
 
 </div>
@@ -563,5 +574,75 @@ function showRippleEffect(button) {
     }, 600); // Remove after animation  
 }  
 </script>  
+
+<script>
+const images = [
+  'https://i.ibb.co/tMzwJ34n/launch.gif',
+  'https://i.ibb.co/nM8WLdXq/secure.gif',
+  'https://i.ibb.co/mpDy87D/artificial-intelligence-3.gif',
+  'https://i.ibb.co/JwhVMnQc/cloud-data.gif',
+  'https://i.ibb.co/Zz2cc1Kd/coding.gif',
+  'https://i.ibb.co/35xMHddn/business-development.gif',
+  'https://i.ibb.co/HTMRb7Dr/light-control.gif',
+  'https://i.ibb.co/RkPz8m0G/light-bulb.gif',
+  'https://i.ibb.co/DgPcCRL1/connection.gif',
+  'https://i.ibb.co/Cs2ds9F6/artificial-intelligence-2.gif',
+  'https://i.ibb.co/Z6jxdyzw/responsive.gif',
+  'https://i.ibb.co/zHGh0DHJ/artificial-intelligence.gif'
+];
+
+let currentList = [];
+let currentIndex = 0;
+const buttonIcon = document.getElementById('buttonIcon');
+
+// Shuffle function
+function shuffle(array) {
+  let newArray = array.slice();
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  }
+  return newArray;
+}
+
+// Start with shuffled list
+currentList = shuffle(images);
+
+function changeIcon() {
+  buttonIcon.classList.add('fade-out');
+
+  setTimeout(() => {
+    buttonIcon.src = currentList[currentIndex];
+    buttonIcon.classList.remove('fade-out');
+
+    currentIndex++;
+    if (currentIndex >= currentList.length) {
+      currentList = shuffle(images); // Reshuffle after finishing all
+      currentIndex = 0;
+    }
+  }, 1000); // Match fade-out duration
+}
+
+setInterval(changeIcon, 4000);
+
+// Modal logic
+const modal = document.getElementById('myModal');
+const closeModal = document.getElementById('closeModal');
+const animatedButton = document.getElementById('animatedButton');
+
+animatedButton.addEventListener('click', () => {
+  modal.style.display = 'block';
+});
+
+closeModal.addEventListener('click', () => {
+  modal.style.display = 'none';
+});
+
+window.addEventListener('click', (event) => {
+  if (event.target === modal) {
+    modal.style.display = 'none';
+  }
+});
+</script>
  
   </body>  </html>
