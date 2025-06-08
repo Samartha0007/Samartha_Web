@@ -975,8 +975,12 @@ button {
   }
 
 
+  /* For medium devices (example breakpoint, adjust as needed) */
+@media screen and (min-width: 768px) {
   .footer_container {
+    display: grid;
     grid-template-columns: repeat(3, 1fr);
+    align-items: center;
   }
 
   .footer_bg {
@@ -984,6 +988,7 @@ button {
   }
 
   .footer_links {
+    display: flex;
     flex-direction: row;
     column-gap: 1rem;
   }
@@ -996,7 +1001,6 @@ button {
     margin-top: 4.5rem;
   }
 }
-
 
 /* For large devices */
 @media screen and (min-width: 1024px) {
@@ -1042,18 +1046,6 @@ button {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-
- 
-  
-
-
-
-
-
-
-
-
-
 
 
 
