@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Next AI - Coming Soon</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #ffffff;
+      color: #222;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .content {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .rotating-text {
+      font-size: 2.2rem;
+      font-weight: 700;
+      transition: opacity 0.3s ease;
+      min-height: 2.8rem;
+    }
+
+    .notify-btn {
+      margin-top: 30px;
+      background-color: #222;
+      color: #fff;
+      padding: 12px 24px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: background-color 0.3s ease;
+    }
+
+    .notify-btn:hover {
+      background-color: #444;
+    }
+
+    .notify-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: #fff;
+    }
+
+    footer {
+      position: absolute;
+      bottom: 15px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #888;
+    }
+
+    @media (max-width: 600px) {
+      .rotating-text {
+        font-size: 1.6rem;
+      }
+
+      .notify-btn {
+        font-size: 0.95rem;
+        padding: 10px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="content">
+    <div class="rotating-text" id="rotatingText">Loading...</div>
+    <button class="notify-btn" onclick="webpushr('subscribe')">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M12 2C10.34 2 9 3.34 9 5v1.07C6.72 6.56 5 8.61 5 11v5l-1 1v1h16v-1l-1-1v-5c0-2.39-1.72-4.44-4-4.93V5c0-1.66-1.34-3-3-3zm0 19c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2z"/>
+      </svg>
+      Notify Me
+    </button>
+  </div>
+
+  <footer>From API By Samartha Gs</footer>
+
+  <!-- Rotating Text Script -->
+  <script>
+    const messages = [
+      "Introducing",
+      "Next Generation",
+      "Smart AI",
+      "Powered by SGS",
+      "Coming Soon"
+    ];
+
+    let index = 0;
+    const rotatingText = document.getElementById('rotatingText');
+
+    function rotateText() {
+      rotatingText.style.opacity = 0;
+      setTimeout(() => {
+        rotatingText.textContent = messages[index];
+        rotatingText.style.opacity = 1;
+        index = (index + 1) % messages.length;
+      }, 300);
+    }
+
+    setInterval(rotateText, 2000);
+    rotateText(); // Initial call
+  </script>
+
+  <!-- Webpushr Notification Script -->
+  <script>
+    (function(w,d,s,id){
+      if(typeof(w.webpushr)!=='undefined') return;
+      w.webpushr=w.webpushr||function(){(w.webpushr.q=w.webpushr.q||[]).push(arguments)};
+      var js, fjs = d.getElementsByTagName(s)[0];
+      js = d.createElement(s);
+      js.id = id;
+      js.async = 1;
+      js.src = "https://cdn.webpushr.com/app.min.js";
+      fjs.parentNode.appendChild(js);
+    }(window,document,'script','webpushr-jssdk'));
+
+    webpushr('setup',{
+      'key':'BHj-Cu4KkNzKmV6Ouy2GOhCUQ32SBr7Exe8cFvg2j5aAzPVrfJDTPgGttyAv7Guc2plKYX257i5NEtCmmFNodEU'
+    });
+  </script>
+
+</body>
+</html>
