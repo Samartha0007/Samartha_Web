@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gemini Chatbot | CodingNepal</title>
+    <!-- Linking Google Fonts For Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@32,400,0,0" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- App Header -->
+      <header class="app-header">
+        <h1 class="heading">Hello, I'm Samarth</h1>
+        <h4 class="sub-heading">How can I help you today?</h4>
+      </header>
+
+      <!-- Chats -->
+      <div class="chats-container"></div>
+
+      <!-- Prompt Input -->
+      <div class="prompt-container">
+        <div class="prompt-wrapper">
+          <form action="#" class="prompt-form">
+            <input type="text" placeholder="Ask Samarth" class="prompt-input" required />
+            <div class="prompt-actions">
+              <!-- File Upload Wrapper -->
+              <div class="file-upload-wrapper">
+                <img src="#" class="file-preview" />
+                <input id="file-input" type="file" accept="image/*" hidden />
+                
+                <!-- Updated button to show "image" icon and trigger file input -->
+                <button type="button" id="add-file-btn" class="file-icon material-symbols-rounded">image</button>
+
+                <button id="cancel-file-btn" type="button" class="material-symbols-rounded">close</button>
+              </div>
+
+              <!-- Send Prompt and Stop Response Buttons -->
+              <button id="stop-response-btn" type="button" class="material-symbols-rounded">stop_circle</button>
+              <button id="send-prompt-btn" class="material-symbols-rounded">arrow_upward</button>
+            </div>
+          </form>
+        </div>
+
+        <p class="disclaimer-text">From API Developed By Samarth Gs </p>
+      </div>
+    </div>
+
+    <script>
+      // Trigger file input when image icon is clicked
+      document.getElementById("add-file-btn").addEventListener("click", () => {
+        document.getElementById("file-input").click();
+      });
+    </script>
+    
+    <script src="script.js"></script>
+  </body>
+</html>
