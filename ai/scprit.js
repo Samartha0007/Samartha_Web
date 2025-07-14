@@ -39,8 +39,7 @@ const typingEffect = (text, textElement, botMsgDiv) => {
 // Fixed bot response
 const generateResponse = (botMsgDiv) => {
   const textElement = botMsgDiv.querySelector(".message-text");
-  const responseText = "This AI is only available for handpicked users — by Samartha Gs.
- Coming soon for everyone";
+  const responseText = "🚫 This AI is only available for Samartha GS. Public access coming soon!";
   typingEffect(responseText, textElement, botMsgDiv);
 };
 
