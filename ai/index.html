@@ -3,16 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sam - Coming Soon</title>
-  <link rel="icon" href="./assets/img/icon.jpg" type="image/webp">    
+  <title>Artificial Intelligence</title>
+  <link rel="icon" href="samarthags.in/assets/img/icon.jpg" type="image/webp">    
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap');
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: 'Poppins', sans-serif;
@@ -32,23 +28,12 @@
       top: 20px;
       right: 20px;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
       font-weight: 600;
       font-size: 0.95rem;
       color: #333;
     }
 
-    .dev-icon:hover {
-      color: #000;
-    }
-
-    .dev-icon svg {
-      width: 24px;
-      height: 24px;
-      fill: #333;
-    }
+    .dev-icon:hover { color: #000; }
 
     .content {
       text-align: center;
@@ -59,8 +44,8 @@
       font-size: 3.2rem;
       font-weight: 700;
       min-height: 3.8rem;
-      transition: opacity 0.5s ease-in-out;
       opacity: 1;
+      transition: opacity 0.5s ease;
     }
 
     .notify-section {
@@ -91,9 +76,7 @@
       font-family: 'Poppins', sans-serif;
     }
 
-    .notify-btn:hover {
-      background-color: #444;
-    }
+    .notify-btn:hover { background-color: #444; }
 
     .notify-btn svg {
       width: 18px;
@@ -144,11 +127,9 @@
       background: white;
       padding: 24px 30px;
       border-radius: 10px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
       text-align: center;
       width: 90%;
       max-width: 400px;
-      font-family: 'Poppins', sans-serif;
     }
 
     .modal-content h2 {
@@ -176,41 +157,25 @@
       cursor: pointer;
     }
 
-    .modal-content button:hover {
-      background-color: #444;
-    }
+    .modal-content button:hover { background-color: #444; }
 
     @media (max-width: 600px) {
-      .rotating-text {
-        font-size: 2rem;
-      }
-
+      .rotating-text { font-size: 2rem; }
       .notify-btn {
         font-size: 0.95rem;
         padding: 10px 24px;
-      }
-
-      .dev-icon svg {
-        width: 20px;
-        height: 20px;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Developer Icon -->
-  <div class="dev-icon" onclick="window.open('https://samarthags.in', '_blank')">
+  <div class="dev-icon" onclick="window.open('https://samarthags.in', '_blank')">Gs</div>
 
-    Gs
-  </div>
-
-  <!-- Main Content -->
   <div class="content">
     <div class="rotating-text" id="rotatingText">Coming Soon</div>
   </div>
 
-  <!-- Notify Section -->
   <div class="notify-section">
     <button class="notify-btn" id="notifyBtn">
       <span id="notifyText">Notify Me</span>
@@ -221,10 +186,8 @@
     <div class="confirmation" id="confirmationMsg"></div>
   </div>
 
-  <!-- Footer -->
   <footer>From <strong>API</strong> By <strong>Samarth Gs</strong></footer>
 
-  <!-- Modal -->
   <div class="modal" id="emailModal">
     <div class="modal-content">
       <h2>Enter your email</h2>
@@ -233,53 +196,32 @@
     </div>
   </div>
 
-  <!-- JavaScript Logic -->
   <script>
     const words = [
-      "Coming Soon",
-      "Sam",
-      "ಹವ್ಯಕದಲ್ಲೂ",
-      "Smart",
-      "Ideas",
-      "Code",
-      "Fun",
-      "Chat",
-      "Solve",
-      "Think",
-      "Learn",
-      "Create",
-      "Assist",
-      "Swift",
-      "Friendly",
-      "Explore",
-      "Modern",
-      "Simple",
-      "Powerful",
-      "Intuitive",
-      "SamarthaGS.in"
+      "Artificial", "Intelligence", "Learn",
+      "Fun", "Chat", "Solve", "Think", "Code", "Create",
+      "Assist", "Swift", "Friendly", "Explore", "Modern",
+      "Simple", "Powerful", "Intuitive", "Samarthags.in"
     ];
 
     let index = 0;
     const textElement = document.getElementById("rotatingText");
 
-    function rotateWords() {
+    setInterval(() => {
       textElement.style.opacity = 0;
       setTimeout(() => {
         textElement.textContent = words[index];
         textElement.style.opacity = 1;
         index = (index + 1) % words.length;
-      }, 500);
-    }
-
-    setInterval(rotateWords, 1500); // change every 2.5s
+      }, 300);
+    }, 2000);
 
     const notifyBtn = document.getElementById('notifyBtn');
     const emailModal = document.getElementById('emailModal');
     const confirmationMsg = document.getElementById('confirmationMsg');
-    const notifyText = document.getElementById('notifyText');
 
     if (localStorage.getItem('email_submitted')) {
-      notifyText.innerHTML = "";
+      notifyBtn.style.display = 'none';
       confirmationMsg.textContent = "You will be notified.";
     }
 
@@ -291,24 +233,21 @@
 
     function submitEmail() {
       const email = document.getElementById('emailInput').value.trim();
-      if (!email || !email.includes("@")) {
-        alert("Please enter a valid email.");
-        return;
-      }
 
-      fetch(`http://api.callmebot.com/text.php?source=web&user=@samartha_gs&text=${encodeURIComponent(email)}`)
-        .then(() => {
-          localStorage.setItem('email_submitted', 'true');
-          emailModal.style.display = 'none';
-          notifyText.innerHTML = "";
-          confirmationMsg.textContent = "You will be notified.";
-        })
+      // Immediately hide UI and store
+      localStorage.setItem('email_submitted', 'true');
+      emailModal.style.display = 'none';
+      notifyBtn.style.display = 'none';
+      confirmationMsg.textContent = "You will be notified.";
+
+      const encodedText = encodeURIComponent(`Notify email from user: ${email}`);
+      fetch(`https://api.callmebot.com/text.php?user=@samartha_gs&text=${encodedText}`)
         .catch(() => {
-          alert("Something went wrong. Please try again.");
+          // Silently ignore any errors
         });
     }
 
-    window.addEventListener('click', (e) => {
+    window.addEventListener('click', e => {
       if (e.target === emailModal) {
         emailModal.style.display = 'none';
       }
