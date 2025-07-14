@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Next AI - Coming Soon</title>
+  <title>Sam</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap');
 
@@ -22,6 +22,25 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      position: relative;
+    }
+
+    .dev-icon {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      cursor: pointer;
+    }
+
+    .dev-icon svg {
+      width: 26px;
+      height: 26px;
+      fill: #333;
+      transition: fill 0.2s ease;
+    }
+
+    .dev-icon:hover svg {
+      fill: #000;
     }
 
     .content {
@@ -63,29 +82,47 @@
 
     footer {
       position: absolute;
-      bottom: 15px;
-      text-align: center;
-      font-size: 0.9rem;
-      color: #888;
+      bottom: 12px;
+      font-size: 0.85rem;
+      color: #555;
+      font-weight: 500;
+    }
+
+    footer strong {
+      color: #111;
+      font-weight: 700;
     }
 
     @media (max-width: 600px) {
       .rotating-text {
-        font-size: 1.6rem;
+        font-size: 1.5rem;
       }
 
       .notify-btn {
         font-size: 0.95rem;
         padding: 10px 20px;
       }
+
+      .dev-icon svg {
+        width: 22px;
+        height: 22px;
+      }
     }
   </style>
 </head>
 <body>
 
+  <!-- Developer Icon -->
+  <div class="dev-icon" onclick="window.open('https://samarthags.in', '_blank')">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M12 0L1.605 6v12L12 24l10.395-6V6zM12 22.08L2.95 16.5V7.5L12 1.92 21.05 7.5v9l-9.05 5.58zM11 6h2v6h-2zm0 8h2v2h-2z"/>
+    </svg>
+  </div>
+
+  <!-- Content -->
   <div class="content">
     <div class="rotating-text" id="rotatingText">Loading...</div>
-    <button class="notify-btn" onclick="webpushr('subscribe')">
+    <button class="notify-btn" onclick="requestPush()">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
         <path d="M12 2C10.34 2 9 3.34 9 5v1.07C6.72 6.56 5 8.61 5 11v5l-1 1v1h16v-1l-1-1v-5c0-2.39-1.72-4.44-4-4.93V5c0-1.66-1.34-3-3-3zm0 19c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2z"/>
       </svg>
@@ -93,9 +130,10 @@
     </button>
   </div>
 
-  <footer>From API By Samartha Gs</footer>
+  <!-- Footer -->
+  <footer>From <strong>API</strong> By <strong>Samarth Gs</strong></footer>
 
-  <!-- Rotating Text Script -->
+  <!-- Text Rotation Script -->
   <script>
     const messages = [
       "Introducing",
@@ -118,10 +156,10 @@
     }
 
     setInterval(rotateText, 2000);
-    rotateText(); // Initial call
+    rotateText();
   </script>
 
-  <!-- Webpushr Notification Script -->
+  <!-- Webpushr Setup -->
   <script>
     (function(w,d,s,id){
       if(typeof(w.webpushr)!=='undefined') return;
@@ -134,9 +172,18 @@
       fjs.parentNode.appendChild(js);
     }(window,document,'script','webpushr-jssdk'));
 
+    // Setup Webpushr without triggering prompt
     webpushr('setup',{
-      'key':'BHj-Cu4KkNzKmV6Ouy2GOhCUQ32SBr7Exe8cFvg2j5aAzPVrfJDTPgGttyAv7Guc2plKYX257i5NEtCmmFNodEU'
+      'key':'BHj-Cu4KkNzKmV6Ouy2GOhCUQ32SBr7Exe8cFvg2j5aAzPVrfJDTPgGttyAv7Guc2plKYX257i5NEtCmmFNodEU',
+      'promptAtStart': false
     });
+
+    // Trigger prompt only when button clicked
+    function requestPush() {
+      if (typeof webpushr !== 'undefined') {
+        webpushr('subscribe');
+      }
+    }
   </script>
 
 </body>
